@@ -4,7 +4,7 @@ Deze map bevat ontwerpdocumentatie voor een "v3" web-app (React SPA + API).
 
 ## Lokaal draaien (Docker)
 
-De backend (Django) en database (PostgreSQL) kunnen met één commando in Docker worden gestart. Je hebt alleen Docker en Docker Compose nodig; er hoeft geen Python of Postgres lokaal geïnstalleerd te zijn. Voor stappen, vereisten en troubleshooting: **[docs/docker.md](docs/docker.md)**.
+De backend (Django) en database (PostgreSQL) staan in de map **`backend/`** en kunnen daar met Docker worden gestart. Je hebt alleen Docker en Docker Compose nodig; er hoeft geen Python of Postgres lokaal geïnstalleerd te zijn. Voor stappen, vereisten en troubleshooting: **[docs/docker.md](docs/docker.md)**. Env-variabelen: kopieer `backend/.env.example` naar `backend/.env` en vul die in.
 
 ## Aanbevolen leesvolgorde
 
