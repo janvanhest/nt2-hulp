@@ -3,7 +3,7 @@
 Deze epics zijn geschreven als "MVP eerst", en sluiten aan op `v3/casus.md`, `v3/usecases.md` en het domein/ERD. **Epic 1 t/m 7 bouwen voort op Epic 0 (Foundation).**
 
 ## Epic 0: Foundation (gebruikers, sessie, migraties)
-**Beschrijving:** Alles wat klaar moet zijn voordat domeinfunctionaliteit (werkwoorden, zinnen, oefeningen) gebouwd wordt. Andere epics veronderstellen dat dit afgerond is.
+**Beschrijving:** Alles wat klaar moet zijn voordat domeinfunctionaliteit (werkwoorden, zinnen, oefeningen) gebouwd wordt: backend (gebruikers, sessie, migraties) én frontend (SPA-stack, build, auth-integratie). Zie ook [v3/adr-002-frontend-stack.md](v3/adr-002-frontend-stack.md). Andere epics veronderstellen dat dit afgerond is.
 
 **Acceptatiecriteria**
 - Het project beschikt over migraties; het databaseschema kan versioned worden aangepast.
@@ -12,6 +12,10 @@ Deze epics zijn geschreven als "MVP eerst", en sluiten aan op `v3/casus.md`, `v3
 - Gebruikers kunnen inloggen (credentials → sessie of token) en uitloggen (sessie/token invalideren).
 - Geauthenticeerde requests worden herkend; er is een endpoint om de huidige gebruiker (en rol) op te vragen (bijv. GET /me).
 - Wachtwoorden worden alleen gehashed opgeslagen; er is geen plain-text wachtwoord in de database.
+- De frontend is een Vite + React (TypeScript) SPA; de build draait lokaal en levert een bruikbare bundle.
+- TanStack Query is geïnstalleerd en geconfigureerd (`QueryClientProvider`); ten minste één API-call (bijv. GET /me na login) gebruikt TanStack Query.
+- shadcn/ui, Tailwind en Lucide icons zijn geïnstalleerd; er is een minimale layout (bijv. shell met navigatie) waarop latere schermen kunnen bouwen.
+- Er is client-side routing (bijv. React Router); een login-scherm kan tegen de bestaande auth-API aan (inloggen en uitloggen werken end-to-end).
 - (Optioneel) Niet-geauthenticeerde toegang tot beschermde endpoints wordt geweigerd met duidelijke statuscode.
 
 ## Epic 1: Rollen & autorisatie
