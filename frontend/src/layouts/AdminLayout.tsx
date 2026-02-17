@@ -1,13 +1,13 @@
 import { Navigate, Outlet } from 'react-router'
 import { useMe } from '@/hooks/useMe'
-import { isBeheerder } from '@/lib/api'
+import { isAdmin } from '@/lib/api'
 import { ROUTES } from '@/lib/routes'
 
 /**
- * Layout for beheer routes. Renders children only when user has role 'beheerder';
+ * Layout for beheer (admin) routes. Renders children only when user has role 'beheerder';
  * otherwise redirects to home. Use as parent route component for /beheer/*.
  */
-export function BeheerLayout() {
+export function AdminLayout() {
   const { data: user, isPending, isError } = useMe()
 
   if (isPending || isError || !user) {
@@ -18,7 +18,7 @@ export function BeheerLayout() {
     )
   }
 
-  if (!isBeheerder(user)) {
+  if (!isAdmin(user)) {
     return <Navigate to={ROUTES.home} replace />
   }
 

@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { useAuth } from '@/contexts/AuthContext'
 import { useLogoutMutation } from '@/hooks/useAuthMutations'
 import { useMe } from '@/hooks/useMe'
+import { isAdmin } from '@/lib/api'
 import { ROUTES } from '@/lib/routes'
 
 export function AppLayout() {
@@ -53,7 +54,7 @@ export function AppLayout() {
             >
               Nakijkmodel
             </Link>
-            {user?.role === 'beheerder' && (
+            {isAdmin(user) && (
               <>
                 <Link
                   to={ROUTES.beheer}

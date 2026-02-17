@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router'
 import { AppLayout } from '@/layouts/AppLayout'
-import { BeheerLayout } from '@/layouts/BeheerLayout'
+import { AdminLayout } from '@/layouts/AdminLayout'
 import { BeheerPage } from '@/pages/BeheerPage'
 import { BeheerWerkwoordenPage } from '@/pages/BeheerWerkwoordenPage'
 import { BeheerZinnenPage } from '@/pages/BeheerZinnenPage'
@@ -33,7 +33,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'beheer',
-        Component: BeheerLayout,
+        Component: AdminLayout,
         children: [
           {
             index: true,
