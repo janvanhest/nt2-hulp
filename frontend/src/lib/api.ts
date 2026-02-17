@@ -25,13 +25,18 @@ export class ApiError extends Error {
 }
 
 /**
+ * Role values returned by the API. Used for route guards and navigation.
+ */
+export type UserRole = 'gebruiker' | 'beheerder';
+
+/**
  * Current user returned by GET /api/auth/me/ and included in login response.
  */
 export interface User {
   id: number;
   username: string;
   email: string;
-  role: string;
+  role: UserRole;
 }
 
 /**
@@ -80,7 +85,8 @@ export interface ApiFetchOptions extends Omit<RequestInit, 'headers'> {
 }
 
 /**
- * Fetches from the API with optional auth header. On 401, clears the token and throws.
+ * Fetches from the API with optional auth header. On 401, clears the token (does not throw).
+ * On 403, leaves token intact; callers should check res.status and show body.detail to the user.
  * Path should start with / (e.g. /api/auth/me/). JSON is not automatically parsed.
  */
 export async function apiFetch(
