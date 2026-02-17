@@ -4,10 +4,12 @@ import { Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
+import { VisuallyHidden } from 'radix-ui'
 import {
   Sheet,
   SheetClose,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
@@ -107,13 +109,15 @@ export function AppLayout() {
             </Button>
           </div>
           <Sheet open={sheetOpen} onOpenChange={handleSheetOpenChange}>
-            <SheetContent
-              side="right"
-              className="w-full max-w-sm"
-              aria-describedby={undefined}
-            >
+            <SheetContent side="right" className="w-full max-w-sm">
+              <VisuallyHidden.Root>
+                <SheetTitle>Menu</SheetTitle>
+                <SheetDescription>Navigatie en uitloggen</SheetDescription>
+              </VisuallyHidden.Root>
               <SheetHeader className="flex flex-row items-center justify-between space-y-0">
-                <SheetTitle id="sheet-nav-title">Menu</SheetTitle>
+                <span id="sheet-nav-title" className="text-lg font-semibold leading-none tracking-tight">
+                  Menu
+                </span>
                 <SheetClose asChild>
                   <Button
                     type="button"
