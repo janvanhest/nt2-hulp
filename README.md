@@ -24,5 +24,6 @@ De backend (Django) en database (PostgreSQL) staan in de map **`backend/`** en k
 ## Notities
 
 - Epic 0 (Foundation) wordt als eerste uitgevoerd; [Epics](v3/epics.md) 1–7 bouwen daarop voort.
+- Rollen en autorisatie (beheerder/gebruiker, waar afdwingen, beheerder aanmaken): [docs/rollen-autorisatie.md](docs/rollen-autorisatie.md).
 - [ADR-001](v3/adr-001-stack-choice.md) gaat over de API-keuze (TBD); [ADR-002](v3/adr-002-frontend-stack.md) beschrijft de frontend-stack (besluit). [Requirements (dev)](v3/requirements-dev.md) kunnen per stack worden aangescherpt.
 - [Open questions](v3/open-questions.md) is bedoeld als backlog van beslissingen die het datamodel en de oefenlogica kunnen beïnvloeden.
