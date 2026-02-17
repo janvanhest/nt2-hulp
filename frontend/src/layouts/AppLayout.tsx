@@ -41,6 +41,40 @@ export function AppLayout() {
             >
               Home
             </Link>
+            <Link
+              to={ROUTES.oefenen}
+              className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
+            >
+              Oefenen
+            </Link>
+            <Link
+              to={ROUTES.nakijk}
+              className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
+            >
+              Nakijkmodel
+            </Link>
+            {user?.role === 'beheerder' && (
+              <>
+                <Link
+                  to={ROUTES.beheer}
+                  className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
+                >
+                  Beheer
+                </Link>
+                <Link
+                  to={ROUTES.beheerWerkwoorden}
+                  className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
+                >
+                  Werkwoorden
+                </Link>
+                <Link
+                  to={ROUTES.beheerZinnen}
+                  className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
+                >
+                  Zinnen
+                </Link>
+              </>
+            )}
           </nav>
           {user != null && (
             <span className="text-muted-foreground text-sm">{user.username}</span>
