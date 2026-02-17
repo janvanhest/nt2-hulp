@@ -153,8 +153,7 @@ export function MobileNavSheetContent({
   onNavigate: () => void
 }) {
   return (
-    <div className="animate-in fade-in duration-200 delay-75">
-      <nav className="mt-6 flex flex-col gap-1" aria-labelledby="sheet-nav-title">
+    <nav className="mt-6 flex flex-col gap-1" aria-labelledby="sheet-nav-title">
       {mainItems.map((item) => (
         <SheetNavItem
           key={item.to}
@@ -174,7 +173,6 @@ export function MobileNavSheetContent({
           ))}
         </>
       )}
-      </nav>
-    </div>
+    </nav>
   )
 }
