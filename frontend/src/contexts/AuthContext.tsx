@@ -1,5 +1,5 @@
-import { createContext, useCallback, useContext, useState } from 'react'
-import { getStoredToken, setStoredToken, clearStoredToken } from '@/lib/api'
+import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { getStoredToken, setStoredToken, clearStoredToken, setUnauthorizedHandler } from '@/lib/api'
 
 export interface AuthContextValue {
   token: string | null
@@ -14,6 +14,19 @@ const AuthContext = createContext<AuthContextValue>({
   setToken: noop,
   clearToken: noop,
 })
+
+/**
+ * Registers clearToken with api so any 401 from apiFetch updates auth state and triggers redirect to login.
+ * Must be mounted inside AuthProvider.
+ */
+function AuthUnauthorizedSync() {
+  const { clearToken } = useAuth()
+  useEffect(() => {
+    setUnauthorizedHandler(clearToken)
+    return () => setUnauthorizedHandler(null)
+  }, [clearToken])
+  return null
+}
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setTokenState] = useState<string | null>(getStoredToken)
@@ -34,7 +47,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     clearToken,
   }
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={value}>
+      <AuthUnauthorizedSync />
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
 /**
