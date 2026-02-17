@@ -1,0 +1,3 @@
+# Project rules
+
+- Use **pnpm** for this project (not npm or npx). Run package scripts and add dependencies with `pnpm` (e.g. `pnpm install`, `pnpm add`, `pnpm run build`, `pnpm exec shadcn@latest add ...`).
