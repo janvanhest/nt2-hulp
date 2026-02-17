@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useLoginMutation } from '@/hooks/useAuthMutations'
+import illustrationLogin from '@/assets/illustration-login.svg?url'
 
 export function LoginPage() {
   const [username, setUsername] = useState('')
@@ -16,8 +17,14 @@ export function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-svh items-center justify-center p-6">
-      <Card className="w-full max-w-sm">
+    <main className="flex min-h-svh flex-col items-center justify-center gap-8 p-6 md:flex-row md:gap-12">
+      <img
+        src={illustrationLogin}
+        alt=""
+        className="h-56 w-auto max-w-xs object-contain md:h-72 md:max-w-sm"
+        aria-hidden
+      />
+      <Card className="w-full max-w-sm shrink-0">
         <CardHeader>
           <CardTitle>Inloggen</CardTitle>
           <CardDescription>Log in met je gebruikersnaam en wachtwoord.</CardDescription>
