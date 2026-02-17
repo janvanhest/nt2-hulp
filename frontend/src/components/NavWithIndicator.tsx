@@ -115,7 +115,7 @@ export function NavWithIndicator({
     <nav ref={navRef} className="relative flex flex-1 items-center gap-2">
       {activeIndex >= 0 && indicator.width > 0 && (
         <span
-          className="absolute z-0 rounded-lg bg-primary/20 ring-1 ring-primary/40 transition-all duration-200 ease-out"
+          className="absolute z-0 rounded-lg bg-primary/20 ring-1 ring-primary/40 transition-[left,width] duration-200 ease-out"
           style={{
             left: indicator.left,
             width: indicator.width,
@@ -153,7 +153,8 @@ export function MobileNavSheetContent({
   onNavigate: () => void
 }) {
   return (
-    <nav className="mt-6 flex flex-col gap-1" aria-labelledby="sheet-nav-title">
+    <div className="animate-in fade-in duration-200 delay-75">
+      <nav className="mt-6 flex flex-col gap-1" aria-labelledby="sheet-nav-title">
       {mainItems.map((item) => (
         <SheetNavItem
           key={item.to}
@@ -173,6 +174,7 @@ export function MobileNavSheetContent({
           ))}
         </>
       )}
-    </nav>
+      </nav>
+    </div>
   )
 }
