@@ -11,3 +11,8 @@
 # OS
 .DS_Store
 *.log
+
+# Node / pnpm
+node_modules/
+.pnpm-store/
+.DS_Store
