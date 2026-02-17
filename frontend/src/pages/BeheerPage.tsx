@@ -1,0 +1,37 @@
+import { useQuery } from '@tanstack/react-query'
+import { ApiError, apiFetch } from '@/lib/api'
+
+export function BeheerPage() {
+  const { data, isError, error } = useQuery({
+    queryKey: ['beheer-check'],
+    queryFn: async () => {
+      const res = await apiFetch('/api/beheer/')
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        throw new ApiError(res.status, body)
+      }
+      return res.json() as Promise<{ ok: boolean }>
+    },
+  })
+
+  const forbiddenMessage =
+    isError && error instanceof ApiError && error.status === 403 ? error.message : null
+
+  return (
+    <main className="p-6">
+      <h1 className="text-2xl font-semibold">Beheer</h1>
+      {forbiddenMessage != null ? (
+        <p className="bg-destructive/10 text-destructive mt-2 rounded-md px-3 py-2 text-sm" role="alert">
+          {forbiddenMessage}
+        </p>
+      ) : (
+        <p className="text-muted-foreground mt-1">
+          Overzicht beheer. Werkwoorden en zinnen beheren via het menu.
+        </p>
+      )}
+      {data?.ok === true && (
+        <p className="text-muted-foreground mt-1 text-sm">Toegang bevestigd.</p>
+      )}
+    </main>
+  )
+}
