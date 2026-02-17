@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from 'react-router'
 import { useMe } from '@/hooks/useMe'
+import { isBeheerder } from '@/lib/api'
 import { ROUTES } from '@/lib/routes'
 
 /**
@@ -17,7 +18,7 @@ export function BeheerLayout() {
     )
   }
 
-  if (user.role !== 'beheerder') {
+  if (!isBeheerder(user)) {
     return <Navigate to={ROUTES.home} replace />
   }
 
