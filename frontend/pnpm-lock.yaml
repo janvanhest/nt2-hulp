@@ -41,6 +41,9 @@ importers:
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
+      undraw-svg:
+        specifier: ^1.0.0
+        version: 1.0.0
     devDependencies:
       '@eslint/js':
         specifier: ^9.39.1
@@ -3095,6 +3098,9 @@ packages:
 
   undici-types@7.16.0:
     resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
+
+  undraw-svg@1.0.0:
+    resolution: {integrity: sha512-TNIhYmRWJ6f/qIeqJklOpy2ID9eoTj1mA6rFHIgzZWS8Fz8L/ktA7MPv5Hl0Sl5ncKMi3t2Uw1ehqTo0VI4fzw==}
 
   unicorn-magic@0.3.0:
     resolution: {integrity: sha512-+QBBXBCvifc56fsbuxZQ6Sic3wqqc3WWaqxs58gvJrcOuN83HGTCwz3oS5phzU9LthRNE9VrJCFCLUgHeeFnfA==}
@@ -6308,6 +6314,8 @@ snapshots:
   typescript@5.9.3: {}
 
   undici-types@7.16.0: {}
+
+  undraw-svg@1.0.0: {}
 
   unicorn-magic@0.3.0: {}
 
