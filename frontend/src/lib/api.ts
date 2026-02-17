@@ -29,6 +29,16 @@ export class ApiError extends Error {
  */
 export type UserRole = 'gebruiker' | 'beheerder';
 
+/** Role value for beheerder; single source of truth for guards and nav. */
+export const ROLE_BEHEERDER: UserRole = 'beheerder';
+
+/**
+ * Type-safe check for beheerder (admin) role. Use in AdminLayout and AppLayout nav.
+ */
+export function isAdmin(user: User | null | undefined): user is User & { role: 'beheerder' } {
+  return user?.role === ROLE_BEHEERDER;
+}
+
 /**
  * Current user returned by GET /api/auth/me/ and included in login response.
  */
@@ -80,12 +90,24 @@ export function clearStoredToken(): void {
   localStorage.removeItem(TOKEN_STORAGE_KEY);
 }
 
+/** Called on 401 so the app can clear auth state (e.g. AuthContext). Set from inside AuthProvider. */
+let unauthorizedHandler: (() => void) | null = null;
+
+/**
+ * Registers a handler to run on every 401 from apiFetch (e.g. clear token in AuthContext).
+ * Pass null to unregister. Should be set once inside AuthProvider and cleared on unmount.
+ */
+export function setUnauthorizedHandler(handler: (() => void) | null): void {
+  unauthorizedHandler = handler;
+}
+
 export interface ApiFetchOptions extends Omit<RequestInit, 'headers'> {
   headers?: Record<string, string>;
 }
 
 /**
- * Fetches from the API with optional auth header. On 401, clears the token (does not throw).
+ * Fetches from the API with optional auth header. On 401, clears the token and calls the
+ * registered unauthorized handler (so AuthContext updates and app redirects to login).
  * On 403, leaves token intact; callers should check res.status and show body.detail to the user.
  * Path should start with / (e.g. /api/auth/me/). JSON is not automatically parsed.
  */
@@ -109,6 +131,7 @@ export async function apiFetch(
   });
   if (res.status === 401) {
     clearStoredToken();
+    unauthorizedHandler?.();
   }
   return res;
 }
