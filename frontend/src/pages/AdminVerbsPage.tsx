@@ -1,11 +1,11 @@
-
 import { ApiError } from '@/lib/api'
 import type { Verb } from '@/lib/api'
 import { useVerbs } from '@/hooks/useVerbs'
-import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table'
+import { VerbFormDialog } from '@/components/VerbFormDialog'
+import { VerbTableRow } from '@/components/VerbTableRow'
+import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Badge } from '@/components/ui/badge'
-import { VerbFormFields } from '@/components/VerbFormFields'
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table'
 import * as React from 'react'
 
 const TABLE_HEADERS = (
@@ -16,12 +16,6 @@ const TABLE_HEADERS = (
   </TableRow>
 )
 
-function countFilledForms(forms: Verb['forms']): number {
-  return Object.values(forms).filter(
-    (v) => (typeof v === 'string' ? v.trim() !== '' : v !== '')
-  ).length
-}
-
 export function AdminVerbsPage() {
   const { data, isLoading, isError, error } = useVerbs()
 
@@ -29,10 +23,25 @@ export function AdminVerbsPage() {
     isError && error instanceof ApiError && error.status === 403 ? error.message : null
 
   const [expandedId, setExpandedId] = React.useState<number | null>(null)
+  const [dialogOpen, setDialogOpen] = React.useState(false)
+  const [selectedVerb, setSelectedVerb] = React.useState<Verb | null>(null)
+
+  const openCreate = () => {
+    setSelectedVerb(null)
+    setDialogOpen(true)
+  }
+  const openEdit = (verb: Verb, e: React.MouseEvent) => {
+    e.stopPropagation()
+    setSelectedVerb(verb)
+    setDialogOpen(true)
+  }
 
   return (
     <main className="p-6">
-      <h1 className="text-2xl font-semibold mb-4">Werkwoorden beheren</h1>
+      <div className="mb-4 flex items-center justify-between">
+        <h1 className="text-2xl font-semibold">Werkwoorden beheren</h1>
+        <Button onClick={openCreate}>Werkwoord toevoegen</Button>
+      </div>
       {forbiddenMessage != null ? (
         <p
           className="bg-destructive/10 text-destructive mt-2 rounded-md px-3 py-2 text-sm"
@@ -58,45 +67,33 @@ export function AdminVerbsPage() {
           {error instanceof Error ? error.message : 'Fout bij ophalen werkwoorden.'}
         </p>
       ) : data && data.length === 0 ? (
-        <div className="text-muted-foreground mt-2">Nog geen werkwoorden. Voeg er een toe.</div>
+        <div className="mt-2 flex flex-col items-start gap-2 text-muted-foreground">
+          <p>Nog geen werkwoorden. Voeg er een toe.</p>
+          <Button onClick={openCreate}>Werkwoord toevoegen</Button>
+        </div>
       ) : data ? (
         <Table>
           <TableHeader>{TABLE_HEADERS}</TableHeader>
           <TableBody>
-            {data.map((verb) => {
-              const filledCount = countFilledForms(verb.forms)
-              const totalCount = Object.keys(verb.forms).length
-              const expanded = expandedId === verb.id
-              return (
-                <React.Fragment key={verb.id}>
-                  <TableRow
-                    className={expanded ? 'bg-muted/30' : ''}
-                    onClick={() => setExpandedId(expanded ? null : verb.id)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <TableCell className="font-medium">{verb.infinitive}</TableCell>
-                    <TableCell>
-                      <Badge variant={filledCount === totalCount ? 'default' : 'secondary'}>
-                        {filledCount} / {totalCount}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-xs text-muted-foreground">{expanded ? 'Sluiten' : 'Details'}</span>
-                    </TableCell>
-                  </TableRow>
-                  {expanded && (
-                    <TableRow>
-                      <TableCell colSpan={3} className="bg-muted/10">
-                        <VerbFormFields forms={verb.forms} />
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </React.Fragment>
-              )
-            })}
+            {data.map((verb) => (
+              <VerbTableRow
+                key={verb.id}
+                verb={verb}
+                expanded={expandedId === verb.id}
+                onToggleExpand={() =>
+                  setExpandedId(expandedId === verb.id ? null : verb.id)
+                }
+                onEdit={(e) => openEdit(verb, e)}
+              />
+            ))}
           </TableBody>
         </Table>
       ) : null}
+      <VerbFormDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        verb={selectedVerb}
+      />
     </main>
   )
 }

@@ -13,6 +13,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
+import { Toaster } from '@/components/ui/sonner'
 import { MobileNavSheetContent, NavWithIndicator } from '@/components/NavWithIndicator'
 import { useAuth } from '@/contexts/AuthContext'
 import { useLogoutMutation } from '@/hooks/useAuthMutations'
@@ -157,6 +158,7 @@ export function AppLayout() {
       <div className="mx-auto w-full max-w-4xl px-4 py-6 md:px-6">
         <Outlet />
       </div>
+      <Toaster />
     </div>
   )
 }

@@ -25,6 +25,24 @@ export class ApiError extends Error {
 }
 
 /**
+ * Extracts per-field error messages from a 400 API response body (e.g. DRF validation errors).
+ * Returns the first message per field key.
+ */
+export function getFieldErrors(error: ApiError): Record<string, string> {
+  if (error.status !== 400 || error.body == null || typeof error.body !== 'object') {
+    return {}
+  }
+  const body = error.body as Record<string, unknown>
+  const out: Record<string, string> = {}
+  for (const [key, value] of Object.entries(body)) {
+    if (Array.isArray(value) && value.length > 0 && typeof value[0] === 'string') {
+      out[key] = value[0]
+    }
+  }
+  return out
+}
+
+/**
  * Role values returned by the API. Used for route guards and navigation.
  */
 export type UserRole = 'gebruiker' | 'beheerder';
