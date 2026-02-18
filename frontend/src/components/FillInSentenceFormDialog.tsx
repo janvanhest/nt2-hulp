@@ -1,5 +1,6 @@
-import type { FillInSentence, FillInSentencePayload, Verb } from '@/lib/api'
+import type { AnswerFormKey, FillInSentence, FillInSentencePayload, Verb } from '@/lib/api'
 import { ApiError, getFieldErrors } from '@/lib/api'
+import { ANSWER_FORM_KEYS, ANSWER_FORM_LABELS } from '@/lib/verbFormConfig'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -50,6 +51,7 @@ export function FillInSentenceFormDialog({
   const [verbId, setVerbId] = React.useState<number | ''>('')
   const [sentenceTemplate, setSentenceTemplate] = React.useState('')
   const [answer, setAnswer] = React.useState('')
+  const [answerFormKey, setAnswerFormKey] = React.useState<AnswerFormKey | ''>('')
 
   const verbSelectDisabled = isCreate && initialVerbId != null
   const displayVerbId = isCreate && initialVerbId != null ? initialVerbId : verbId
@@ -63,10 +65,12 @@ export function FillInSentenceFormDialog({
       setVerbId(sentence.verb.id)
       setSentenceTemplate(sentence.sentence_template)
       setAnswer(sentence.answer)
+      setAnswerFormKey(sentence.answer_form_key ?? '')
     } else {
       setVerbId(initialVerbId ?? '')
       setSentenceTemplate('')
       setAnswer('')
+      setAnswerFormKey('')
     }
   }, [open, sentence, initialVerbId])
 
@@ -79,10 +83,15 @@ export function FillInSentenceFormDialog({
       setFieldErrors({ verb: 'Kies een werkwoord.' })
       return
     }
+    if (!answerFormKey) {
+      setFieldErrors({ answer_form_key: 'Kies een werkwoordsvorm.' })
+      return
+    }
     const payload: FillInSentencePayload = {
       verb: finalVerbId,
       sentence_template: sentenceTemplate.trim(),
       answer: answer.trim(),
+      answer_form_key: answerFormKey,
     }
     if (!payload.sentence_template) {
       setFieldErrors({ sentence_template: 'Zin is verplicht.' })
@@ -186,11 +195,33 @@ export function FillInSentenceFormDialog({
               id="fillin-answer"
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
-              placeholder="Bijv. fiets"
+              placeholder="Bijv. loop"
               aria-invalid={fieldErrors.answer != null}
             />
             {fieldErrors.answer != null && (
               <p className="text-destructive text-sm">{fieldErrors.answer}</p>
+            )}
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="fillin-form-key">Werkwoordsvorm</Label>
+            <Select
+              value={answerFormKey}
+              onValueChange={(v) => setAnswerFormKey(v === '' ? '' : (v as AnswerFormKey))}
+              required
+            >
+              <SelectTrigger id="fillin-form-key" className="w-full">
+                <SelectValue placeholder="Kies welke vorm het antwoord is" />
+              </SelectTrigger>
+              <SelectContent>
+                {ANSWER_FORM_KEYS.map((key) => (
+                  <SelectItem key={key} value={key}>
+                    {ANSWER_FORM_LABELS[key]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {fieldErrors.answer_form_key != null && (
+              <p className="text-destructive text-sm">{fieldErrors.answer_form_key}</p>
             )}
           </div>
           <div className="flex justify-end gap-2">

@@ -113,6 +113,17 @@ export interface VerbPayload {
 /** Beheer invulzinnen API base path. */
 export const FILL_IN_SENTENCES_API_PATH = '/api/beheer/invulzinnen';
 
+/** Werkwoordsvorm van het antwoord in een invulzin (sluit aan op VerbForm + infinitief). */
+export type AnswerFormKey =
+  | 'tt_ik'
+  | 'tt_jij'
+  | 'tt_hij'
+  | 'vt_ev'
+  | 'vt_mv'
+  | 'vd'
+  | 'vd_hulpwerkwoord'
+  | 'infinitive'
+
 /** Verb as returned in FillInSentence (nested). */
 export interface FillInSentenceVerb {
   id: number;
@@ -125,6 +136,7 @@ export interface FillInSentence {
   verb: FillInSentenceVerb;
   sentence_template: string;
   answer: string;
+  answer_form_key?: AnswerFormKey | '';
   created_at: string;
   updated_at: string;
 }
@@ -134,6 +146,7 @@ export interface FillInSentencePayload {
   verb: number;
   sentence_template: string;
   answer: string;
+  answer_form_key?: AnswerFormKey | '';
 }
 
 /**

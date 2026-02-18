@@ -1,6 +1,7 @@
 import { ApiError } from '@/lib/api'
-import type { FillInSentence } from '@/lib/api'
+import type { AnswerFormKey, FillInSentence } from '@/lib/api'
 import { FillInSentenceFormDialog } from '@/components/FillInSentenceFormDialog'
+import { ANSWER_FORM_LABELS } from '@/lib/verbFormConfig'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -43,6 +44,13 @@ const TABLE_HEADERS = (
 function sentencePreview(text: string, maxLen = 50): string {
   const t = text.trim()
   return t.length <= maxLen ? t : `${t.slice(0, maxLen)}…`
+}
+
+function formatAnswerDisplay(answer: string, answerFormKey?: AnswerFormKey | ''): string {
+  if (answerFormKey && answerFormKey in ANSWER_FORM_LABELS) {
+    return `${answer} (${ANSWER_FORM_LABELS[answerFormKey as AnswerFormKey]})`
+  }
+  return answer
 }
 
 export function AdminSentencesPage() {
@@ -174,7 +182,7 @@ export function AdminSentencesPage() {
                   <TableCell className="max-w-xs truncate" title={s.sentence_template}>
                     {sentencePreview(s.sentence_template)}
                   </TableCell>
-                  <TableCell>{s.answer}</TableCell>
+                  <TableCell>{formatAnswerDisplay(s.answer, s.answer_form_key)}</TableCell>
                   <TableCell>{s.verb.infinitive}</TableCell>
                   <TableCell>
                     <div className="flex flex-wrap items-center gap-1">

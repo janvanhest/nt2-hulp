@@ -1,22 +1,34 @@
-import type { VerbForm } from '@/lib/api'
+import type { AnswerFormKey, VerbForm } from '@/lib/api'
 
 export const VERB_FORM_LABELS: Record<keyof VerbForm, string> = {
   tt_ik: 'ik (tt)',
   tt_jij: 'jij (tt)',
-  tt_hij: 'hij/zij (tt)',
-  vt_ev: 'hij/zij (vt)',
-  vt_mv: 'zij (vt mv)',
+  tt_hij: 'hij/zij/het (tt)',
+  vt_ev: 'hij/zij/het (vt)',
+  vt_mv: 'wij/jullie/zij (vt mv)',
   vd: 'voltooid deelwoord',
   vd_hulpwerkwoord: 'hulpwerkwoord',
+}
+
+/** Keys for invulzin "Werkwoordsvorm" dropdown: verb forms + infinitive. */
+export const ANSWER_FORM_KEYS: AnswerFormKey[] = [
+  ...(Object.keys(VERB_FORM_LABELS) as (keyof VerbForm)[]),
+  'infinitive',
+]
+
+/** Labels for invulzin answer form dropdown. Reuses VERB_FORM_LABELS + infinitive. */
+export const ANSWER_FORM_LABELS: Record<AnswerFormKey, string> = {
+  ...VERB_FORM_LABELS,
+  infinitive: 'Infinitief (heel werkwoord)',
 }
 
 /** Short descriptions for form fields, shown as hints (e.g. tooltip). Single source of truth. */
 export const VERB_FORM_DESCRIPTIONS: Record<keyof VerbForm, string> = {
   tt_ik: '1e persoon enkelvoud, tegenwoordige tijd (bijv. ik loop)',
   tt_jij: '2e persoon enkelvoud, tegenwoordige tijd (bijv. jij loopt)',
-  tt_hij: '3e persoon enkelvoud, tegenwoordige tijd (bijv. hij loopt)',
-  vt_ev: '3e persoon enkelvoud, verleden tijd (bijv. hij liep)',
-  vt_mv: '3e persoon meervoud, verleden tijd (bijv. zij liepen)',
+  tt_hij: '3e persoon enkelvoud, tegenwoordige tijd (hij/zij/het, bijv. hij loopt)',
+  vt_ev: '3e persoon enkelvoud, verleden tijd (hij/zij/het, bijv. hij liep)',
+  vt_mv: '3e persoon meervoud, verleden tijd (wij/jullie/zij, bijv. zij liepen)',
   vd: 'Voltooid deelwoord (bijv. gelopen, gewerkt)',
   vd_hulpwerkwoord: 'Hulpwerkwoord bij voltooid deelwoord: hebben of zijn',
 }
