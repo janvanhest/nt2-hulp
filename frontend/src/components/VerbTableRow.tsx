@@ -11,6 +11,7 @@ export interface VerbTableRowProps {
   expanded: boolean
   onToggleExpand: () => void
   onEdit: (e: React.MouseEvent) => void
+  onDelete: (verb: Verb) => void
 }
 
 /** Single responsibility: render one verb table row and its expandable detail. */
@@ -19,6 +20,7 @@ export function VerbTableRow({
   expanded,
   onToggleExpand,
   onEdit,
+  onDelete,
 }: VerbTableRowProps) {
   const filledCount = countFilledForms(verb.forms)
   const totalCount = VERB_FORM_KEYS.length
@@ -37,12 +39,26 @@ export function VerbTableRow({
           </Badge>
         </TableCell>
         <TableCell onClick={(e) => e.stopPropagation()}>
-          <Button type="button" variant="ghost" size="sm" onClick={onEdit}>
-            Bewerken
-          </Button>
-          <span className="ml-2 text-xs text-muted-foreground">
-            {expanded ? 'Sluiten' : 'Details'}
-          </span>
+          <div className="flex flex-wrap items-center gap-1">
+            <Button type="button" variant="ghost" size="sm" onClick={onEdit}>
+              Bewerken
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+              onClick={(e) => {
+                e.stopPropagation()
+                onDelete(verb)
+              }}
+            >
+              Verwijderen
+            </Button>
+            <span className="ml-2 text-xs text-muted-foreground">
+              {expanded ? 'Sluiten' : 'Details'}
+            </span>
+          </div>
         </TableCell>
       </TableRow>
       {expanded && (
