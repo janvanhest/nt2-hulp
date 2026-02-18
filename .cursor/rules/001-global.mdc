@@ -10,3 +10,4 @@ alwaysApply: true
 - Bij wijzigingen in gedrag: voeg of pas tests aan zodat het gedrag gedekt is.
 - Geen secrets, wachtwoorden of API-keys in code of in images; gebruik env/config.
 - Geen generieke open deuren in comments; regels zijn concreet en toepasbaar.
+- **MCP:** Gebruik MCP-tools waar nuttig. Context7 (documentatie), mui-mcp (MUI) en shadcn (shadcn/ui) staan doorgaans aan; raadpleeg ze voor actuele docs en voorbeelden.

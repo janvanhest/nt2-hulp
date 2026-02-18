@@ -1,5 +1,0 @@
-# Project rules
-
-- Use **pnpm** for this project (not npm or npx). Run package scripts and add dependencies with `pnpm` (e.g. `pnpm install`, `pnpm add`, `pnpm run build`, `pnpm exec shadcn@latest add ...`).
-
-- Use **Docker Compose** to run Python/backend commands when a local venv is not active. From `backend/`: `docker compose run web python manage.py <command>` (e.g. `check`, `migrate`, `shell`). If the web container is already running: `docker compose exec web python manage.py <command>`.
