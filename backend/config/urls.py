@@ -23,5 +23,5 @@ urlpatterns = [
     path("", views.api_root),
     path("admin/", admin.site.urls),
     path("api/auth/", include("accounts.api_urls")),
-    path("api/beheer/", include("accounts.beheer_urls")),
+    path("api/beheer/", include("accounts.admin_urls")),
 ]
