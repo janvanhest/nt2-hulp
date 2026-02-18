@@ -1,0 +1,27 @@
+---
+description: SOLID, DRY en KISS – principes die we consequent toepassen
+alwaysApply: true
+---
+
+# Coding Principles
+
+Waarde hechten we aan deze principes; pas ze consequent toe in code en refactors.
+
+## SOLID
+
+- **S**ingle Responsibility: één verantwoordelijkheid per module/class/functie.
+- **O**pen/Closed: open voor uitbreiding, gesloten voor wijziging (abstracties, interfaces).
+- **L**iskov Substitution: subtypes moeten bruikbaar zijn waar het basistype verwacht wordt.
+- **I**nterface Segregation: kleine, gerichte interfaces in plaats van één dikke.
+- **D**ependency Inversion: dependeer op abstracties, niet op concrete implementaties.
+
+## DRY (Don't Repeat Yourself)
+
+- Geen dubbele logica of data; centraliseer in één plek.
+- Herbruikbare functies, hooks, componenten en gedeelde constanten/types.
+- Bij copy-paste: eerst abstraheren, dan hergebruiken.
+
+## KISS (Keep It Simple, Stupid)
+
+- Eenvoudige, leesbare oplossingen boven slimme of over-engineered code.
+- Geen onnodige abstracties of lagen; YAGNI (You Ain’t Gonna Need It) toepassen waar passend.
