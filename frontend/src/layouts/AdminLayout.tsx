@@ -1,11 +1,12 @@
-import { Navigate, Outlet } from 'react-router'
+import { Link } from 'react-router'
+import { Outlet } from 'react-router'
 import { useMe } from '@/hooks/useMe'
 import { isAdmin } from '@/lib/api'
 import { ROUTES } from '@/lib/routes'
 
 /**
  * Layout for beheer (admin) routes. Renders children only when user has role 'beheerder';
- * otherwise redirects to home. Use as parent route component for /beheer/*.
+ * otherwise shows a "no access" message so the URL stays visible (e.g. /beheer/werkwoorden).
  */
 export function AdminLayout() {
   const { data: user, isPending, isError } = useMe()
@@ -19,7 +20,20 @@ export function AdminLayout() {
   }
 
   if (!isAdmin(user)) {
-    return <Navigate to={ROUTES.home} replace />
+    return (
+      <main className="p-6">
+        <h1 className="text-2xl font-semibold">Geen toegang</h1>
+        <p className="text-muted-foreground mt-1">
+          Alleen beheerders hebben toegang tot deze pagina.
+        </p>
+        <Link
+          to={ROUTES.home}
+          className="mt-4 inline-block text-primary font-medium hover:underline"
+        >
+          Naar startpagina
+        </Link>
+      </main>
+    )
   }
 
   return <Outlet />

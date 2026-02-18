@@ -3,9 +3,9 @@ import { useQuery } from '@tanstack/react-query'
 import { ApiError, apiFetch } from '@/lib/api'
 import { ROUTES } from '@/lib/routes'
 
-export function BeheerPage() {
+export function AdminPage() {
   const { data, isError, error } = useQuery({
-    queryKey: ['beheer-check'],
+    queryKey: ['admin-check'],
     queryFn: async () => {
       const res = await apiFetch('/api/beheer/')
       if (!res.ok) {

@@ -1,4 +1,4 @@
-import { VerbForm } from '@/lib/api'
+import type { VerbForm } from '@/lib/api'
 
 const LABELS: Record<keyof VerbForm, string> = {
   tt_ik: 'ik (tt)',

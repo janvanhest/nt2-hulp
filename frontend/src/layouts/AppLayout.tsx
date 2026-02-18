@@ -17,7 +17,7 @@ import { MobileNavSheetContent, NavWithIndicator } from '@/components/NavWithInd
 import { useAuth } from '@/contexts/AuthContext'
 import { useLogoutMutation } from '@/hooks/useAuthMutations'
 import { useMe } from '@/hooks/useMe'
-import { isAdmin } from '@/lib/api'
+import { isAdmin, ROLE_LABELS } from '@/lib/api'
 import { NAV_ITEMS } from '@/lib/nav-config'
 import { ROUTES } from '@/lib/routes'
 
@@ -75,15 +75,16 @@ export function AppLayout() {
           </div>
           <div className="ml-auto flex items-center gap-4">
             {user != null && (
-              <div className="flex items-center gap-2 rounded-md bg-muted/50 px-3 py-1.5">
-                <span className="text-foreground text-sm font-medium">
+              <div className="flex items-center gap-2">
+                <span className="rounded-md bg-muted px-2.5 py-1 text-sm font-medium text-foreground">
                   {user.username}
                 </span>
-                {isAdmin(user) && (
-                  <Badge variant="secondary" className="text-xs">
-                    Beheerder
-                  </Badge>
-                )}
+                <Badge
+                  variant="secondary"
+                  className="border-primary/40 bg-primary/15 text-primary text-xs font-medium"
+                >
+                  {ROLE_LABELS[user.role]}
+                </Badge>
               </div>
             )}
             <Button
