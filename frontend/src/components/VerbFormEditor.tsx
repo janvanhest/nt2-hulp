@@ -1,9 +1,14 @@
 import type { VerbForm, VerbPayload } from '@/lib/api'
-import { getEmptyVerbForm } from '@/lib/verbFormConfig'
-import { VERB_FORM_KEYS, VERB_FORM_LABELS } from '@/lib/verbFormConfig'
+import {
+  getEmptyVerbForm,
+  INFINITIVE_DESCRIPTION,
+  VERB_FORM_ABBREVIATIONS_HELP,
+  VERB_FORM_DESCRIPTIONS,
+  VERB_FORM_KEYS,
+  VERB_FORM_LABELS,
+} from '@/lib/verbFormConfig'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -11,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { LabelWithHint } from '@/components/LabelWithHint'
 import * as React from 'react'
 
 const VD_EMPTY_VALUE = '__empty__'
@@ -58,8 +64,25 @@ export function VerbFormEditor({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <details className="rounded-md border bg-muted/40 px-3 py-2 text-sm">
+        <summary className="cursor-pointer font-medium text-muted-foreground hover:text-foreground">
+          {VERB_FORM_ABBREVIATIONS_HELP.title}
+        </summary>
+        <ul className="mt-2 list-inside list-disc space-y-0.5 text-muted-foreground">
+          {VERB_FORM_ABBREVIATIONS_HELP.items.map(({ abbr, meaning }) => (
+            <li key={abbr}>
+              <strong className="text-foreground">{abbr}</strong> — {meaning}
+            </li>
+          ))}
+        </ul>
+      </details>
+
       <div className="space-y-2">
-        <Label htmlFor="verb-infinitive">Infinitief</Label>
+        <LabelWithHint
+          htmlFor="verb-infinitive"
+          label="Infinitief"
+          hint={INFINITIVE_DESCRIPTION}
+        />
         <Input
           id="verb-infinitive"
           value={infinitive}
@@ -80,7 +103,11 @@ export function VerbFormEditor({
             const value = forms.vd_hulpwerkwoord
             return (
               <div key={key} className="space-y-2">
-                <Label htmlFor={`verb-${key}`}>{VERB_FORM_LABELS[key]}</Label>
+                <LabelWithHint
+                  htmlFor={`verb-${key}`}
+                  label={VERB_FORM_LABELS[key]}
+                  hint={VERB_FORM_DESCRIPTIONS[key]}
+                />
                 <Select
                   value={value || VD_EMPTY_VALUE}
                   onValueChange={(v) =>
@@ -108,7 +135,11 @@ export function VerbFormEditor({
           const err = fieldErrors[key]
           return (
             <div key={key} className="space-y-2">
-              <Label htmlFor={`verb-${key}`}>{VERB_FORM_LABELS[key]}</Label>
+              <LabelWithHint
+                htmlFor={`verb-${key}`}
+                label={VERB_FORM_LABELS[key]}
+                hint={VERB_FORM_DESCRIPTIONS[key]}
+              />
               <Input
                 id={`verb-${key}`}
                 value={value}
