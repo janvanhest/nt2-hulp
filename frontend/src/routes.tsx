@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router'
 import { AppLayout } from '@/layouts/AppLayout'
 import { AdminLayout } from '@/layouts/AdminLayout'
-import { BeheerPage } from '@/pages/BeheerPage'
-import { BeheerWerkwoordenPage } from '@/pages/BeheerWerkwoordenPage'
-import { BeheerZinnenPage } from '@/pages/BeheerZinnenPage'
+import { AdminPage } from '@/pages/AdminPage'
+import { AdminVerbsPage } from '@/pages/AdminVerbsPage'
+import { AdminSentencesPage } from '@/pages/AdminSentencesPage'
 import { HomePage } from '@/pages/HomePage'
 import { LoginPage } from '@/pages/LoginPage'
 import { NakijkPage } from '@/pages/NakijkPage'
@@ -37,15 +37,15 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            Component: BeheerPage,
+            Component: AdminPage,
           },
           {
             path: 'werkwoorden',
-            Component: BeheerWerkwoordenPage,
+            Component: AdminVerbsPage,
           },
           {
             path: 'zinnen',
-            Component: BeheerZinnenPage,
+            Component: AdminSentencesPage,
           },
         ],
       },

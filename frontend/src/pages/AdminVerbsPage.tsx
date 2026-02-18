@@ -22,7 +22,7 @@ function countFilledForms(forms: Verb['forms']): number {
   ).length
 }
 
-export function BeheerWerkwoordenPage() {
+export function AdminVerbsPage() {
   const { data, isLoading, isError, error } = useVerbs()
 
   const forbiddenMessage =

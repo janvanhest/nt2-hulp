@@ -1,4 +1,4 @@
-export function BeheerZinnenPage() {
+export function AdminSentencesPage() {
   return (
     <main className="p-6">
       <h1 className="text-2xl font-semibold">Zinnen beheren</h1>
