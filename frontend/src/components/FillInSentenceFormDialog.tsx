@@ -31,6 +31,8 @@ export interface FillInSentenceFormDialogProps {
   sentence: FillInSentence | null
   /** Pre-filled verb id (e.g. from ?verb=). When set, verb select is disabled in create mode. */
   initialVerbId?: number
+  /** Pre-filled answer form key (e.g. from ?form=). Used in create mode. */
+  initialAnswerFormKey?: AnswerFormKey | ''
   verbs: Verb[]
 }
 
@@ -39,6 +41,7 @@ export function FillInSentenceFormDialog({
   onOpenChange,
   sentence,
   initialVerbId,
+  initialAnswerFormKey,
   verbs,
 }: FillInSentenceFormDialogProps) {
   const createMutation = useCreateFillInSentence()
@@ -70,9 +73,9 @@ export function FillInSentenceFormDialog({
       setVerbId(initialVerbId ?? '')
       setSentenceTemplate('')
       setAnswer('')
-      setAnswerFormKey('')
+      setAnswerFormKey(initialAnswerFormKey ?? '')
     }
-  }, [open, sentence, initialVerbId])
+  }, [open, sentence, initialVerbId, initialAnswerFormKey])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()

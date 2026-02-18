@@ -1,72 +1,57 @@
 import { ApiError } from '@/lib/api'
 import type { AnswerFormKey, FillInSentence } from '@/lib/api'
+import { DeleteSentenceConfirmDialog } from '@/components/DeleteSentenceConfirmDialog'
 import { FillInSentenceFormDialog } from '@/components/FillInSentenceFormDialog'
-import { ANSWER_FORM_LABELS } from '@/lib/verbFormConfig'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
+import { VerbSentenceCard } from '@/components/VerbSentenceCard'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
 import {
   useFillInSentences,
   useDeleteFillInSentence,
 } from '@/hooks/useFillInSentences'
 import { useVerbs } from '@/hooks/useVerbs'
 import { ROUTES } from '@/lib/routes'
+import { TARGET_SENTENCES_PER_FORM, buildGroupsByVerb } from '@/lib/sentenceUtils'
+import { ANSWER_FORM_KEYS } from '@/lib/verbFormConfig'
 import { toast } from 'sonner'
 import * as React from 'react'
 import { Link, useSearchParams } from 'react-router'
 
-const TABLE_HEADERS = (
-  <TableRow>
-    <TableHead>Zin</TableHead>
-    <TableHead>Antwoord</TableHead>
-    <TableHead>Werkwoord</TableHead>
-    <TableHead>Acties</TableHead>
-  </TableRow>
-)
-
-function sentencePreview(text: string, maxLen = 50): string {
-  const t = text.trim()
-  return t.length <= maxLen ? t : `${t.slice(0, maxLen)}…`
-}
-
-function formatAnswerDisplay(answer: string, answerFormKey?: AnswerFormKey | ''): string {
-  if (answerFormKey && answerFormKey in ANSWER_FORM_LABELS) {
-    return `${answer} (${ANSWER_FORM_LABELS[answerFormKey as AnswerFormKey]})`
-  }
-  return answer
-}
-
 export function AdminSentencesPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const verbParam = searchParams.get('verb')
+  const formParam = searchParams.get('form')
   const initialVerbIdFromQuery =
     verbParam != null && /^\d+$/.test(verbParam) ? Number(verbParam) : undefined
+  const initialAnswerFormKeyFromQuery =
+    formParam != null && ANSWER_FORM_KEYS.includes(formParam as AnswerFormKey)
+      ? (formParam as AnswerFormKey)
+      : undefined
 
   const { data: verbs = [], isLoading: verbsLoading, isError: verbsError, error: verbsErrorObj } = useVerbs()
   const { data: sentences = [], isLoading: sentencesLoading, isError: sentencesError, error: sentencesErrorObj } = useFillInSentences()
   const deleteMutation = useDeleteFillInSentence()
 
+  const groups = React.useMemo(
+    () => buildGroupsByVerb(verbs, sentences),
+    [verbs, sentences]
+  )
+
   const [dialogOpen, setDialogOpen] = React.useState(false)
   const [selectedSentence, setSelectedSentence] = React.useState<FillInSentence | null>(null)
   const [sentenceToDelete, setSentenceToDelete] = React.useState<FillInSentence | null>(null)
   const [hasOpenedFromQuery, setHasOpenedFromQuery] = React.useState(false)
+  const [expandedVerbIds, setExpandedVerbIds] = React.useState<Set<number>>(new Set())
+
+  const setVerbSublistOpen = (verbId: number, open: boolean) => {
+    setExpandedVerbIds((prev) => {
+      const next = new Set(prev)
+      if (open) next.add(verbId)
+      else next.delete(verbId)
+      return next
+    })
+  }
 
   const forbiddenMessage =
     (verbsError && verbsErrorObj instanceof ApiError && verbsErrorObj.status === 403
@@ -95,6 +80,7 @@ export function AdminSentencesPage() {
     setSelectedSentence(null)
     setDialogOpen(true)
   }, [initialVerbIdFromQuery, noVerbs, hasOpenedFromQuery])
+  const hasQueryParams = initialVerbIdFromQuery != null
 
   const handleConfirmDelete = () => {
     if (sentenceToDelete == null) return
@@ -117,10 +103,14 @@ export function AdminSentencesPage() {
 
   const handleDialogOpenChange = (open: boolean) => {
     setDialogOpen(open)
-    if (!open && initialVerbIdFromQuery != null) {
+    if (!open && hasQueryParams) {
       setSearchParams({})
+      setHasOpenedFromQuery(false)
     }
   }
+
+  const isLoading = verbsLoading || sentencesLoading
+  const showCardList = !noVerbs && !isLoading && !sentencesError
 
   return (
     <main className="p-6">
@@ -147,102 +137,60 @@ export function AdminSentencesPage() {
             <Link to={ROUTES.beheerWerkwoorden}>Naar Werkwoorden beheren</Link>
           </Button>
         </div>
-      ) : verbsLoading || sentencesLoading ? (
-        <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>{TABLE_HEADERS}</TableHeader>
-            <TableBody>
-              {[...Array(3)].map((_, i) => (
-                <TableRow key={i}>
-                  <TableCell><Skeleton className="h-4 w-48" /></TableCell>
-                  <TableCell><Skeleton className="h-4 w-24" /></TableCell>
-                  <TableCell><Skeleton className="h-4 w-24" /></TableCell>
-                  <TableCell><Skeleton className="h-4 w-20" /></TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+      ) : isLoading ? (
+        <div className="space-y-4">
+          {[...Array(4)].map((_, i) => (
+            <Card key={i}>
+              <CardHeader>
+                <Skeleton className="h-6 w-32" />
+                <Skeleton className="h-4 w-24" />
+              </CardHeader>
+              <CardContent>
+                <Skeleton className="h-16 w-full" />
+              </CardContent>
+            </Card>
+          ))}
         </div>
       ) : sentencesError ? (
         <p className="text-destructive mt-1 text-sm" role="alert">
           {sentencesErrorObj instanceof Error ? sentencesErrorObj.message : 'Fout bij ophalen invulzinnen.'}
         </p>
-      ) : sentences.length === 0 ? (
-        <div className="mt-2 flex flex-col items-start gap-2 text-muted-foreground">
-          <p>Nog geen invulzinnen. Voeg er een toe.</p>
-          <Button onClick={() => openCreate()}>Nieuwe zin</Button>
-        </div>
-      ) : (
-        <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>{TABLE_HEADERS}</TableHeader>
-            <TableBody>
-              {sentences.map((s) => (
-                <TableRow key={s.id}>
-                  <TableCell className="max-w-xs truncate" title={s.sentence_template}>
-                    {sentencePreview(s.sentence_template)}
-                  </TableCell>
-                  <TableCell>{formatAnswerDisplay(s.answer, s.answer_form_key)}</TableCell>
-                  <TableCell>{s.verb.infinitive}</TableCell>
-                  <TableCell>
-                    <div className="flex flex-wrap items-center gap-1">
-                      <Button type="button" variant="ghost" size="sm" onClick={(e) => openEdit(s, e)}>
-                        Bewerken
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="text-destructive hover:bg-destructive/10 hover:text-destructive"
-                        onClick={() => openDeleteConfirm(s)}
-                      >
-                        Verwijderen
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      )}
+      ) : showCardList ? (
+        <>
+          <p className="text-muted-foreground mb-4 text-sm">
+            Streef: per werkwoordsvorm min. {TARGET_SENTENCES_PER_FORM} oefenzinnen.
+          </p>
+          <div className="space-y-4">
+            {groups.map((group) => (
+              <VerbSentenceCard
+                key={group.verb.id}
+                group={group}
+                isExpanded={expandedVerbIds.has(group.verb.id)}
+                onExpandChange={(open) => setVerbSublistOpen(group.verb.id, open)}
+                onEditSentence={openEdit}
+                onDeleteSentence={openDeleteConfirm}
+              />
+            ))}
+          </div>
+        </>
+      ) : null}
 
       <FillInSentenceFormDialog
         open={dialogOpen}
         onOpenChange={handleDialogOpenChange}
         sentence={selectedSentence}
         initialVerbId={initialVerbIdFromQuery}
+        initialAnswerFormKey={initialAnswerFormKeyFromQuery}
         verbs={verbs}
       />
 
-      <AlertDialog
+      <DeleteSentenceConfirmDialog
         open={sentenceToDelete != null}
         onOpenChange={(open) => !open && closeDeleteConfirm()}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Invulzin verwijderen</AlertDialogTitle>
-            <AlertDialogDescription>
-              Weet je zeker dat je deze invulzin wilt verwijderen?
-              {sentenceToDelete && (
-                <span className="mt-2 block text-muted-foreground">
-                  {sentencePreview(sentenceToDelete.sentence_template, 80)}
-                </span>
-              )}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Annuleren</AlertDialogCancel>
-            <AlertDialogAction
-              variant="destructive"
-              onClick={handleConfirmDelete}
-              disabled={deleteMutation.isPending}
-            >
-              {deleteMutation.isPending ? 'Bezig…' : 'Verwijderen'}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        sentence={sentenceToDelete}
+        onConfirm={handleConfirmDelete}
+        isPending={deleteMutation.isPending}
+      />
     </main>
   )
 }
