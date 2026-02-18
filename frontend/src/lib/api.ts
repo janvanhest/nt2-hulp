@@ -32,6 +32,12 @@ export type UserRole = 'gebruiker' | 'beheerder';
 /** Role value for beheerder; single source of truth for guards and nav. */
 export const ROLE_BEHEERDER: UserRole = 'beheerder';
 
+/** Display label for each role (for header/UI). */
+export const ROLE_LABELS: Record<UserRole, string> = {
+  gebruiker: 'Gebruiker',
+  beheerder: 'Beheerder',
+}
+
 /**
  * Type-safe check for beheerder (admin) role. Use in AdminLayout and AppLayout nav.
  */
@@ -55,6 +61,35 @@ export interface User {
 export interface LoginResponse {
   token: string;
   user: User;
+}
+
+/** Beheer werkwoorden API base path. */
+export const VERBS_API_PATH = '/api/beheer/werkwoorden';
+
+/** Workword form fields (conjugation) from the API. */
+export interface VerbForm {
+  tt_ik: string;
+  tt_jij: string;
+  tt_hij: string;
+  vt_ev: string;
+  vt_mv: string;
+  vd: string;
+  vd_hulpwerkwoord: '' | 'hebben' | 'zijn';
+}
+
+/** Workword returned by the API (list/detail). */
+export interface Verb {
+  id: number;
+  infinitive: string;
+  forms: VerbForm;
+  created_at: string;
+  updated_at: string;
+}
+
+/** Payload for creating or updating a verb. */
+export interface VerbPayload {
+  infinitive: string;
+  forms?: VerbForm;
 }
 
 /**
