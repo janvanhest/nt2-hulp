@@ -1,0 +1,12 @@
+---
+description: Algemene projectregels – reviewbaar, bestaande patterns, security
+alwaysApply: true
+---
+
+# Global
+
+- Houd changes klein en reviewbaar; split grote wijzigingen in logische commits/PRs.
+- Verzin geen nieuwe bestanden, APIs of endpoints zonder dat ze in de codebase of specs bestaan; volg bestaande patterns.
+- Bij wijzigingen in gedrag: voeg of pas tests aan zodat het gedrag gedekt is.
+- Geen secrets, wachtwoorden of API-keys in code of in images; gebruik env/config.
+- Geen generieke open deuren in comments; regels zijn concreet en toepasbaar.

@@ -1,0 +1,11 @@
+---
+description: Docker en docker-compose – dev workflow, geen secrets in images
+globs: docker-compose*.yml, **/Dockerfile, **/*.env*
+---
+
+# Docker & docker-compose
+
+- Houd de dev workflow werkend: `docker compose up` (of `docker compose run web ...`) moet de app starten zonder extra handmatige stappen.
+- Geen secrets in images; gebruik env files of runtime env, niet `ENV` voor gevoelige waarden.
+- Wijzigingen in Django-models: migrations via `docker compose run web python manage.py makemigrations` (of `exec` als de container draait); management commands idem via `docker compose run web python manage.py <command>`.
+- Dockerfiles: minimaliseer lagen en gebruik duidelijke base images; voorkom onnodige cache-invalidatie.

@@ -1,0 +1,11 @@
+---
+description: Tests – bij behavior changes, geen flaky tests, arrange-act-assert
+globs: "**/tests/**/*", "**/*test*.py", "**/*.test.{ts,tsx}", "**/*.spec.{ts,tsx}"
+---
+
+# Tests
+
+- Bij wijzigingen in gedrag: voeg tests toe of pas bestaande tests aan zodat het gedrag gedekt blijft.
+- Geen flaky tests: geen tijdsafhankelijke of niet-deterministische asserts zonder voldoende stabilisatie.
+- Structuur: arrange–act–assert (of given–when–then); één duidelijke intentie per test.
+- Testnamen beschrijvend: wat wordt getest en onder welke conditie/verwachting.

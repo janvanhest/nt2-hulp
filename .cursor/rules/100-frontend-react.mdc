@@ -1,0 +1,12 @@
+---
+description: Frontend React – TypeScript, components, hooks, scheiding van concerns
+globs: frontend/**/*.{ts,tsx,js,jsx}
+---
+
+# Frontend (React)
+
+- TypeScript heeft voorkeur boven JavaScript; vermijd `any` tenzij gedocumenteerd noodzakelijk.
+- Arrow function components en hooks; geen class components tenzij voor bestaande legacy.
+- Scheid presentational components van data/hooks/services; businesslogica niet in UI-componenten.
+- Volg bestaande lint- en formatregels (ESLint/Prettier); geen onderdrukte warnings zonder reden.
+- Zelfdocumenterende code: duidelijke namen voor componenten, props en hooks.

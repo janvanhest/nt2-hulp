@@ -1,0 +1,12 @@
+---
+description: Backend Django – dunne views, services/selectors, migrations, transacties
+globs: backend/**/*.py
+---
+
+# Backend (Django)
+
+- Views dun houden: request/response en aanroep van services of selectors; businesslogica in services of selectors.
+- Bestaande migrations niet bewerken; nieuwe wijzigingen via nieuwe migraties.
+- Transacties expliciet waar meerdere schrijfacties atomisch moeten zijn (`transaction.atomic`).
+- Volg lint/format (ruff, black, isort, mypy) zoals in het project geconfigureerd; geen onderdrukking zonder reden.
+- Geen businesslogica in models behalve domain-logica die bij het model hoort.

@@ -1,0 +1,11 @@
+---
+description: shadcn/ui en Radix – componenten, a11y, design tokens
+globs: frontend/**/*.{ts,tsx}
+---
+
+# shadcn/ui & Radix
+
+- Gebruik eerst shadcn-componenten; voeg alleen Radix-primitives toe waar shadcn geen voorziening heeft.
+- Breuk a11y niet: focus, aria-attributen en keyboardgedrag van Radix/shadcn intact laten.
+- Design tokens en class-namen consistent houden met de bestaande UI (Tailwind/shadcn conventies).
+- Wijzig geen shadcn/Radix source in `node_modules`; fork of wrap in eigen component indien aanpassing nodig.
