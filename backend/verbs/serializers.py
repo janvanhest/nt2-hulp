@@ -67,7 +67,7 @@ class FillInSentenceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FillInSentence
-        fields = ["id", "verb", "sentence_template", "answer", "created_at", "updated_at"]
+        fields = ["id", "verb", "sentence_template", "answer", "answer_form_key", "created_at", "updated_at"]
         read_only_fields = ["id", "created_at", "updated_at"]
 
     def to_representation(self, instance: FillInSentence) -> dict:

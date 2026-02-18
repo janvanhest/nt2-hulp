@@ -46,6 +46,19 @@ class VerbForm(models.Model):
         return f"Vormen van {self.verb.infinitive}"
 
 
+class AnswerFormKey(models.TextChoices):
+    """Werkwoordsvorm van het antwoord in een invulzin (sluit aan op VerbForm + infinitief)."""
+
+    tt_ik = "tt_ik", "ik (tt)"
+    tt_jij = "tt_jij", "jij (tt)"
+    tt_hij = "tt_hij", "hij/zij/het (tt)"
+    vt_ev = "vt_ev", "hij/zij/het (vt)"
+    vt_mv = "vt_mv", "wij/jullie/zij (vt mv)"
+    vd = "vd", "voltooid deelwoord"
+    vd_hulpwerkwoord = "vd_hulpwerkwoord", "hulpwerkwoord"
+    infinitive = "infinitive", "Infinitief (heel werkwoord)"
+
+
 class FillInSentence(models.Model):
     """Invulzin: zin met invulplek, gekoppeld aan een werkwoord."""
 
@@ -56,6 +69,12 @@ class FillInSentence(models.Model):
     )
     sentence_template = models.CharField(max_length=500)
     answer = models.CharField(max_length=100)
+    answer_form_key = models.CharField(
+        max_length=20,
+        choices=AnswerFormKey.choices,
+        blank=True,
+        default="",
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

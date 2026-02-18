@@ -18,6 +18,6 @@ class VerbAdmin(admin.ModelAdmin):
 
 @admin.register(FillInSentence)
 class FillInSentenceAdmin(admin.ModelAdmin):
-    list_display = ("sentence_template", "answer", "verb", "created_at")
-    list_filter = ("verb",)
+    list_display = ("sentence_template", "answer", "answer_form_key", "verb", "created_at")
+    list_filter = ("verb", "answer_form_key")
     search_fields = ("sentence_template", "answer")
