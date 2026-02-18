@@ -110,6 +110,32 @@ export interface VerbPayload {
   forms?: VerbForm;
 }
 
+/** Beheer invulzinnen API base path. */
+export const FILL_IN_SENTENCES_API_PATH = '/api/beheer/invulzinnen';
+
+/** Verb as returned in FillInSentence (nested). */
+export interface FillInSentenceVerb {
+  id: number;
+  infinitive: string;
+}
+
+/** Invulzin (fill-in sentence) from the API. */
+export interface FillInSentence {
+  id: number;
+  verb: FillInSentenceVerb;
+  sentence_template: string;
+  answer: string;
+  created_at: string;
+  updated_at: string;
+}
+
+/** Payload for creating or updating an invulzin. */
+export interface FillInSentencePayload {
+  verb: number;
+  sentence_template: string;
+  answer: string;
+}
+
 /**
  * Returns the base URL for API requests. Empty string when using the Vite proxy (dev);
  * otherwise the value of VITE_API_URL without trailing slash.

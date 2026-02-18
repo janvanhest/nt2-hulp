@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Verb, VerbForm
+from .models import FillInSentence, Verb, VerbForm
 
 
 class VerbFormSerializer(serializers.ModelSerializer):
@@ -58,3 +58,19 @@ class VerbSerializer(serializers.ModelSerializer):
             form.save()
 
         return instance
+
+
+class FillInSentenceSerializer(serializers.ModelSerializer):
+    """Invulzin: verb as id on write, nested { id, infinitive } on read."""
+
+    verb = serializers.PrimaryKeyRelatedField(queryset=Verb.objects.all())
+
+    class Meta:
+        model = FillInSentence
+        fields = ["id", "verb", "sentence_template", "answer", "created_at", "updated_at"]
+        read_only_fields = ["id", "created_at", "updated_at"]
+
+    def to_representation(self, instance: FillInSentence) -> dict:
+        data = super().to_representation(instance)
+        data["verb"] = {"id": instance.verb.id, "infinitive": instance.verb.infinitive}
+        return data

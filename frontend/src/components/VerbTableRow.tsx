@@ -1,10 +1,12 @@
 import type { Verb } from '@/lib/api'
 import { countFilledForms, VERB_FORM_KEYS } from '@/lib/verbFormConfig'
-import * as React from 'react'
 import { VerbFormFields } from '@/components/VerbFormFields'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { TableRow, TableCell } from '@/components/ui/table'
+import { ROUTES } from '@/lib/routes'
+import { Link } from 'react-router'
+import * as React from 'react'
 
 export interface VerbTableRowProps {
   verb: Verb
@@ -65,6 +67,11 @@ export function VerbTableRow({
         <TableRow>
           <TableCell colSpan={3} className="bg-muted/10">
             <VerbFormFields forms={verb.forms} />
+            <div className="mt-3">
+              <Button variant="outline" size="sm" asChild>
+                <Link to={`${ROUTES.beheerZinnen}?verb=${verb.id}`}>Oefenzinnen toevoegen</Link>
+              </Button>
+            </div>
           </TableCell>
         </TableRow>
       )}

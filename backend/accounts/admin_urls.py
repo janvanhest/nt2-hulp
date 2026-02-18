@@ -7,4 +7,5 @@ app_name = "admin_api"
 urlpatterns = [
     path("", admin_views.AdminCheckView.as_view(), name="check"),
     path("werkwoorden/", include("verbs.urls")),
+    path("invulzinnen/", include("verbs.invulzinnen_urls")),
 ]

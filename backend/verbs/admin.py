@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Verb, VerbForm
+from .models import FillInSentence, Verb, VerbForm
 
 
 class VerbFormInline(admin.StackedInline):
@@ -14,3 +14,10 @@ class VerbAdmin(admin.ModelAdmin):
     list_display = ("infinitive", "created_at")
     search_fields = ("infinitive",)
     inlines = [VerbFormInline]
+
+
+@admin.register(FillInSentence)
+class FillInSentenceAdmin(admin.ModelAdmin):
+    list_display = ("sentence_template", "answer", "verb", "created_at")
+    list_filter = ("verb",)
+    search_fields = ("sentence_template", "answer")

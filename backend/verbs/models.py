@@ -44,3 +44,24 @@ class VerbForm(models.Model):
 
     def __str__(self) -> str:
         return f"Vormen van {self.verb.infinitive}"
+
+
+class FillInSentence(models.Model):
+    """Invulzin: zin met invulplek, gekoppeld aan een werkwoord."""
+
+    verb = models.ForeignKey(
+        Verb,
+        on_delete=models.CASCADE,
+        related_name="fill_in_sentences",
+    )
+    sentence_template = models.CharField(max_length=500)
+    answer = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Invulzin"
+        verbose_name_plural = "Invulzinnen"
+
+    def __str__(self) -> str:
+        return f"{self.sentence_template[:50]}…" if len(self.sentence_template) > 50 else self.sentence_template
