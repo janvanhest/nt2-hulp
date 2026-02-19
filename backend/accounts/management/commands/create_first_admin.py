@@ -1,8 +1,8 @@
 """
-Management command to create or promote the first beheerder (admin) user.
+Management command to create or promote the first admin user.
 
 Password: from environment NT2_FIRST_ADMIN_PASSWORD, or prompted interactively.
-If a user with the given username already exists, their role is set to beheerder (idempotent).
+If a user with the given username already exists, their role is set to admin (idempotent).
 """
 import os
 import getpass
@@ -18,25 +18,25 @@ def get_password_from_env_or_prompt() -> str:
     pwd = os.environ.get("NT2_FIRST_ADMIN_PASSWORD", "").strip()
     if pwd:
         return pwd
-    return getpass.getpass("Wachtwoord voor beheerder: ")
+    return getpass.getpass("Password for admin: ")
 
 
 class Command(BaseCommand):
     help = (
-        "Maak een eerste beheerder aan, of zet bestaande gebruiker op rol beheerder. "
-        "Wachtwoord via env NT2_FIRST_ADMIN_PASSWORD of interactieve prompt."
+        "Create the first admin user, or promote an existing user to admin. "
+        "Password via env NT2_FIRST_ADMIN_PASSWORD or interactive prompt."
     )
 
     def add_arguments(self, parser: ArgumentParser) -> None:
         parser.add_argument(
             "--username",
-            default="beheerder",
-            help="Gebruikersnaam voor de beheerder (default: beheerder).",
+            default="admin",
+            help="Username for the admin (default: admin).",
         )
         parser.add_argument(
             "--email",
             default="",
-            help="E-mailadres (optioneel).",
+            help="Email address (optional).",
         )
 
     def handle(self, *args: object, **options: object) -> None:
@@ -44,7 +44,7 @@ class Command(BaseCommand):
         username = opts.get("username") or ""
         email = opts.get("email") or ""
         if not username:
-            raise CommandError("Username mag niet leeg zijn.")
+            raise CommandError("Username must not be empty.")
 
         try:
             user = User.objects.get(username=username)
@@ -54,7 +54,7 @@ class Command(BaseCommand):
         if user is not None:
             if user.role == Role.beheerder:
                 self.stdout.write(
-                    self.style.SUCCESS(f"Gebruiker '{username}' is al beheerder.")
+                    self.style.SUCCESS(f"User '{username}' is already admin.")
                 )
                 return
             user.role = Role.beheerder
@@ -62,13 +62,13 @@ class Command(BaseCommand):
                 user.email = email
             user.save()
             self.stdout.write(
-                self.style.SUCCESS(f"Gebruiker '{username}' is nu beheerder.")
+                self.style.SUCCESS(f"User '{username}' is now admin.")
             )
             return
 
         password = get_password_from_env_or_prompt()
         if not password:
-            raise CommandError("Wachtwoord mag niet leeg zijn.")
+            raise CommandError("Password must not be empty.")
 
         User.objects.create_user(
             username=username,
@@ -77,5 +77,5 @@ class Command(BaseCommand):
             role=Role.beheerder,
         )
         self.stdout.write(
-            self.style.SUCCESS(f"Beheerder '{username}' is aangemaakt.")
+            self.style.SUCCESS(f"Admin '{username}' has been created.")
         )
