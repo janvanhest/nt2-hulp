@@ -5,8 +5,8 @@ Password: from environment NT2_FIRST_ADMIN_PASSWORD, or prompted interactively.
 If a user with the given username already exists, their role is set to admin (idempotent).
 """
 
-import os
 import getpass
+import os
 from argparse import ArgumentParser
 
 from django.core.management.base import BaseCommand, CommandError
