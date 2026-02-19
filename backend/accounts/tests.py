@@ -9,8 +9,8 @@ from django.test import TestCase
 from .models import Role, User
 
 
-class CreateFirstBeheerderCommandTests(TestCase):
-    """Tests for create_first_beheerder management command (Epic 0)."""
+class CreateFirstAdminCommandTests(TestCase):
+    """Tests for create_first_admin management command (Epic 0)."""
 
     def setUp(self) -> None:
         self._saved_env_password = os.environ.pop("NT2_FIRST_ADMIN_PASSWORD", None)
@@ -21,17 +21,17 @@ class CreateFirstBeheerderCommandTests(TestCase):
         elif "NT2_FIRST_ADMIN_PASSWORD" in os.environ:
             del os.environ["NT2_FIRST_ADMIN_PASSWORD"]
 
-    def test_creates_beheerder_and_can_login(self) -> None:
+    def test_creates_admin_and_can_login(self) -> None:
         os.environ["NT2_FIRST_ADMIN_PASSWORD"] = "testpass123"
         out = StringIO()
-        call_command("create_first_beheerder", "--username", "admin1", stdout=out)
-        self.assertIn("aangemaakt", out.getvalue())
+        call_command("create_first_admin", "--username", "admin1", stdout=out)
+        self.assertIn("created", out.getvalue())
 
         user = User.objects.get(username="admin1")
         self.assertEqual(user.role, Role.beheerder)
         self.assertTrue(user.check_password("testpass123"))
 
-    def test_existing_gebruiker_promoted_to_beheerder(self) -> None:
+    def test_existing_user_promoted_to_admin(self) -> None:
         User.objects.create_user(
             username="promo",
             password="original",
@@ -39,14 +39,14 @@ class CreateFirstBeheerderCommandTests(TestCase):
         )
         os.environ["NT2_FIRST_ADMIN_PASSWORD"] = "ignored"
         out = StringIO()
-        call_command("create_first_beheerder", "--username", "promo", stdout=out)
-        self.assertIn("nu beheerder", out.getvalue())
+        call_command("create_first_admin", "--username", "promo", stdout=out)
+        self.assertIn("now admin", out.getvalue())
 
         user = User.objects.get(username="promo")
         self.assertEqual(user.role, Role.beheerder)
         self.assertTrue(user.check_password("original"))
 
-    def test_existing_beheerder_idempotent(self) -> None:
+    def test_existing_admin_idempotent(self) -> None:
         User.objects.create_user(
             username="already",
             password="pw",
@@ -54,8 +54,8 @@ class CreateFirstBeheerderCommandTests(TestCase):
         )
         os.environ["NT2_FIRST_ADMIN_PASSWORD"] = "other"
         out = StringIO()
-        call_command("create_first_beheerder", "--username", "already", stdout=out)
-        self.assertIn("al beheerder", out.getvalue())
+        call_command("create_first_admin", "--username", "already", stdout=out)
+        self.assertIn("already admin", out.getvalue())
 
         user = User.objects.get(username="already")
         self.assertEqual(user.role, Role.beheerder)
@@ -64,19 +64,19 @@ class CreateFirstBeheerderCommandTests(TestCase):
     def test_empty_username_fails(self) -> None:
         os.environ["NT2_FIRST_ADMIN_PASSWORD"] = "pw"
         with self.assertRaises(CommandError) as cm:
-            call_command("create_first_beheerder", "--username", "")
+            call_command("create_first_admin", "--username", "")
         self.assertIn("Username", str(cm.exception))
 
     def test_empty_password_when_creating_fails(self) -> None:
         with patch(
-            "accounts.management.commands.create_first_beheerder.get_password_from_env_or_prompt",
+            "accounts.management.commands.create_first_admin.get_password_from_env_or_prompt",
             return_value="",
         ):
             with self.assertRaises(CommandError) as cm:
                 call_command(
-                    "create_first_beheerder",
+                    "create_first_admin",
                     "--username",
                     "newuser",
                 )
-            self.assertIn("Wachtwoord", str(cm.exception))
+            self.assertIn("Password", str(cm.exception))
         self.assertFalse(User.objects.filter(username="newuser").exists())

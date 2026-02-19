@@ -41,7 +41,7 @@ De applicatie draait in Docker met twee services: **db** (PostgreSQL) en **web**
 
 6. **Optioneel: eerste beheerder voor de app**  
    Voor inloggen in de NT-2 app (werkwoorden/zinnen beheren):  
-   `docker compose run --rm web python manage.py create_first_beheerder --username beheerder`  
+   `docker compose run --rm web python manage.py create_first_admin --username admin`  
    Wachtwoord via env `NT2_FIRST_ADMIN_PASSWORD` of interactief. Zie [Rollen en autorisatie](rollen-autorisatie.md).
 
 Daarna is de app bereikbaar op **http://localhost:8000**.

@@ -24,6 +24,32 @@ Deze file beschrijft de dev-setup voor de "v3" web-app (React SPA + API), en is 
 - `pip` en een virtualenv of `uv`/`poetry`
 - Code quality: `ruff`, `black`, `mypy`, `pytest`
 
+#### Backend Python: lint, format, typecheck
+Configuratie staat in **`backend/pyproject.toml`** (Black, Ruff, Mypy). Dev-dependencies: **`backend/requirements-dev.txt`**. Alle onderstaande commando’s voer je uit met **`backend/`** als werkmap.
+
+**Waar installeren?**
+
+- **Lokaal (aanbevolen):** Installeer in je eigen virtualenv in **`backend/`**. Dan kun je `black`, `ruff` en `mypy` in je IDE of terminal gebruiken zonder Docker. De **web**-container gebruikt alleen `requirements.txt` en heeft deze tools standaard niet.
+- **In Docker (optioneel):** De **web**-image installeert standaard alleen `requirements.txt`. Voor een eenmalige check in de container:  
+  `docker compose run --rm web sh -c "pip install -r requirements-dev.txt && ruff check ."`  
+  Voor structureel gebruik in Docker zou je in het Dockerfile (of een apart dev-stage) ook `requirements-dev.txt` kunnen installeren.
+
+1. **Installeren** (lokaal, in een venv): vanuit **`backend/`**:  
+   `pip install -r requirements-dev.txt`
+
+2. **Formatteren:** vanuit **`backend/`**:  
+   `black .`
+
+3. **Linting (Ruff):** vanuit **`backend/`**:  
+   `ruff check .`  
+   Optioneel met auto-fix: `ruff check . --fix`
+
+4. **Import-sortering / format (Ruff):** vanuit **`backend/`**:  
+   `ruff format .`
+
+5. **Typecheck (Mypy):** vanuit **`backend/`** (zodat `config.settings` vindbaar is):  
+   `mypy .`
+
 ### Als we Hybrid (Optie C) kiezen
 - Alles van Laravel + alles van Python
 - Extra: duidelijke contract tests tussen gateway en Python service
