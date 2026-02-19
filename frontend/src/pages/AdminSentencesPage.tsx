@@ -85,6 +85,11 @@ export function AdminSentencesPage() {
     setSelectedSentence(null)
     setDialogOpen(true)
   }, [initialVerbIdFromQuery, noVerbs, hasOpenedFromQuery])
+
+  React.useEffect(() => {
+    if (initialVerbIdFromQuery == null) setHasOpenedFromQuery(false)
+  }, [initialVerbIdFromQuery])
+
   const hasQueryParams = initialVerbIdFromQuery != null
 
   const handleConfirmDelete = () => {
@@ -108,10 +113,7 @@ export function AdminSentencesPage() {
 
   const handleDialogOpenChange = (open: boolean) => {
     setDialogOpen(open)
-    if (!open && hasQueryParams) {
-      setSearchParams({})
-      setHasOpenedFromQuery(false)
-    }
+    if (!open && hasQueryParams) setSearchParams({})
   }
 
   const isLoading = verbsLoading || sentencesLoading

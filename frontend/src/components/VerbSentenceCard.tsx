@@ -64,7 +64,7 @@ export function VerbSentenceCard({
   const countLabel = sentenceCount === 1 ? '1 zin' : `${sentenceCount} zinnen`
   const formCounts = getFormCounts(verbSentences)
 
-  const showHeaderBorder = isExpanded || detailsOpen
+  const showHeaderBorder = isExpanded
 
   const toggleButtonClass =
     'group w-full justify-start gap-1.5 text-muted-foreground hover:text-foreground data-[state=open]:text-foreground'
@@ -193,7 +193,7 @@ export function VerbSentenceCard({
                 Nog geen zinnen voor dit werkwoord.
               </p>
             ) : (
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto [&_tbody_tr:last-child]:border-b-0">
                 <Table>
                   <TableHeader>
                     <TableRow>
