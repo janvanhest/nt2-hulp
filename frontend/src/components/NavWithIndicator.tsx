@@ -112,7 +112,7 @@ export function NavWithIndicator({
 
   let idx = 0
   return (
-    <nav ref={navRef} className="relative flex flex-1 items-center gap-2">
+    <nav ref={navRef} className="relative flex min-w-0 flex-1 items-center gap-2">
       {activeIndex >= 0 && indicator.width > 0 && (
         <span
           className="absolute z-0 rounded-lg bg-primary/20 ring-1 ring-primary/40 transition-[left,width] duration-200 ease-out"

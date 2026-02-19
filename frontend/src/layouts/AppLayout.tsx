@@ -58,31 +58,31 @@ export function AppLayout() {
   const showAdminNav = isAdmin(user) && adminItems.length > 0
 
   return (
-    <div className="flex min-h-svh flex-col">
-      <header className="border-b bg-card">
-        <div className="flex h-14 items-center gap-4 px-4 md:px-6">
+    <div className="flex min-h-svh flex-col overflow-x-hidden">
+      <header className="border-b bg-card shrink-0">
+        <div className="flex h-14 min-w-0 items-center gap-2 px-4 sm:gap-4 sm:px-6">
           <Link
             to={ROUTES.home}
-            className="font-semibold text-foreground hover:underline"
+            className="shrink-0 font-semibold text-foreground hover:underline"
           >
             NT-2
           </Link>
-          <div className="hidden flex-1 md:flex">
+          <div className="hidden min-w-0 flex-1 min-[1150px]:flex">
             <NavWithIndicator
               mainItems={mainItems}
               adminItems={adminItems}
               showAdminNav={showAdminNav}
             />
           </div>
-          <div className="ml-auto flex items-center gap-4">
+          <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-4">
             {user != null && (
-              <div className="flex items-center gap-2">
-                <span className="rounded-md bg-muted px-2.5 py-1 text-sm font-medium text-foreground">
+              <div className="hidden min-w-0 min-[1150px]:flex min-[1150px]:gap-2">
+                <span className="truncate rounded-md bg-muted px-2.5 py-1 text-sm font-medium text-foreground">
                   {user.username}
                 </span>
                 <Badge
                   variant="secondary"
-                  className="border-primary/40 bg-primary/15 text-primary text-xs font-medium"
+                  className="shrink-0 border-primary/40 bg-primary/15 text-primary text-xs font-medium"
                 >
                   {ROLE_LABELS[user.role]}
                 </Badge>
@@ -91,7 +91,7 @@ export function AppLayout() {
             <Button
               variant="outline"
               size="sm"
-              className="hidden md:inline-flex"
+              className="hidden min-[1150px]:inline-flex"
               onClick={() => logoutMutation.mutate()}
               disabled={logoutMutation.isPending}
             >
@@ -102,7 +102,7 @@ export function AppLayout() {
               type="button"
               variant="ghost"
               size="icon"
-              className="flex md:hidden"
+              className="flex min-[1150px]:hidden"
               aria-label="Menu openen"
               aria-expanded={sheetOpen}
               onClick={() => setSheetOpen(true)}
@@ -117,9 +117,16 @@ export function AppLayout() {
                 <SheetDescription>Navigatie en uitloggen</SheetDescription>
               </VisuallyHidden.Root>
               <SheetHeader className="flex flex-row items-center justify-between space-y-0">
-                <span id="sheet-nav-title" className="text-lg font-semibold leading-none tracking-tight">
-                  Menu
-                </span>
+                <div className="flex min-w-0 flex-col gap-0.5">
+                  <span id="sheet-nav-title" className="text-lg font-semibold leading-none tracking-tight">
+                    Menu
+                  </span>
+                  {user != null && (
+                    <span className="truncate text-sm text-muted-foreground">
+                      {user.username} · {ROLE_LABELS[user.role]}
+                    </span>
+                  )}
+                </div>
                 <SheetClose asChild>
                   <Button
                     type="button"
@@ -155,8 +162,10 @@ export function AppLayout() {
           </Sheet>
         </div>
       </header>
-      <div className="mx-auto w-full max-w-4xl px-4 py-6 md:px-6">
-        <Outlet />
+      <div className="min-w-0 flex-1 px-4 py-6 sm:px-6">
+        <main className="mx-auto w-full max-w-4xl">
+          <Outlet />
+        </main>
       </div>
       <Toaster />
     </div>

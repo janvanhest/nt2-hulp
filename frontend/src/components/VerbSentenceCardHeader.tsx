@@ -36,15 +36,17 @@ export function VerbSentenceCardHeader({
           />
         </div>
       </div>
-      <CollapsibleContent>
-        <div className="grid grid-cols-2 gap-x-3 gap-y-1.5 text-xs sm:grid-cols-4 sm:gap-x-4 sm:gap-y-2">
+      <CollapsibleContent className="min-w-0 overflow-visible">
+        <div className="flex min-w-0 flex-wrap gap-x-3 gap-y-1.5 text-xs sm:gap-x-4 sm:gap-y-2">
           {ANSWER_FORM_KEYS.map((formKey) => {
             const count = formCounts.get(formKey) ?? 0
             const covered = count >= TARGET_SENTENCES_PER_FORM
             const label = ANSWER_FORM_LABELS[formKey as AnswerFormKey]
             return (
-              <span key={formKey} className="flex min-w-0 items-center gap-1.5">
-                <span className="truncate text-muted-foreground">{label}:</span>
+              <span key={formKey} className="inline-flex items-center gap-1.5">
+                <span className="text-muted-foreground" title={label}>
+                  {label}:
+                </span>
                 <Badge variant={covered ? 'default' : 'secondary'} className="shrink-0 font-normal">
                   {count}
                 </Badge>

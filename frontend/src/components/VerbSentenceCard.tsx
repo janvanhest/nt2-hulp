@@ -48,12 +48,12 @@ export function VerbSentenceCard({
   const showHeaderBorder = isExpanded
 
   return (
-    <Card className="gap-2 py-2 sm:gap-3 sm:py-3">
+    <Card className="min-w-0 w-full gap-2 py-2 sm:gap-3 sm:py-3">
       <Collapsible open={isExpanded} onOpenChange={onExpandChange}>
         <Collapsible open={detailsOpen} onOpenChange={setDetailsOpen}>
           <CardHeader
             className={cn(
-              'max-sm:!flex max-sm:flex-col gap-3 px-3 sm:grid sm:grid-cols-[1fr_auto] sm:gap-2 sm:px-4',
+              'max-sm:!flex max-sm:flex-col gap-3 min-w-0 px-3 sm:grid sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-2 sm:px-4',
               showHeaderBorder ? 'border-b pb-3' : ''
             )}
           >

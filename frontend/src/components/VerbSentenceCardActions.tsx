@@ -29,7 +29,7 @@ export function VerbSentenceCardActions({
   return (
     <div
       className={cn(
-        'flex flex-col gap-1.5 rounded-lg border bg-muted/30 p-2 sm:min-w-[10rem]'
+        'flex flex-col gap-1.5 rounded-lg border bg-muted/30 p-2 sm:min-w-[10rem] sm:max-w-[13rem]'
       )}
     >
       <div className="flex flex-row flex-wrap gap-1">
