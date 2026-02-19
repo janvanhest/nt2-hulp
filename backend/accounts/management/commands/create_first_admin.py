@@ -4,6 +4,7 @@ Management command to create or promote the first admin user.
 Password: from environment NT2_FIRST_ADMIN_PASSWORD, or prompted interactively.
 If a user with the given username already exists, their role is set to admin (idempotent).
 """
+
 import os
 import getpass
 from argparse import ArgumentParser
