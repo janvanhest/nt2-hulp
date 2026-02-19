@@ -69,21 +69,21 @@ export function VerbSentenceCard({
     'group w-full justify-start gap-1.5 text-muted-foreground hover:text-foreground data-[state=open]:text-foreground'
 
   return (
-    <Card className="gap-3 py-3">
+    <Card className="gap-2 py-2 sm:gap-3 sm:py-3">
       <Collapsible open={isExpanded} onOpenChange={onExpandChange}>
         <Collapsible open={detailsOpen} onOpenChange={setDetailsOpen}>
           <CardHeader
             className={cn(
-              'px-4',
+              'max-sm:flex max-sm:flex-col gap-3 px-3 sm:grid sm:grid-cols-[1fr_auto] sm:gap-2 sm:px-4',
               showHeaderBorder ? 'border-b pb-3' : ''
             )}
           >
-            <div className="row-span-2 flex min-w-0 flex-col gap-1">
-              <CardTitle className="text-lg">{verb.infinitive}</CardTitle>
+            <div className="order-1 flex min-w-0 flex-col gap-1 sm:order-none sm:row-span-2">
+              <CardTitle className="text-base sm:text-lg">{verb.infinitive}</CardTitle>
               <p className="text-muted-foreground text-sm">
                 {countLabel} — {coveredForms}/{TOTAL_VERB_FORMS} vormen gedekt
               </p>
-              <div className="-mb-0.5 w-full max-w-xs">
+              <div className="-mb-0.5 w-full max-w-full sm:max-w-xs">
                 <div className="bg-muted h-2 overflow-hidden rounded-full">
                   <div
                     className="bg-primary h-full rounded-full transition-[width]"
@@ -92,7 +92,7 @@ export function VerbSentenceCard({
                 </div>
               </div>
               <CollapsibleContent>
-                <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs sm:grid-cols-4">
+                <div className="grid grid-cols-2 gap-x-3 gap-y-1.5 text-xs sm:grid-cols-4 sm:gap-x-4 sm:gap-y-2">
                   {ANSWER_FORM_KEYS.map((formKey) => {
                     const count = formCounts.get(formKey) ?? 0
                     const covered = count >= TARGET_SENTENCES_PER_FORM
@@ -117,68 +117,72 @@ export function VerbSentenceCard({
                 </div>
               </CollapsibleContent>
             </div>
-            <CardAction>
+            <CardAction className="order-2 w-full shrink-0 sm:order-none sm:col-start-2 sm:row-span-2 sm:row-start-1 sm:w-auto sm:min-w-[10rem] sm:justify-self-end">
               <div
                 className={cn(
-                  'flex min-w-[10rem] flex-col gap-1 rounded-lg border p-2'
+                  'flex flex-col gap-1.5 rounded-lg border bg-muted/30 p-2 sm:min-w-[10rem]'
                 )}
               >
-                <CollapsibleTrigger asChild>
+                <div className="flex flex-row flex-wrap gap-1">
+                  <CollapsibleTrigger asChild>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className={cn(toggleButtonClass, 'min-h-9 sm:min-h-8')}
+                      aria-expanded={detailsOpen}
+                      aria-label="Vormen per type tonen of verbergen"
+                    >
+                      {detailsOpen ? (
+                        <>
+                          <ChevronUpIcon className="size-4 shrink-0" />
+                          <span className="sm:inline">Verberg vormdetails</span>
+                          <span className="sm:hidden">Vormen</span>
+                        </>
+                      ) : (
+                        <>
+                          <ChevronDownIcon className="size-4 shrink-0" />
+                          Vormen ({TOTAL_VERB_FORMS})
+                        </>
+                      )}
+                    </Button>
+                  </CollapsibleTrigger>
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className={toggleButtonClass}
-                    aria-expanded={detailsOpen}
-                    aria-label="Vormen per type tonen of verbergen"
+                    className={cn(toggleButtonClass, 'min-h-9 sm:min-h-8')}
+                    aria-expanded={isExpanded}
+                    aria-label="Zinnen tonen of verbergen"
+                    onClick={() => onExpandChange(!isExpanded)}
                   >
-                    {detailsOpen ? (
+                    {isExpanded ? (
                       <>
                         <ChevronUpIcon className="size-4 shrink-0" />
-                        Verberg vormdetails
+                        <span className="sm:inline">Verberg zinnen</span>
+                        <span className="sm:hidden">Zinnen</span>
                       </>
                     ) : (
                       <>
                         <ChevronDownIcon className="size-4 shrink-0" />
-                        Vormen ({TOTAL_VERB_FORMS})
+                        Zinnen
+                        {verbSentences.length > 0 && ` (${verbSentences.length})`}
                       </>
                     )}
                   </Button>
-                </CollapsibleTrigger>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className={toggleButtonClass}
-                  aria-expanded={isExpanded}
-                  aria-label="Zinnen tonen of verbergen"
-                  onClick={() => onExpandChange(!isExpanded)}
-                >
-                  {isExpanded ? (
-                    <>
-                      <ChevronUpIcon className="size-4 shrink-0" />
-                      Verberg zinnen
-                    </>
-                  ) : (
-                    <>
-                      <ChevronDownIcon className="size-4 shrink-0" />
-                      Zinnen ingeklapt
-                      {verbSentences.length > 0 && ` (${verbSentences.length})`}
-                    </>
-                  )}
-                </Button>
+                </div>
                 {onAddSentence != null ? (
                   <Button
                     type="button"
                     variant="outline"
                     size="sm"
-                    className="w-full"
+                    className="min-h-9 w-full sm:min-h-8"
                     onClick={() => onAddSentence(verb.id)}
                   >
                     Zin toevoegen
                   </Button>
                 ) : (
-                  <Button asChild variant="outline" size="sm" className="w-full">
+                  <Button asChild variant="outline" size="sm" className="min-h-9 w-full sm:min-h-8">
                     <Link to={`${ROUTES.beheerZinnen}?verb=${verb.id}`}>
                       Zin toevoegen
                     </Link>
@@ -189,7 +193,7 @@ export function VerbSentenceCard({
           </CardHeader>
         </Collapsible>
         <CollapsibleContent>
-          <CardContent className="px-4 pt-1.5">
+          <CardContent className="px-3 pt-1.5 sm:px-4">
             {verbSentences.length === 0 ? (
               <p className="text-muted-foreground text-sm">
                 Nog geen zinnen voor dit werkwoord.
