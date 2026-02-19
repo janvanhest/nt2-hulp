@@ -74,7 +74,7 @@ export function VerbSentenceCard({
         <Collapsible open={detailsOpen} onOpenChange={setDetailsOpen}>
           <CardHeader
             className={cn(
-              'max-sm:flex max-sm:flex-col gap-3 px-3 sm:grid sm:grid-cols-[1fr_auto] sm:gap-2 sm:px-4',
+              'max-sm:!flex max-sm:flex-col gap-3 px-3 sm:grid sm:grid-cols-[1fr_auto] sm:gap-2 sm:px-4',
               showHeaderBorder ? 'border-b pb-3' : ''
             )}
           >
