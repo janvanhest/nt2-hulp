@@ -4,6 +4,7 @@ Management command to create or promote the first admin user.
 Password: from environment NT2_FIRST_ADMIN_PASSWORD, or prompted interactively.
 If a user with the given username already exists, their role is set to admin (idempotent).
 """
+
 import os
 import getpass
 from argparse import ArgumentParser
@@ -61,9 +62,7 @@ class Command(BaseCommand):
             if email:
                 user.email = email
             user.save()
-            self.stdout.write(
-                self.style.SUCCESS(f"User '{username}' is now admin.")
-            )
+            self.stdout.write(self.style.SUCCESS(f"User '{username}' is now admin."))
             return
 
         password = get_password_from_env_or_prompt()
@@ -76,6 +75,4 @@ class Command(BaseCommand):
             password=password,
             role=Role.beheerder,
         )
-        self.stdout.write(
-            self.style.SUCCESS(f"Admin '{username}' has been created.")
-        )
+        self.stdout.write(self.style.SUCCESS(f"Admin '{username}' has been created."))

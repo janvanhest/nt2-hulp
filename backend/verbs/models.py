@@ -83,4 +83,8 @@ class FillInSentence(models.Model):
         verbose_name_plural = "Invulzinnen"
 
     def __str__(self) -> str:
-        return f"{self.sentence_template[:50]}…" if len(self.sentence_template) > 50 else self.sentence_template
+        return (
+            f"{self.sentence_template[:50]}…"
+            if len(self.sentence_template) > 50
+            else self.sentence_template
+        )

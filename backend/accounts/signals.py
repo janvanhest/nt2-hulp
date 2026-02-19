@@ -5,6 +5,8 @@ from rest_framework.authtoken.models import Token
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_auth_token(sender: type, instance: object, created: bool, **kwargs: object) -> None:
+def create_auth_token(
+    sender: type, instance: object, created: bool, **kwargs: object
+) -> None:
     if created:
         Token.objects.create(user=instance)

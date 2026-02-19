@@ -1,6 +1,7 @@
 """
 Project-level views. Kept minimal; app views live in their apps.
 """
+
 from django.http import JsonResponse
 
 

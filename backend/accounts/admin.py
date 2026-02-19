@@ -7,9 +7,5 @@ from .models import User
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     list_display = BaseUserAdmin.list_display + ("role",)
-    fieldsets = BaseUserAdmin.fieldsets + (
-        (None, {"fields": ("role",)}),
-    )
-    add_fieldsets = BaseUserAdmin.add_fieldsets + (
-        (None, {"fields": ("role",)}),
-    )
+    fieldsets = BaseUserAdmin.fieldsets + ((None, {"fields": ("role",)}),)
+    add_fieldsets = BaseUserAdmin.add_fieldsets + ((None, {"fields": ("role",)}),)
