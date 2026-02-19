@@ -14,7 +14,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible'
-import { Separator } from '@/components/ui/separator'
 import {
   Table,
   TableBody,
@@ -70,13 +69,16 @@ export function VerbSentenceCard({
     'group w-full justify-start gap-1.5 text-muted-foreground hover:text-foreground data-[state=open]:text-foreground'
 
   return (
-    <Card className="gap-4 py-4">
+    <Card className="gap-3 py-3">
       <Collapsible open={isExpanded} onOpenChange={onExpandChange}>
         <Collapsible open={detailsOpen} onOpenChange={setDetailsOpen}>
           <CardHeader
-            className={cn(showHeaderBorder ? 'border-b pb-4' : '')}
+            className={cn(
+              'px-4',
+              showHeaderBorder ? 'border-b pb-3' : ''
+            )}
           >
-            <div className="row-span-2 flex min-w-0 flex-col gap-1.5">
+            <div className="row-span-2 flex min-w-0 flex-col gap-1">
               <CardTitle className="text-lg">{verb.infinitive}</CardTitle>
               <p className="text-muted-foreground text-sm">
                 {countLabel} — {coveredForms}/{TOTAL_VERB_FORMS} vormen gedekt
@@ -116,7 +118,7 @@ export function VerbSentenceCard({
             <CardAction>
               <div
                 className={cn(
-                  'flex min-w-[10rem] flex-col gap-2 rounded-lg border p-3'
+                  'flex min-w-[10rem] flex-col gap-1 rounded-lg border p-2'
                 )}
               >
                 <CollapsibleTrigger asChild>
@@ -141,7 +143,6 @@ export function VerbSentenceCard({
                     )}
                   </Button>
                 </CollapsibleTrigger>
-                <Separator />
                 <Button
                   type="button"
                   variant="ghost"
@@ -164,7 +165,6 @@ export function VerbSentenceCard({
                     </>
                   )}
                 </Button>
-                <Separator />
                 {onAddSentence != null ? (
                   <Button
                     type="button"
@@ -187,13 +187,13 @@ export function VerbSentenceCard({
           </CardHeader>
         </Collapsible>
         <CollapsibleContent>
-          <CardContent className="pt-2">
+          <CardContent className="px-4 pt-1.5">
             {verbSentences.length === 0 ? (
               <p className="text-muted-foreground text-sm">
                 Nog geen zinnen voor dit werkwoord.
               </p>
             ) : (
-              <div className="overflow-x-auto [&_tbody_tr:last-child]:border-b-0">
+              <div className="overflow-x-auto [&_tbody_tr:last-child]:border-b-0 [&_td]:p-2 [&_th]:px-2 [&_th]:py-2 [&_th]:h-9">
                 <Table>
                   <TableHeader>
                     <TableRow>
