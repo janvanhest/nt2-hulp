@@ -83,11 +83,13 @@ export function VerbSentenceCard({
               <p className="text-muted-foreground text-sm">
                 {countLabel} — {coveredForms}/{TOTAL_VERB_FORMS} vormen gedekt
               </p>
-              <div className="bg-muted h-2 w-full max-w-xs overflow-hidden rounded-full">
-                <div
-                  className="bg-primary h-full rounded-full transition-[width]"
-                  style={{ width: `${formsPercentage}%` }}
-                />
+              <div className="-mb-0.5 w-full max-w-xs">
+                <div className="bg-muted h-2 overflow-hidden rounded-full">
+                  <div
+                    className="bg-primary h-full rounded-full transition-[width]"
+                    style={{ width: `${formsPercentage}%` }}
+                  />
+                </div>
               </div>
               <CollapsibleContent>
                 <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs sm:grid-cols-4">
@@ -193,7 +195,7 @@ export function VerbSentenceCard({
                 Nog geen zinnen voor dit werkwoord.
               </p>
             ) : (
-              <div className="overflow-x-auto [&_tbody_tr:last-child]:border-b-0 [&_td]:p-2 [&_th]:px-2 [&_th]:py-2 [&_th]:h-9">
+              <div className="overflow-x-auto [&_tbody_tr:last-child]:border-b-0 [&_td]:px-2 [&_td]:py-1.5 [&_th]:px-2 [&_th]:py-1.5 [&_th]:h-9">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -211,8 +213,8 @@ export function VerbSentenceCard({
                         <TableCell>
                           {formatAnswerDisplay(s.answer, s.answer_form_key)}
                         </TableCell>
-                        <TableCell>
-                          <div className="flex flex-wrap items-center gap-1">
+                        <TableCell className="py-1">
+                          <div className="flex flex-nowrap items-center gap-1">
                             <Button
                               type="button"
                               variant="ghost"
