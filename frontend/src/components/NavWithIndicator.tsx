@@ -4,6 +4,19 @@ import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import type { NavItemConfig } from '@/lib/nav-config'
 
+/** Shared props for nav components that receive main/admin items and visibility. */
+interface NavItemsProps {
+  mainItems: NavItemConfig[]
+  adminItems: NavItemConfig[]
+  showAdminNav: boolean
+}
+
+export type NavWithIndicatorProps = NavItemsProps
+
+export interface MobileNavSheetContentProps extends NavItemsProps {
+  onNavigate: () => void
+}
+
 const navLinkBaseClassName =
   'relative z-10 inline-flex items-center gap-2.5 rounded-lg px-3 py-2 text-base font-medium transition-colors duration-200'
 
@@ -71,11 +84,7 @@ export function NavWithIndicator({
   mainItems,
   adminItems,
   showAdminNav,
-}: {
-  mainItems: NavItemConfig[]
-  adminItems: NavItemConfig[]
-  showAdminNav: boolean
-}) {
+}: NavWithIndicatorProps) {
   const navRef = useRef<HTMLElement>(null)
   const linkRefs = useRef<(HTMLAnchorElement | null)[]>([])
   const location = useLocation()
@@ -146,12 +155,7 @@ export function MobileNavSheetContent({
   adminItems,
   showAdminNav,
   onNavigate,
-}: {
-  mainItems: NavItemConfig[]
-  adminItems: NavItemConfig[]
-  showAdminNav: boolean
-  onNavigate: () => void
-}) {
+}: MobileNavSheetContentProps) {
   return (
     <nav className="mt-6 flex flex-col gap-1" aria-labelledby="sheet-nav-title">
       {mainItems.map((item) => (
