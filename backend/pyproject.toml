@@ -20,6 +20,8 @@ extend-exclude = '''
 line-length = 88
 target-version = "py311"
 exclude = [".git", ".venv", "__pycache__", "*/migrations/*"]
+
+[tool.ruff.lint]
 select = [
     "E",      # pycodestyle errors
     "W",      # pycodestyle warnings
@@ -35,7 +37,7 @@ ignore = [
     "B904",   # raise without from inside except
 ]
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 known-first-party = ["accounts", "config"]
 
 [tool.mypy]
