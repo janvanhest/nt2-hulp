@@ -5,7 +5,6 @@ Password: from environment NT2_FIRST_ADMIN_PASSWORD, or prompted interactively.
 If a user with the given username already exists, their role is set to beheerder (idempotent).
 """
 import getpass
-import os
 from django.core.management.base import BaseCommand, CommandError
 
 from accounts.models import Role, User
@@ -13,6 +12,8 @@ from accounts.models import Role, User
 
 def get_password_from_env_or_prompt() -> str:
     """Return password from NT2_FIRST_ADMIN_PASSWORD or prompt. Never log or return empty."""
+    import os
+
     pwd = os.environ.get("NT2_FIRST_ADMIN_PASSWORD", "").strip()
     if pwd:
         return pwd
@@ -54,15 +55,14 @@ class Command(BaseCommand):
                     self.style.SUCCESS(f"Gebruiker '{username}' is al beheerder.")
                 )
                 return
-            else:
-                user.role = Role.beheerder
-                if email:
-                    user.email = email
-                user.save()
-                self.stdout.write(
-                    self.style.SUCCESS(f"Gebruiker '{username}' is nu beheerder.")
-                )
-                return
+            user.role = Role.beheerder
+            if email:
+                user.email = email
+            user.save()
+            self.stdout.write(
+                self.style.SUCCESS(f"Gebruiker '{username}' is nu beheerder.")
+            )
+            return
 
         password = get_password_from_env_or_prompt()
         if not password:
