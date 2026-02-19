@@ -4,7 +4,10 @@ Management command to create or promote the first beheerder (admin) user.
 Password: from environment NT2_FIRST_ADMIN_PASSWORD, or prompted interactively.
 If a user with the given username already exists, their role is set to beheerder (idempotent).
 """
+import os
 import getpass
+from argparse import ArgumentParser
+
 from django.core.management.base import BaseCommand, CommandError
 
 from accounts.models import Role, User
@@ -12,8 +15,6 @@ from accounts.models import Role, User
 
 def get_password_from_env_or_prompt() -> str:
     """Return password from NT2_FIRST_ADMIN_PASSWORD or prompt. Never log or return empty."""
-    import os
-
     pwd = os.environ.get("NT2_FIRST_ADMIN_PASSWORD", "").strip()
     if pwd:
         return pwd
@@ -26,7 +27,7 @@ class Command(BaseCommand):
         "Wachtwoord via env NT2_FIRST_ADMIN_PASSWORD of interactieve prompt."
     )
 
-    def add_arguments(self, parser):
+    def add_arguments(self, parser: ArgumentParser) -> None:
         parser.add_argument(
             "--username",
             default="beheerder",
@@ -38,9 +39,10 @@ class Command(BaseCommand):
             help="E-mailadres (optioneel).",
         )
 
-    def handle(self, *args, **options):
-        username = options["username"].strip()
-        email = (options["email"] or "").strip()
+    def handle(self, *args: object, **options: object) -> None:
+        opts = {k: (v if v is None else str(v).strip()) for k, v in options.items()}
+        username = opts.get("username") or ""
+        email = opts.get("email") or ""
         if not username:
             raise CommandError("Username mag niet leeg zijn.")
 
