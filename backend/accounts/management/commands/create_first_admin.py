@@ -9,7 +9,8 @@ import getpass
 import os
 from argparse import ArgumentParser
 
-from django.core.management.base import BaseCommand, CommandError
+# Pyright can miss Django if the IDE interpreter is not the backend venv.
+from django.core.management.base import BaseCommand, CommandError  # pyright: ignore[reportMissingImports]
 
 from accounts.models import Role, User
 
