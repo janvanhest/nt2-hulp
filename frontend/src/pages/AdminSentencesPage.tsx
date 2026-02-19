@@ -66,6 +66,11 @@ export function AdminSentencesPage() {
     setSelectedSentence(null)
     setDialogOpen(true)
   }
+  const handleAddSentence = (verbId: number) => {
+    setSearchParams({ verb: String(verbId) })
+    setSelectedSentence(null)
+    setDialogOpen(true)
+  }
   const openEdit = (sentence: FillInSentence, e: React.MouseEvent) => {
     e.stopPropagation()
     setSelectedSentence(sentence)
@@ -169,6 +174,7 @@ export function AdminSentencesPage() {
                 onExpandChange={(open) => setVerbSublistOpen(group.verb.id, open)}
                 onEditSentence={openEdit}
                 onDeleteSentence={openDeleteConfirm}
+                onAddSentence={handleAddSentence}
               />
             ))}
           </div>

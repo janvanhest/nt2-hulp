@@ -1,5 +1,6 @@
 import type { AnswerFormKey, FillInSentence } from '@/lib/api'
 import { Badge } from '@/components/ui/badge'
+import * as React from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -13,6 +14,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible'
+import { Separator } from '@/components/ui/separator'
 import {
   Table,
   TableBody,
@@ -22,6 +24,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { ROUTES } from '@/lib/routes'
+import { cn } from '@/lib/utils'
 import {
   TARGET_SENTENCES_PER_FORM,
   TOTAL_VERB_FORMS,
@@ -41,6 +44,8 @@ export interface VerbSentenceCardProps {
   onExpandChange: (open: boolean) => void
   onEditSentence: (sentence: FillInSentence, e: React.MouseEvent) => void
   onDeleteSentence: (sentence: FillInSentence) => void
+  /** Called when user clicks "Zin toevoegen"; opens dialog with this verb pre-selected. */
+  onAddSentence?: (verbId: number) => void
 }
 
 export function VerbSentenceCard({
@@ -49,67 +54,102 @@ export function VerbSentenceCard({
   onExpandChange,
   onEditSentence,
   onDeleteSentence,
+  onAddSentence,
 }: VerbSentenceCardProps) {
   const { verb, sentences: verbSentences } = group
+  const [detailsOpen, setDetailsOpen] = React.useState(false)
   const sentenceCount = verbSentences.length
   const coveredForms = countCoveredForms(verbSentences, TARGET_SENTENCES_PER_FORM)
   const formsPercentage = TOTAL_VERB_FORMS > 0 ? (coveredForms / TOTAL_VERB_FORMS) * 100 : 0
   const countLabel = sentenceCount === 1 ? '1 zin' : `${sentenceCount} zinnen`
   const formCounts = getFormCounts(verbSentences)
 
+  const showHeaderBorder = isExpanded || detailsOpen
+
+  const toggleButtonClass =
+    'group w-full justify-start gap-1.5 text-muted-foreground hover:text-foreground data-[state=open]:text-foreground'
+
   return (
-    <Card>
+    <Card className="gap-4 py-4">
       <Collapsible open={isExpanded} onOpenChange={onExpandChange}>
-        <CardHeader className="border-b">
-          <div className="row-span-2 flex min-w-0 flex-col gap-2">
-            <CardTitle className="text-lg">{verb.infinitive}</CardTitle>
-            <p className="text-muted-foreground text-sm">
-              {countLabel} — {coveredForms}/{TOTAL_VERB_FORMS} vormen gedekt
-            </p>
-            <div className="bg-muted h-2 w-full max-w-xs overflow-hidden rounded-full">
+        <Collapsible open={detailsOpen} onOpenChange={setDetailsOpen}>
+          <CardHeader
+            className={cn(showHeaderBorder ? 'border-b pb-4' : '')}
+          >
+            <div className="row-span-2 flex min-w-0 flex-col gap-1.5">
+              <CardTitle className="text-lg">{verb.infinitive}</CardTitle>
+              <p className="text-muted-foreground text-sm">
+                {countLabel} — {coveredForms}/{TOTAL_VERB_FORMS} vormen gedekt
+              </p>
+              <div className="bg-muted h-2 w-full max-w-xs overflow-hidden rounded-full">
+                <div
+                  className="bg-primary h-full rounded-full transition-[width]"
+                  style={{ width: `${formsPercentage}%` }}
+                />
+              </div>
+              <CollapsibleContent>
+                <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs sm:grid-cols-4">
+                  {ANSWER_FORM_KEYS.map((formKey) => {
+                    const count = formCounts.get(formKey) ?? 0
+                    const covered = count >= TARGET_SENTENCES_PER_FORM
+                    const label = ANSWER_FORM_LABELS[formKey as AnswerFormKey]
+                    return (
+                      <span key={formKey} className="flex min-w-0 items-center gap-1.5">
+                        <span className="truncate text-muted-foreground">{label}:</span>
+                        <Badge variant={covered ? 'default' : 'secondary'} className="shrink-0 font-normal">
+                          {count}
+                        </Badge>
+                        {!covered && (
+                          <Link
+                            to={`${ROUTES.beheerZinnen}?verb=${verb.id}&form=${formKey}`}
+                            className="shrink-0 text-primary hover:underline"
+                          >
+                            Toevoegen
+                          </Link>
+                        )}
+                      </span>
+                    )
+                  })}
+                </div>
+              </CollapsibleContent>
+            </div>
+            <CardAction>
               <div
-                className="bg-primary h-full rounded-full transition-[width]"
-                style={{ width: `${formsPercentage}%` }}
-              />
-            </div>
-            <div className="flex flex-wrap gap-x-3 gap-y-1.5 text-xs">
-              {ANSWER_FORM_KEYS.map((formKey) => {
-                const count = formCounts.get(formKey) ?? 0
-                const covered = count >= TARGET_SENTENCES_PER_FORM
-                const label = ANSWER_FORM_LABELS[formKey as AnswerFormKey]
-                return (
-                  <span key={formKey} className="flex items-center gap-1.5">
-                    <span className="text-muted-foreground">{label}:</span>
-                    <Badge variant={covered ? 'default' : 'secondary'} className="font-normal">
-                      {count}
-                    </Badge>
-                    {!covered && (
-                      <Link
-                        to={`${ROUTES.beheerZinnen}?verb=${verb.id}&form=${formKey}`}
-                        className="text-primary hover:underline"
-                      >
-                        Toevoegen
-                      </Link>
+                className={cn(
+                  'flex min-w-[10rem] flex-col gap-2 rounded-lg border p-3'
+                )}
+              >
+                <CollapsibleTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className={toggleButtonClass}
+                    aria-expanded={detailsOpen}
+                    aria-label="Vormen per type tonen of verbergen"
+                  >
+                    {detailsOpen ? (
+                      <>
+                        <ChevronUpIcon className="size-4 shrink-0" />
+                        Verberg vormdetails
+                      </>
+                    ) : (
+                      <>
+                        <ChevronDownIcon className="size-4 shrink-0" />
+                        Vormen ({TOTAL_VERB_FORMS})
+                      </>
                     )}
-                  </span>
-                )
-              })}
-            </div>
-          </div>
-          <CardAction>
-            <div className="flex min-w-[10rem] flex-col items-stretch gap-2">
-              <Button asChild size="sm" className="w-full">
-                <Link to={`${ROUTES.beheerZinnen}?verb=${verb.id}`}>
-                  Nieuwe zin
-                </Link>
-              </Button>
-              <CollapsibleTrigger asChild>
+                  </Button>
+                </CollapsibleTrigger>
+                <Separator />
                 <Button
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="group w-full justify-start gap-1.5 text-muted-foreground hover:text-foreground data-[state=open]:text-foreground"
+                  className={toggleButtonClass}
                   aria-expanded={isExpanded}
+                  aria-label="Zinnen tonen of verbergen"
+                  onClick={() => onExpandChange(!isExpanded)}
                 >
                   {isExpanded ? (
                     <>
@@ -124,12 +164,30 @@ export function VerbSentenceCard({
                     </>
                   )}
                 </Button>
-              </CollapsibleTrigger>
-            </div>
-          </CardAction>
-        </CardHeader>
+                <Separator />
+                {onAddSentence != null ? (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                    onClick={() => onAddSentence(verb.id)}
+                  >
+                    Zin toevoegen
+                  </Button>
+                ) : (
+                  <Button asChild variant="outline" size="sm" className="w-full">
+                    <Link to={`${ROUTES.beheerZinnen}?verb=${verb.id}`}>
+                      Zin toevoegen
+                    </Link>
+                  </Button>
+                )}
+              </div>
+            </CardAction>
+          </CardHeader>
+        </Collapsible>
         <CollapsibleContent>
-          <CardContent className="pt-4">
+          <CardContent className="pt-2">
             {verbSentences.length === 0 ? (
               <p className="text-muted-foreground text-sm">
                 Nog geen zinnen voor dit werkwoord.

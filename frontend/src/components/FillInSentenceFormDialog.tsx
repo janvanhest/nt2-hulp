@@ -29,7 +29,7 @@ export interface FillInSentenceFormDialogProps {
   onOpenChange: (open: boolean) => void
   /** Existing sentence when editing; null for create. */
   sentence: FillInSentence | null
-  /** Pre-filled verb id (e.g. from ?verb=). When set, verb select is disabled in create mode. */
+  /** Pre-filled verb id (e.g. from ?verb=). Used as initial value in create mode; user can still change the verb. */
   initialVerbId?: number
   /** Pre-filled answer form key (e.g. from ?form=). Used in create mode. */
   initialAnswerFormKey?: AnswerFormKey | ''
@@ -56,8 +56,7 @@ export function FillInSentenceFormDialog({
   const [answer, setAnswer] = React.useState('')
   const [answerFormKey, setAnswerFormKey] = React.useState<AnswerFormKey | ''>('')
 
-  const verbSelectDisabled = isCreate && initialVerbId != null
-  const displayVerbId = isCreate && initialVerbId != null ? initialVerbId : verbId
+  const verbSelectDisabled = false
 
   React.useEffect(() => {
     if (!open) {
@@ -81,7 +80,7 @@ export function FillInSentenceFormDialog({
     e.preventDefault()
     setFieldErrors({})
     const finalVerbId =
-      typeof displayVerbId === 'number' ? displayVerbId : verbId !== '' ? (verbId as number) : null
+      verbId !== '' ? (verbId as number) : null
     if (finalVerbId == null) {
       setFieldErrors({ verb: 'Kies een werkwoord.' })
       return
@@ -159,7 +158,7 @@ export function FillInSentenceFormDialog({
           <div className="grid gap-2">
             <Label htmlFor="fillin-verb">Werkwoord</Label>
             <Select
-              value={displayVerbId !== '' ? String(displayVerbId) : ''}
+              value={verbId !== '' ? String(verbId) : ''}
               onValueChange={(v) => setVerbId(v === '' ? '' : Number(v))}
               disabled={verbSelectDisabled}
               required
