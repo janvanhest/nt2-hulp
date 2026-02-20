@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "accounts",
     "verbs",
+    "exercises",
 ]
 
 AUTH_USER_MODEL = "accounts.User"
