@@ -149,6 +149,103 @@ export interface FillInSentencePayload {
   answer_form_key?: AnswerFormKey | '';
 }
 
+/** Beheer oefeningen API base path (generate exercise). */
+export const EXERCISES_API_PATH = '/api/beheer/oefeningen';
+
+/** Oefeningstype voor genereren. */
+export type ExerciseType = 'vervoeging' | 'invulzin';
+
+/** Payload voor het aanmaken van een oefening. */
+export interface CreateExercisePayload {
+  exercise_type: ExerciseType;
+  num_items: number;
+}
+
+/** Conjugation item in exercise response. */
+export interface ConjugationItemResponse {
+  id: number;
+  order: number;
+  verb: number;
+}
+
+/** Fill-in sentence item in exercise response. */
+export interface FillInSentenceItemResponse {
+  id: number;
+  order: number;
+  fill_in_sentence: number;
+}
+
+/** Oefening zoals teruggegeven na aanmaken of in lijst. */
+export interface Exercise {
+  id: number;
+  exercise_type: ExerciseType;
+  created_at: string;
+  conjugation_items: ConjugationItemResponse[];
+  fill_in_sentence_items: FillInSentenceItemResponse[];
+}
+
+/** Verb prompt for do-view (no forms/answers). */
+export interface VerbPrompt {
+  id: number;
+  infinitive: string;
+}
+
+/** Fill-in sentence prompt for do-view (no answer). */
+export interface FillInSentencePrompt {
+  id: number;
+  sentence_template: string;
+  answer_form_key: string;
+}
+
+/** Conjugation item for do-view: verb with infinitive only. */
+export interface ConjugationItemDoResponse {
+  id: number;
+  order: number;
+  verb: VerbPrompt;
+}
+
+/** Fill-in sentence item for do-view: sentence template only. */
+export interface FillInSentenceItemDoResponse {
+  id: number;
+  order: number;
+  fill_in_sentence: FillInSentencePrompt;
+}
+
+/** Oefening-detail voor doen (prompts, geen antwoorden). */
+export interface ExerciseDo {
+  id: number;
+  exercise_type: ExerciseType;
+  created_at: string;
+  conjugation_items: ConjugationItemDoResponse[];
+  fill_in_sentence_items: FillInSentenceItemDoResponse[];
+}
+
+/** One conjugation item in nakijkmodel (correct forms). */
+export interface NakijkConjugationItem {
+  id: number;
+  order: number;
+  verb_id: number;
+  infinitive: string;
+  forms: VerbForm;
+}
+
+/** One fill-in item in nakijkmodel (correct answer). */
+export interface NakijkFillInSentenceItem {
+  id: number;
+  order: number;
+  fill_in_sentence_id: number;
+  sentence_template: string;
+  answer: string;
+}
+
+/** Nakijkmodel response (correcte antwoorden). */
+export interface NakijkmodelResponse {
+  exercise_id: number;
+  exercise_type: ExerciseType;
+  conjugation_items: NakijkConjugationItem[];
+  fill_in_sentence_items: NakijkFillInSentenceItem[];
+}
+
 /**
  * Returns the base URL for API requests. Empty string when using the Vite proxy (dev);
  * otherwise the value of VITE_API_URL without trailing slash.

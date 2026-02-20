@@ -80,6 +80,9 @@ function SheetNavItem({
   )
 }
 
+const INDICATOR_INSET_X = 2
+const INDICATOR_INSET_Y = 14
+
 export function NavWithIndicator({
   mainItems,
   adminItems,
@@ -114,8 +117,8 @@ export function NavWithIndicator({
     const navRect = navRef.current.getBoundingClientRect()
     const linkRect = el.getBoundingClientRect()
     setIndicator({
-      left: linkRect.left - navRect.left,
-      width: linkRect.width,
+      left: linkRect.left - navRect.left + INDICATOR_INSET_X,
+      width: Math.max(0, linkRect.width - INDICATOR_INSET_X * 2),
     })
   }, [activeIndex, location.pathname, mainItems.length, adminItems.length, showAdminNav])
 
@@ -124,13 +127,13 @@ export function NavWithIndicator({
     <nav ref={navRef} className="relative flex min-w-0 flex-1 items-center gap-2">
       {activeIndex >= 0 && indicator.width > 0 && (
         <span
-          className="absolute z-0 rounded-lg bg-primary/20 ring-1 ring-primary/40 transition-[left,width] duration-200 ease-out"
+          className="absolute z-0 rounded-lg bg-zinc-200 transition-[left,width] duration-200 ease-out dark:bg-zinc-600"
           style={{
             left: indicator.left,
             width: indicator.width,
             top: '50%',
             transform: 'translateY(-50%)',
-            height: 'calc(100% - 8px)',
+            height: `calc(100% - ${INDICATOR_INSET_Y * 2}px)`,
           }}
           aria-hidden
         />

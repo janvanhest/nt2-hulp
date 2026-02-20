@@ -116,6 +116,25 @@ export function AdminPage() {
           <section className="mt-8" aria-label="Acties">
             <div className="grid gap-4 md:grid-cols-2">
               <Link
+                to={ROUTES.beheerOefeningGenereren}
+                className="block transition-colors rounded-xl border hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <Card className="border-0 shadow-none h-full">
+                  <CardHeader>
+                    <CardTitle className="text-lg">Oefening genereren</CardTitle>
+                    <CardDescription>
+                      Maak een vervoegingsoefening of invulzin-oefening met een
+                      gekozen aantal items.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <span className="text-muted-foreground text-sm">
+                      Ga naar oefening genereren
+                    </span>
+                  </CardContent>
+                </Card>
+              </Link>
+              <Link
                 to={ROUTES.beheerWerkwoorden}
                 className="block transition-colors rounded-xl border hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >

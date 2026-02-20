@@ -5,6 +5,7 @@ import {
   FileText,
   Home,
   List,
+  PlusCircle,
   Settings,
 } from 'lucide-react'
 import type { AppPath } from '@/lib/routes'
@@ -34,6 +35,12 @@ export const NAV_ITEMS: NavItemConfig[] = [
     to: ROUTES.beheerZinnen,
     label: 'Zinnen',
     icon: FileText,
+    adminOnly: true,
+  },
+  {
+    to: ROUTES.beheerOefeningGenereren,
+    label: 'Oefening genereren',
+    icon: PlusCircle,
     adminOnly: true,
   },
 ]

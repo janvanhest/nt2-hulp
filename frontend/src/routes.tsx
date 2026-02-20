@@ -2,11 +2,13 @@ import { createBrowserRouter } from 'react-router'
 import { AppLayout } from '@/layouts/AppLayout'
 import { AdminLayout } from '@/layouts/AdminLayout'
 import { AdminPage } from '@/pages/AdminPage'
+import { AdminGenerateExercisePage } from '@/pages/AdminGenerateExercisePage'
 import { AdminVerbsPage } from '@/pages/AdminVerbsPage'
 import { AdminSentencesPage } from '@/pages/AdminSentencesPage'
 import { HomePage } from '@/pages/HomePage'
 import { LoginPage } from '@/pages/LoginPage'
 import { NakijkPage } from '@/pages/NakijkPage'
+import { OefenenDoPage } from '@/pages/OefenenDoPage'
 import { OefenenPage } from '@/pages/OefenenPage'
 import { ROUTES } from '@/lib/routes'
 
@@ -28,6 +30,10 @@ export const router = createBrowserRouter([
         Component: OefenenPage,
       },
       {
+        path: 'oefenen/:id',
+        Component: OefenenDoPage,
+      },
+      {
         path: 'nakijk',
         Component: NakijkPage,
       },
@@ -46,6 +52,10 @@ export const router = createBrowserRouter([
           {
             path: 'zinnen',
             Component: AdminSentencesPage,
+          },
+          {
+            path: 'oefening-genereren',
+            Component: AdminGenerateExercisePage,
           },
         ],
       },
