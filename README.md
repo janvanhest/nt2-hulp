@@ -12,5 +12,5 @@ Ontwerpdocumentatie en code voor een web-app om Nederlands als tweede taal te oe
 
 ## Lokaal draaien
 
-- **Backend (Django + Postgres):** [docs/docker.md](docs/docker.md). Env: kopieer `backend/.env.example` naar `backend/.env` en vul in.
+- **Backend (Django + Postgres):** [backend/README.md](backend/README.md) — structuur en commando's; [docs/docker.md](docs/docker.md) voor Docker-setup. Env: kopieer `backend/.env.example` naar `backend/.env` en vul in.
 - **Frontend (React SPA):** [frontend/README.md](frontend/README.md) — install, scripts, dev server en proxy naar de API.
