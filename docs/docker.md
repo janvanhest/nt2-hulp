@@ -33,11 +33,11 @@ De applicatie draait in Docker met twee services: **db** (PostgreSQL) en **web**
    - **Seed data** (als `SEED_INITIAL_DATA=1` in `.env` staat): 3 voorbeeldwerkwoorden (lopen, zwemmen, fietsen) met vormen en invulzinnen
    - Daarna start de server (`runserver`)
 
-4. **Optioneel: handmatig migreren** (als je de web-container niet gebruikt om de app te starten)  
+4. **Handmatig migraties uitvoeren** (bijv. na toevoegen van een nieuwe migratie, als de stack al draait)  
    ```bash
-   docker compose run --rm web python manage.py migrate
+   docker compose exec web python manage.py migrate
    ```
-   (Vanuit `backend/`.)
+   (Vanuit `backend/`.) Als de web-container niet draait: `docker compose run --rm web python manage.py migrate`.
 
 5. **Optioneel: superuser aanmaken** (voor Django-admin /admin/)  
    ```bash
@@ -54,6 +54,7 @@ Daarna is de app bereikbaar op **http://localhost:8000**.
 
 - **Starten:** `docker compose up` (of `docker compose up -d` voor op de achtergrond) — vanuit `backend/`
 - **Stoppen:** `docker compose down`
+- **Migraties uitvoeren** (na toevoegen van een migratie): `docker compose exec web python manage.py migrate`
 - **Logs bekijken:** `docker compose logs web` of `docker compose logs db`
 
 **Na wijziging van `requirements.txt` of `Dockerfile`:** voer opnieuw `docker compose build` uit en start eventueel de containers opnieuw (`docker compose up -d`). Bij wijziging van alleen Python-code is geen rebuild nodig (code staat via volume gemount).
