@@ -48,12 +48,16 @@ class FillInSentenceAnswerFormKeyTests(TestCase):
 class SeedInitialDataCommandTests(TestCase):
     """Tests for seed_initial_data management command."""
 
-    def test_creates_three_verbs_with_forms_and_sentences(self) -> None:
+    def test_creates_ten_verbs_with_forms_and_sentences(self) -> None:
         out = StringIO()
         call_command("seed_initial_data", stdout=out)
-        self.assertEqual(Verb.objects.count(), 3)
+        self.assertEqual(Verb.objects.count(), 10)
+        expected = {
+            "lopen", "zwemmen", "fietsen", "komen", "gaan", "doen",
+            "zien", "maken", "lezen", "schrijven",
+        }
         infinitives = {v.infinitive for v in Verb.objects.all()}
-        self.assertEqual(infinitives, {"lopen", "zwemmen", "fietsen"})
+        self.assertEqual(infinitives, expected)
         for verb in Verb.objects.all():
             self.assertIsNotNone(verb.forms)
             self.assertGreater(verb.fill_in_sentences.count(), 0)
@@ -64,6 +68,6 @@ class SeedInitialDataCommandTests(TestCase):
 
     def test_idempotent_second_run_creates_nothing(self) -> None:
         call_command("seed_initial_data")
-        self.assertEqual(Verb.objects.count(), 3)
+        self.assertEqual(Verb.objects.count(), 10)
         call_command("seed_initial_data")
-        self.assertEqual(Verb.objects.count(), 3)
+        self.assertEqual(Verb.objects.count(), 10)
