@@ -19,6 +19,8 @@ Er zijn twee rollen:
 
 ## Beheerder aanmaken
 
+- **Eerste beheerder (aanbevolen):** `python manage.py create_first_admin --username admin`  
+  Wachtwoord via environment variable `NT2_FIRST_ADMIN_PASSWORD` of interactief via prompt. Bestaande gebruiker met die username wordt indien nodig op beheerder gezet (idempotent). Zie ook [Epic 0](v3/epics.md).
 - **Via Django admin:** Log in op `/admin/`, ga naar Gebruikers, open een gebruiker en zet **Role** op "Beheerder". Sla op.
 - **Handmatig in shell:** `python manage.py shell` → bijvoorbeeld:
   ```python
@@ -27,7 +29,6 @@ Er zijn twee rollen:
   u.role = Role.beheerder
   u.save()
   ```
-- Er is (nog) geen management command; die kan later toegevoegd worden indien gewenst.
 
 ## Waar wordt autorisatie afgedwongen?
 

@@ -27,22 +27,26 @@ De applicatie draait in Docker met twee services: **db** (PostgreSQL) en **web**
    ```
    (Vanuit `backend/`.) Of zonder `-d` om logs in de terminal te zien. Bij de eerste keer bouwt `up` het image ook als je stap 2 overslaat; expliciet `build` doen maakt de volgorde duidelijker.
 
-4. **Migraties uitvoeren**  
+   Bij het starten van de **web**-container voert het entrypoint automatisch uit:
+   - **Migraties** (`migrate --noinput`)
+   - **Eerste beheerder** (als `NT2_FIRST_ADMIN_PASSWORD` in `.env` staat): aanmaken van gebruiker `admin` met dat wachtwoord; anders wordt niets gedaan
+   - **Seed data** (als `SEED_INITIAL_DATA=1` in `.env` staat): 3 voorbeeldwerkwoorden (lopen, zwemmen, fietsen) met vormen en invulzinnen
+   - Daarna start de server (`runserver`)
+
+4. **Optioneel: handmatig migreren** (als je de web-container niet gebruikt om de app te starten)  
    ```bash
    docker compose run --rm web python manage.py migrate
    ```
    (Vanuit `backend/`.)
 
-5. **Optioneel: superuser aanmaken**  
+5. **Optioneel: superuser aanmaken** (voor Django-admin /admin/)  
    ```bash
    docker compose run --rm web python manage.py createsuperuser
    ```
    Daarmee kun je inloggen op het Django-adminpaneel: **http://localhost:8000/admin/**
 
-6. **Optioneel: eerste beheerder voor de app**  
-   Voor inloggen in de NT-2 app (werkwoorden/zinnen beheren):  
-   `docker compose run --rm web python manage.py create_first_admin --username admin`  
-   Wachtwoord via env `NT2_FIRST_ADMIN_PASSWORD` of interactief. Zie [Rollen en autorisatie](rollen-autorisatie.md).
+6. **Eerste beheerder voor de NT-2 app**  
+   Zet in `.env`: `NT2_FIRST_ADMIN_PASSWORD=jouwwachtwoord` (en eventueel `SEED_INITIAL_DATA=1` voor voorbeelddata). Bij de volgende `docker compose up` wordt de beheerder automatisch aangemaakt. Zie [Rollen en autorisatie](rollen-autorisatie.md).
 
 Daarna is de app bereikbaar op **http://localhost:8000**.
 
