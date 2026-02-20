@@ -8,4 +8,5 @@ urlpatterns = [
     path("", admin_views.AdminCheckView.as_view(), name="check"),
     path("werkwoorden/", include("verbs.urls")),
     path("invulzinnen/", include("verbs.invulzinnen_urls")),
+    path("oefeningen/", include("exercises.urls")),
 ]
