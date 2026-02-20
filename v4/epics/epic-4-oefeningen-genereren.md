@@ -6,6 +6,15 @@ De beheerder genereert een oefening door type (vervoegingsoefening of invulzin-o
 
 Bouwt voort op Epic 0 (Foundation), Epic 1 (Rollen & autorisatie), **Epic 2 (Werkwoorden Beheren)** en **Epic 3 (Invulzinnen Beheren)**.
 
+### Uitgangspunt: selectie op werkwoord (infinitief)
+
+Selectie bij het genereren van een oefening gebeurt op **werkwoord/infinitief**. Werkwoordsvormen en oefenzinnen (invulzinnen) zijn aan het werkwoord gekoppeld; ze zijn geen aparte selectie-eenheid. De beheerder kiest welke werkwoorden meedoen; het systeem bepaalt daaruit welke items in de oefening komen.
+
+- **Vervoegingsoefening (scenario A):** items = werkwoorden met hun werkwoordsvormen (één item = één werkwoord, alle vormen).
+- **Invulzin-oefening (scenario B):** items = invulzinnen die bij de geselecteerde werkwoorden horen.
+
+Beide scenario's zijn toepassingen van hetzelfde uitgangspunt: selectie = op werkwoord. Zie ook [../terminologie.md](../terminologie.md) (Selectie, Uitgangspunt selectie).
+
 ### Scope
 
 | Wat | In scope | Toelichting |
