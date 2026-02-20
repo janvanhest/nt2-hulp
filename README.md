@@ -10,6 +10,7 @@ Ontwerpdocumentatie en code voor een web-app om Nederlands als tweede taal te oe
 - **ADR's:** [v4/adr/](v4/adr/)
 - **Archief v3:** [archive/v3/](archive/v3/) (historische referentie)
 
-## Lokaal draaien (Docker)
+## Lokaal draaien
 
-Backend (Django) en database (PostgreSQL) staan in **`backend/`** en kunnen daar met Docker worden gestart. Stappen, vereisten en troubleshooting: **[docs/docker.md](docs/docker.md)**. Env: kopieer `backend/.env.example` naar `backend/.env` en vul in.
+- **Backend (Django + Postgres):** [docs/docker.md](docs/docker.md). Env: kopieer `backend/.env.example` naar `backend/.env` en vul in.
+- **Frontend (React SPA):** [frontend/README.md](frontend/README.md) — install, scripts, dev server en proxy naar de API.
