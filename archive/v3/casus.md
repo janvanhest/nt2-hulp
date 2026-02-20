@@ -55,8 +55,10 @@ Later wil ik ook andere activiteiten kunnen toevoegen, zodat gebruikers thema’
 - thematisch doorlopen
 - voorstellen (AI)
 
+## Geplande uitbreidingen
+
+Voortgang/score bijhouden en thema's/rijtje zijn opgenomen als geplande uitbreidingen na MVP. Zie de sectie "Uitbreidingen na MVP (backlog)" in `v3/epics.md` en het voorstel in [docs/voortgang-tracking.md](../docs/voortgang-tracking.md) (wat gedaan, beheerst, te herhalen; basis voor later pad/curriculum).
+
 ## Open vragen
 - Moeten er niveaus of categorieën komen (bijv. regelmatige/onregelmatige werkwoorden)?
-- Hoe ziet een "rijtje" eruit: vaste sets, hoofdstukken, thema’s?
-- Moet voortgang of score worden bijgehouden?
 - AI alleen als eenmalige invoerhulp, of ook dynamisch tijdens oefenen?

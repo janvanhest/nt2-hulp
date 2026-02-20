@@ -19,6 +19,8 @@
 3. Gebruiker genereert een nakijk‑PDF.
 4. Het systeem levert het nakijkmodel als PDF.
 
+Het nakijkmodel (correcte antwoorden) wordt bij het genereren van de oefening (UC3) aangemaakt. Digitaal: de gebruiker ziet het in de app. Print: de nakijk‑PDF wordt gegenereerd bij export (UC6).
+
 **Alternatieven/uitzonderingen:**
 - Als er te weinig werkwoorden zijn, toont het systeem een melding.
 

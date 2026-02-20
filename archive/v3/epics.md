@@ -36,13 +36,15 @@ Deze epics zijn geschreven als "MVP eerst", en sluiten aan op `v3/casus.md`, `v3
 - Data kan worden opgeslagen en later weer opgehaald voor oefeninggeneratie.
 
 ## Epic 3: Invulzinnen Beheren
-**Beschrijving:** Zinnen met invulplek kunnen beheren, inclusief het juiste antwoord (werkwoord of vorm).
+**Beschrijving:** Oefenzinnen zijn een uitbreiding op werkwoorden: ze worden altijd aan een bestaand werkwoord gekoppeld. Zinnen met invulplek kunnen beheren, inclusief het juiste antwoord (werkwoord of vorm). Het beheer van invulzinnen bouwt voort op de werkwoorden uit Epic 2.
 
 **Acceptatiecriteria**
 - Beheerder kan invulzinnen toevoegen, wijzigen en verwijderen.
-- Een invulzin heeft minimaal `sentence_template` en `answer` (zie `v3/erd.md`).
-- Het systeem kan invulzinnen koppelen aan een werkwoord (minimaal op infinitief-niveau).
-- Het systeem toont een foutmelding als er geen zinnen beschikbaar zijn bij een invulzin-oefening.
+- Een invulzin heeft minimaal `sentence_template` en `answer` (zie `v3/erd.md`); daarnaast geeft de beheerder aan **welke werkwoordsvorm** het antwoord is (bijv. ik-tt, hij-vt, voltooid deelwoord), zodat eenduidig is of "loop" of "liep" e.d. bedoeld is.
+- Bij het toevoegen of wijzigen van een invulzin kiest de beheerder een werkwoord uit de lijst van bestaande werkwoorden (bijv. dropdown of zoeklijst); het systeem toont bestaande werkwoorden zodat oefenzinnen eenvoudig aan werkwoorden gekoppeld kunnen worden.
+- Vanuit het detail van een werkwoord kan de beheerder oefenzinnen voor dat werkwoord toevoegen (werkwoord is dan vooringevuld).
+- Als er nog geen werkwoorden bestaan, toont het systeem een duidelijke melding en verwijs naar Werkwoorden beheren (Epic 2).
+- Het systeem toont een foutmelding als er geen zinnen beschikbaar zijn bij een invulzin-oefening. (Contract voor implementatie in Epic 4/5: [docs/epic-3-invulzinnen-beheren.md](docs/epic-3-invulzinnen-beheren.md#5-contract-foutmelding-bij-invulzin-oefening-zonder-zinnen-epic-45).)
 
 ## Epic 4: Oefeningen Genereren
 **Beschrijving:** Oefeningen genereren op basis van beschikbare werkwoorden/zinnen (vervoegingsoefening of invulzin-oefening).
@@ -54,7 +56,7 @@ Deze epics zijn geschreven als "MVP eerst", en sluiten aan op `v3/casus.md`, `v3
 - Het systeem toont een melding als er te weinig items beschikbaar zijn.
 
 ## Epic 5: Oefenen + Nakijkmodel Tonen
-**Beschrijving:** Gebruikers kunnen oefeningen invullen en daarna het nakijkmodel bekijken.
+**Beschrijving:** Gebruikers kunnen oefeningen invullen en daarna het nakijkmodel bekijken. Het nakijkmodel wordt bij aanmaak van de oefening (Epic 4) aangemaakt; de gebruiker roept het op in de app.
 
 **Acceptatiecriteria**
 - Gebruiker kan een vervoegingsoefening doorlopen en invoer per werkwoordsvorm doen (UC1).
@@ -63,7 +65,7 @@ Deze epics zijn geschreven als "MVP eerst", en sluiten aan op `v3/casus.md`, `v3
 - "Nakijken" werkt ook als de oefening niet volledig is ingevuld (toon alsnog de correcte antwoorden).
 
 ## Epic 6: Export (Oefening + Nakijkmodel)
-**Beschrijving:** Oefeningen en nakijkmodellen kunnen exporteren (minimaal PDF of Markdown).
+**Beschrijving:** Oefeningen en nakijkmodellen kunnen exporteren (minimaal PDF of Markdown). De nakijk-PDF wordt gegenereerd op het moment van export.
 
 **Acceptatiecriteria**
 - Beheerder kan een exportformaat kiezen (UC6).
@@ -78,3 +80,8 @@ Deze epics zijn geschreven als "MVP eerst", en sluiten aan op `v3/casus.md`, `v3
 - Het systeem kan ontbrekende velden herkennen en expliciet markeren als "nog in te vullen".
 - Eventuele AI-ondersteuning is beperkt tot eenmalig invullen van ontbrekende data; resultaten worden opgeslagen en hergebruikt (randvoorwaarde uit `v3/casus.md`).
 - Beheerder kan voor een gekozen werkwoord eenmalig een aantal invulzinnen laten genereren via een externe API (bijv. LLM); de gegenereerde zinnen worden opgeslagen als invulzinnen (sentence_template + answer, gekoppeld aan werkwoord) en daarna hergebruikt.
+
+## Uitbreidingen na MVP (backlog)
+
+- **Voortgang en tracking:** De gebruiker ziet wat hij al gedaan heeft; welke werkwoorden/zinnen beheerst vs. te herhalen; opslaan van antwoorden en afronding. Zie [docs/voortgang-tracking.md](docs/voortgang-tracking.md). Later: dashboard en suggestie "oefen wat te herhalen".
+- **Thema's / curriculum:** Oefenen per thema of volgorde; werkwoorden of zinnen groeperen; een pad uitzetten. Sluit aan op de open vragen in `v3/casus.md`.
