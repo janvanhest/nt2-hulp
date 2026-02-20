@@ -38,6 +38,6 @@ We kiezen voor:
 
 ## Referenties
 
-- Epic 7: [v3/epics.md](epics.md)
+- Epic 7: [epics.md](../epics.md)
 - Datamodel import: [docs/epic-7-datamodel-import.md](../docs/epic-7-datamodel-import.md)
 - Technisch overzicht: [docs/epic-7-technisch-overzicht.md](../docs/epic-7-technisch-overzicht.md)

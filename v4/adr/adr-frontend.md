@@ -41,7 +41,7 @@ Optioneel later: Framer Motion (animaties), sonner (toast), recharts (voortgang)
 ## Consequenties
 - Frontend draait als aparte app (bijv. `frontend/` of `web/`); praat via HTTP naar de API.
 - Epic 0 omvat naast backend-foundation ook frontend-foundation: Vite-project, TanStack Query geconfigureerd, shadcn/Tailwind/Lucide beschikbaar, routing en login-flow end-to-end.
-- Requirements (dev) kunnen worden aangescherpt met deze stack (zie `v3/requirements-dev.md`).
+- Requirements (dev) kunnen worden aangescherpt met deze stack (zie archive/v3 of docs indien een requirements-dev document wordt toegevoegd).
 
 ## Referenties
 - [Vite – create vite](https://vite.dev/guide/) (o.a. React + TypeScript template)
