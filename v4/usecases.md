@@ -59,7 +59,7 @@ Het nakijkmodel wordt bij het genereren van de oefening (UC3) aangemaakt. Digita
 
 ## UC3: Oefening genereren
 
-**Doel:** Een nieuwe oefening genereren op basis van een **selectie** (werkwoorden en/of thema) en aantal items.
+**Doel:** Een nieuwe oefening genereren op basis van een **selectie** (op werkwoord/infinitief; Fase 2: ook thema) en aantal items.
 
 **Actoren:** Beheerder
 
@@ -67,7 +67,7 @@ Het nakijkmodel wordt bij het genereren van de oefening (UC3) aangemaakt. Digita
 
 **Hoofdscenario:**
 1. Beheerder kiest oefeningstype (vervoegingsoefening of invulzin-oefening).
-2. Beheerder maakt een **selectie**: kiest werkwoorden (expliciet) en/of een thema waaruit items worden gekozen (in plaats van "alle" willekeurig).
+2. Beheerder maakt een **selectie**: kiest werkwoorden (infinitieven); daar hangen werkwoordsvormen en invulzinnen aan. (Fase 2: ook thema.) Zie [terminologie.md](terminologie.md) en [epics/epic-4-oefeningen-genereren.md](epics/epic-4-oefeningen-genereren.md).
 3. Beheerder selecteert aantal items (rijtje); richtlijn minimaal 5 voor voldoende oefenlengte.
 4. Systeem genereert oefening met geordende items en nakijkmodel.
 
