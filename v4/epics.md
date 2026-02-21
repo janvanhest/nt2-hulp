@@ -8,6 +8,7 @@ Deze epics sluiten aan op [casus.md](casus.md), [usecases.md](usecases.md) en [e
 |------|----------|----------------|
 | 0 Foundation | Af* | — |
 | 1 Rollen & autorisatie | Af* | — |
+| Beheer-dashboard en navigatie | Open | — |
 | 2 Werkwoorden Beheren | Af* | Open (Fase 2/3: thema, filter) |
 | 3 Invulzinnen Beheren | Af* | Open (Fase 2/3: thema, filter) |
 | 4 Oefeningen Genereren | Af* | Open (Fase 1/2: selectie) |
@@ -42,6 +43,38 @@ Deze epics sluiten aan op [casus.md](casus.md), [usecases.md](usecases.md) en [e
 - Rollen bestaan minimaal uit `gebruiker` en `beheerder`.
 - Alleen `beheerder` kan werkwoorden, zinnen en (later) thema's beheren.
 - Alleen geauthenticeerde gebruikers kunnen oefenen en nakijkmodellen zien.
+- Beheerders zien in de hoofdnavigatie één item "Beheer"; klik daarop leidt naar het Beheer-dashboard (/beheer).
+- Toegang tot Werkwoorden beheren, Zinnen beheren en Oefening genereren verloopt via het Beheer-dashboard; er zijn geen aparte navigatie-items voor deze acties.
+
+## Beheer-dashboard en navigatie
+
+**Beschrijving:** De beheer-omgeving heeft één navigatie-item "Beheer". Het Beheer-dashboard (`/beheer`) is de centrale ingang voor werkwoorden, invulzinnen en oefening genereren. De hoofdnavigatie bevat geen aparte items voor Werkwoorden, Zinnen of Oefening genereren.
+
+**Acceptatiecriteria**
+- In de hoofdnavigatie (desktop en mobiel) zien beheerders voor beheer alleen het item "Beheer". Klik daarop leidt naar het Beheer-dashboard (`/beheer`).
+- Op het Beheer-dashboard zijn zichtbaar: overzicht/statistieken (aantal werkwoorden, invulzinnen, werkwoorden compleet) en acties: Werkwoorden beheren, Zinnen/Invulzinnen beheren, Oefening genereren. Elke actie is een duidelijke link of knop naar de bestaande pagina.
+- De routes `/beheer/werkwoorden`, `/beheer/zinnen` en `/beheer/oefening-genereren` blijven bestaan en zijn bereikbaar via het dashboard (niet via aparte nav-items).
+- (Optioneel) Het dashboard toont een logische volgorde of stappen: werkwoord toevoegen → vormen invullen → invulzinnen toevoegen → oefening genereren (visueel of als richtlijn).
+
+### Beslissing
+
+- **Context:** Beheer had naast "Beheer" aparte nav-items (Werkwoorden, Zinnen, Oefening genereren); dezelfde acties stonden op het dashboard. Nav was vol; "Zinnen" dekte meer dan alleen invulzinnen.
+- **Beslissing:** Hoofdnavigatie toont voor beheerders één item "Beheer". Het Beheer-dashboard is de enige ingang voor Werkwoorden, Zinnen, Oefening genereren. Routes blijven; breadcrumb/terug naar dashboard vanaf subpagina's.
+- **Gevolgen:** nav-config bevat voor adminOnly alleen het item naar `/beheer`; bestaande pagina's en functionaliteit blijven; alleen de manier van navigeren verandert.
+
+### UI-componenten (bij implementatie)
+
+De shadcn-registry (@shadcn) biedt geen dedicated "stepper" of "timeline"-component. Voor het dashboard en de beheer-flow zijn de volgende componenten bruikbaar:
+
+| Behoefte | shadcn-component | Opmerking |
+|----------|------------------|-----------|
+| Actieblokken op dashboard | **card** | Al in gebruik op AdminPage; blijven gebruiken. |
+| Voortgang / compleetheid | **progress** (registry:ui) | Geschikt voor "X van Y werkwoorden compleet" of stappen-indicator. |
+| Stappen of volgorde tonen | Geen stepper | Bouwen met **card** + **separator** of genummerde lijst; eventueel **breadcrumb** voor pad Beheer > Werkwoorden. |
+| Lege staat (geen werkwoorden) | **empty** (registry:ui) | Kan op dashboard of op Zinnen-pagina gebruikt worden voor duidelijke empty state. |
+| Dashboard-layout (referentie) | **dashboard-01** (registry:block) | Voorbeeldblock "sidebar, charts and data table"; zwaar (o.a. dnd-kit, react-table). Alleen als inspiratie; geen verplichting om het block te installeren. |
+
+Bij de latere code-iteratie: card, progress, breadcrumb en empty overwogen; geen officiële stepper in shadcn.
 
 ## Epic 2: Werkwoorden Beheren (incl. Vormen)
 
@@ -51,6 +84,7 @@ Deze epics sluiten aan op [casus.md](casus.md), [usecases.md](usecases.md) en [e
 - Beheerder kan een werkwoord (infinitief) toevoegen, wijzigen en verwijderen.
 - Beheerder kan per werkwoord de set werkwoordsvormen beheren (zie [erd.md](erd.md)).
 - Validatie voorkomt ongeldige invoer (minimaal: infinitief verplicht; vormvelden mogen leeg in MVP).
+- Bij het toevoegen van een werkwoord: als de infinitief al bestaat, toont het systeem een duidelijke foutmelding (bijv. "Een werkwoord met deze infinitief bestaat al."). De backend hanteert een unieke constraint op de infinitief.
 - Data kan worden opgeslagen en later weer opgehaald voor oefeninggeneratie.
 
 **Uitbreiding (v4 Fase 2/3):**
