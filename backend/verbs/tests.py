@@ -4,6 +4,7 @@ from django.core.management import call_command
 from django.test import TestCase
 
 from .models import AnswerFormKey, FillInSentence, Verb, VerbForm, VdHulp
+from .serializers import VerbSerializer
 
 
 class FillInSentenceAnswerFormKeyTests(TestCase):
@@ -43,6 +44,42 @@ class FillInSentenceAnswerFormKeyTests(TestCase):
         )
         sentence.refresh_from_db()
         self.assertEqual(sentence.answer_form_key, AnswerFormKey.infinitive)
+
+
+class VerbInfinitiveUniquenessTests(TestCase):
+    """Tests for unique infinitive (Epic 2). Create and update must reject duplicates."""
+
+    def test_create_rejects_duplicate_infinitive(self) -> None:
+        serializer = VerbSerializer(data={"infinitive": "lopen"})
+        self.assertTrue(serializer.is_valid(), serializer.errors)
+        serializer.save()
+        self.assertEqual(Verb.objects.count(), 1)
+
+        duplicate = VerbSerializer(data={"infinitive": "lopen"})
+        self.assertFalse(duplicate.is_valid())
+        self.assertIn("infinitive", duplicate.errors)
+        self.assertIn("bestaat al", str(duplicate.errors["infinitive"]))
+        self.assertEqual(Verb.objects.count(), 1)
+
+    def test_update_rejects_changing_infinitive_to_existing_one(self) -> None:
+        lopen = Verb.objects.create(infinitive="lopen")
+        VerbForm.objects.create(verb=lopen)
+        zwemmen = Verb.objects.create(infinitive="zwemmen")
+        VerbForm.objects.create(verb=zwemmen)
+        self.assertEqual(Verb.objects.count(), 2)
+
+        serializer = VerbSerializer(
+            instance=lopen,
+            data={"infinitive": "zwemmen"},
+            partial=True,
+        )
+        self.assertFalse(serializer.is_valid())
+        self.assertIn("infinitive", serializer.errors)
+        self.assertIn("bestaat al", str(serializer.errors["infinitive"]))
+
+        lopen.refresh_from_db()
+        self.assertEqual(lopen.infinitive, "lopen")
+        self.assertEqual(Verb.objects.get(infinitive="zwemmen").id, zwemmen.id)
 
 
 class SeedInitialDataCommandTests(TestCase):
