@@ -6,6 +6,8 @@ Korte uitwerking; volledige beschrijving en acceptatiecriteria: [../epics.md#epi
 
 Werkwoorden en bijbehorende werkwoordsvormen beheren (CRUD) met duidelijke validatie. Zie [../erd.md](../erd.md).
 
+De werkwoordenpagina (/beheer/werkwoorden) biedt een **overzicht** per werkwoord: naast de vervoegingsvormen wordt het aantal invulzinnen getoond; de beheerder kan vanuit een werkwoord naar de zinnen voor dat werkwoord (link naar Overzicht per werkwoord met filter, bijv. "Bekijk zinnen" / "Oefenzinnen toevoegen").
+
 ## Kernacceptatiecriteria
 
 - Beheerder kan werkwoord (infinitief) toevoegen, wijzigen, verwijderen; per werkwoord de set werkwoordsvormen beheren.
