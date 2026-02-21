@@ -16,9 +16,10 @@ Bouwt voort op Epic 0 (Foundation), Epic 1 (Rollen & autorisatie) en **Epic 2 (W
 | Werkwoordsvorm van het antwoord | Ja | Veld `answer_form_key` (bijv. tt_ik, vt_ev, vd) zodat eenduidig is welke vorm bedoeld is (bijv. "loop" = ik-tt, "liep" = hij-vt). Dropdown in UI met labels uit werkwoordsvormen. |
 | Werkwoorden tonen bij invoeren | Ja | Lijst/dropdown van bestaande werkwoorden bij toevoegen/wijzigen van een invulzin. |
 | Oefenzinnen toevoegen vanuit werkwoord-detail | Ja | Vanuit een werkwoord kunnen oefenzinnen voor dat werkwoord worden toegevoegd (werkwoord vooringevuld). |
-| Lege staat: geen werkwoorden | Ja | Duidelijke melding + verwijs naar Werkwoorden beheren. |
+| Lege staat: geen werkwoorden | Ja | Duidelijke melding + verwijs naar Vervoegingen beheren. |
 | Autorisatie | Ja | Alleen beheerder; hergebruik beheer-permissies. |
 | Foutmelding bij oefening zonder zinnen | Ja | Bij invulzin-oefening zonder beschikbare zinnen (Epic 4/5). |
+| Weergave "Alleen invulzinnen" | Ja | Beheerder kan op de zinnen-pagina kiezen voor weergave "Invulzinnen" (alleen lijst invulzinnen per werkwoord, zonder vormdekking) of "Vormdekking" (met vormdekking en streef per vorm). |
 
 ### Acceptatiecriteria (uit `../epics.md`)
 
@@ -26,8 +27,9 @@ Bouwt voort op Epic 0 (Foundation), Epic 1 (Rollen & autorisatie) en **Epic 2 (W
 2. Een invulzin heeft minimaal `sentence_template` en `answer` (zie `../erd.md`); de beheerder geeft aan welke werkwoordsvorm het antwoord is (bijv. ik-tt, hij-vt), zodat eenduidig is of "loop" of "liep" e.d. bedoeld is.
 3. Bij het toevoegen of wijzigen van een invulzin kiest de beheerder een werkwoord uit de lijst van bestaande werkwoorden (bijv. dropdown of zoeklijst); het systeem toont bestaande werkwoorden zodat oefenzinnen eenvoudig aan werkwoorden gekoppeld kunnen worden.
 4. Vanuit het detail van een werkwoord kan de beheerder oefenzinnen voor dat werkwoord toevoegen (werkwoord is dan vooringevuld).
-5. Als er nog geen werkwoorden bestaan, toont het systeem een duidelijke melding en verwijs naar Werkwoorden beheren (Epic 2).
+5. Als er nog geen werkwoorden bestaan, toont het systeem een duidelijke melding en verwijs naar Vervoegingen beheren (Epic 2).
 6. Het systeem toont een foutmelding als er geen zinnen beschikbaar zijn bij een invulzin-oefening.
+7. Er is een duidelijke manier om alleen de invulzinnen per werkwoord te zien (zonder vormdekking in de kaarten), bijv. via tab "Invulzinnen".
 
 ### Relevante bronnen
 
@@ -43,7 +45,7 @@ Bouwt voort op Epic 0 (Foundation), Epic 1 (Rollen & autorisatie) en **Epic 2 (W
 
 Invulzinnen worden altijd aan een werkwoord gekoppeld (`werkwoord_id` verplicht). Er is geen "losse" invulzin. De UI ondersteunt twee manieren van toevoegen:
 
-- **Flow A — Vanuit Invulzinnen beheren:** Overzicht van invulzinnen → "Nieuwe zin" → kies werkwoord uit lijst van bestaande werkwoorden → vul `sentence_template` en `answer` in.
+- **Flow A — Vanuit Zinnen beheren:** Overzicht van invulzinnen → "Nieuwe zin" → kies werkwoord uit lijst van bestaande werkwoorden → vul `sentence_template` en `answer` in.
 - **Flow B — Vanuit Werkwoord-detail:** Bij een werkwoord (detail of rij) → "Oefenzinnen toevoegen" → werkwoord is vooringevuld → alleen `sentence_template` en `answer` invullen.
 
 Beide flows leiden tot dezelfde data: een `INVULZIN` met `werkwoord_id`, `sentence_template`, `answer` en `answer_form_key`.
@@ -61,7 +63,7 @@ Het antwoord ("loop", "liep", "gelopen" …) kan bij hetzelfde werkwoord voor me
 
 Als er nog geen werkwoorden zijn:
 
-- Pagina "Invulzinnen beheren" toont een duidelijke melding (bijv. "Voeg eerst werkwoorden toe om oefenzinnen te kunnen koppelen.") met link/verwijzing naar Werkwoorden beheren.
+- Pagina "Zinnen beheren" (voorheen Overzicht per werkwoord) toont een duidelijke melding (bijv. "Voeg eerst werkwoorden toe om oefenzinnen te kunnen koppelen.") met link/verwijzing naar Vervoegingen beheren.
 - "Nieuwe invulzin" is dan niet beschikbaar of toont dezelfde melding.
 
 ### 4. API en data
