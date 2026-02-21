@@ -122,7 +122,12 @@ export function AdminSentencesPage() {
   return (
     <main className="min-w-0 overflow-x-hidden p-6">
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Invulzinnen beheren</h1>
+        <div>
+          <h1 className="text-2xl font-semibold">Overzicht per werkwoord</h1>
+          <p className="text-muted-foreground mt-1 text-sm">
+            Vormdekking en invulzinnen per werkwoord.
+          </p>
+        </div>
         {!noVerbs && (
           <Button onClick={() => openCreate()} disabled={verbsLoading}>
             Nieuwe zin
