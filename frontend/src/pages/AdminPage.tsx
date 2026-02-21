@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import { ChevronRight } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { ApiError, apiFetch } from '@/lib/api'
 import { ROUTES } from '@/lib/routes'
@@ -6,6 +7,7 @@ import { useFillInSentences } from '@/hooks/useFillInSentences'
 import { useVerbs } from '@/hooks/useVerbs'
 import { countFilledForms, VERB_FORM_KEYS } from '@/lib/verbFormConfig'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -115,69 +117,73 @@ export function AdminPage() {
 
           <section className="mt-8" aria-label="Acties">
             <div className="grid gap-4 md:grid-cols-2">
-              <Link
-                to={ROUTES.beheerOefeningGenereren}
-                className="block transition-colors rounded-xl border hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                <Card className="border-0 shadow-none h-full">
-                  <CardHeader>
-                    <CardTitle className="text-lg">Oefening genereren</CardTitle>
-                    <CardDescription>
-                      Maak een vervoegingsoefening of invulzin-oefening met een
-                      gekozen aantal items.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <span className="text-muted-foreground text-sm">
-                      Ga naar oefening genereren
-                    </span>
-                  </CardContent>
-                </Card>
-              </Link>
-              <Link
-                to={ROUTES.beheerWerkwoorden}
-                className="block transition-colors rounded-xl border hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                <Card className="border-0 shadow-none h-full">
-                  <CardHeader>
-                    <CardTitle className="text-lg">Werkwoorden beheren</CardTitle>
-                    <CardDescription>
-                      Voeg werkwoorden toe en vul de vervoegingen in.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    {statsLoading ? (
-                      <Skeleton className="h-6 w-16" />
-                    ) : (
+              <Card className="flex h-full flex-col rounded-xl border">
+                <CardHeader>
+                  <CardTitle className="text-lg">Oefening genereren</CardTitle>
+                  <CardDescription>
+                    Maak een vervoegingsoefening of invulzin-oefening met een
+                    gekozen aantal items.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="mt-auto">
+                  <Button asChild variant="outline" size="sm">
+                    <Link to={ROUTES.beheerOefeningGenereren}>
+                      Openen
+                      <ChevronRight className="size-4" />
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+              <Card className="flex h-full flex-col rounded-xl border">
+                <CardHeader>
+                  <CardTitle className="text-lg">Werkwoorden beheren</CardTitle>
+                  <CardDescription>
+                    Voeg werkwoorden toe en vul de vervoegingen in.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="mt-auto flex flex-wrap items-center gap-2">
+                  {statsLoading ? (
+                    <Skeleton className="h-8 w-24" />
+                  ) : (
+                    <>
+                      <Button asChild variant="outline" size="sm">
+                        <Link to={ROUTES.beheerWerkwoorden}>
+                          Openen
+                          <ChevronRight className="size-4" />
+                        </Link>
+                      </Button>
                       <Badge variant="secondary" className="tabular-nums">
                         {verbsCount} werkwoord{verbsCount !== 1 ? 'en' : ''}
                       </Badge>
-                    )}
-                  </CardContent>
-                </Card>
-              </Link>
-              <Link
-                to={ROUTES.beheerZinnen}
-                className="block transition-colors rounded-xl border hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                <Card className="border-0 shadow-none h-full">
-                  <CardHeader>
-                    <CardTitle className="text-lg">Zinnen beheren</CardTitle>
-                    <CardDescription>
-                      Beheer invulzinnen gekoppeld aan werkwoorden.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    {statsLoading ? (
-                      <Skeleton className="h-6 w-16" />
-                    ) : (
+                    </>
+                  )}
+                </CardContent>
+              </Card>
+              <Card className="flex h-full flex-col rounded-xl border">
+                <CardHeader>
+                  <CardTitle className="text-lg">Zinnen beheren</CardTitle>
+                  <CardDescription>
+                    Beheer invulzinnen gekoppeld aan werkwoorden.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="mt-auto flex flex-wrap items-center gap-2">
+                  {statsLoading ? (
+                    <Skeleton className="h-8 w-24" />
+                  ) : (
+                    <>
+                      <Button asChild variant="outline" size="sm">
+                        <Link to={ROUTES.beheerZinnen}>
+                          Openen
+                          <ChevronRight className="size-4" />
+                        </Link>
+                      </Button>
                       <Badge variant="secondary" className="tabular-nums">
                         {sentencesCount} zin{sentencesCount !== 1 ? 'nen' : ''}
                       </Badge>
-                    )}
-                  </CardContent>
-                </Card>
-              </Link>
+                    </>
+                  )}
+                </CardContent>
+              </Card>
             </div>
           </section>
 
