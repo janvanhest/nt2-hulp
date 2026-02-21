@@ -1,123 +1,42 @@
-import { ApiError } from '@/lib/api'
-import type { AnswerFormKey, FillInSentence } from '@/lib/api'
 import { DeleteSentenceConfirmDialog } from '@/components/DeleteSentenceConfirmDialog'
 import { FillInSentenceFormDialog } from '@/components/FillInSentenceFormDialog'
 import { VerbSentenceCard } from '@/components/VerbSentenceCard'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import {
-  useFillInSentences,
-  useDeleteFillInSentence,
-} from '@/hooks/useFillInSentences'
-import { useVerbs } from '@/hooks/useVerbs'
+import { useAdminSentencesPage } from '@/hooks/useAdminSentencesPage'
 import { ROUTES } from '@/lib/routes'
-import { TARGET_SENTENCES_PER_FORM, buildGroupsByVerb } from '@/lib/sentenceUtils'
-import { ANSWER_FORM_KEYS } from '@/lib/verbFormConfig'
-import { toast } from 'sonner'
-import * as React from 'react'
+import { TARGET_SENTENCES_PER_FORM } from '@/lib/sentenceUtils'
 import { Link, useSearchParams } from 'react-router'
 
 export function AdminSentencesPage() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const verbParam = searchParams.get('verb')
-  const formParam = searchParams.get('form')
-  const initialVerbIdFromQuery =
-    verbParam != null && /^\d+$/.test(verbParam) ? Number(verbParam) : undefined
-  const initialAnswerFormKeyFromQuery =
-    formParam != null && ANSWER_FORM_KEYS.includes(formParam as AnswerFormKey)
-      ? (formParam as AnswerFormKey)
-      : undefined
 
-  const { data: verbs = [], isLoading: verbsLoading, isError: verbsError, error: verbsErrorObj } = useVerbs()
-  const { data: sentences = [], isLoading: sentencesLoading, isError: sentencesError, error: sentencesErrorObj } = useFillInSentences()
-  const deleteMutation = useDeleteFillInSentence()
-
-  const groups = React.useMemo(
-    () => buildGroupsByVerb(verbs, sentences),
-    [verbs, sentences]
-  )
-
-  const [dialogOpen, setDialogOpen] = React.useState(false)
-  const [selectedSentence, setSelectedSentence] = React.useState<FillInSentence | null>(null)
-  const [sentenceToDelete, setSentenceToDelete] = React.useState<FillInSentence | null>(null)
-  const [hasOpenedFromQuery, setHasOpenedFromQuery] = React.useState(false)
-  const [expandedVerbIds, setExpandedVerbIds] = React.useState<Set<number>>(new Set())
-
-  const setVerbSublistOpen = (verbId: number, open: boolean) => {
-    setExpandedVerbIds((prev) => {
-      const next = new Set(prev)
-      if (open) next.add(verbId)
-      else next.delete(verbId)
-      return next
-    })
-  }
-
-  const forbiddenMessage =
-    (verbsError && verbsErrorObj instanceof ApiError && verbsErrorObj.status === 403
-      ? verbsErrorObj.message
-      : null) ??
-    (sentencesError && sentencesErrorObj instanceof ApiError && sentencesErrorObj.status === 403
-      ? sentencesErrorObj.message
-      : null)
-
-  const noVerbs = !verbsLoading && verbs.length === 0
-  const openCreate = () => {
-    setSelectedSentence(null)
-    setDialogOpen(true)
-  }
-  const handleAddSentence = (verbId: number) => {
-    setSearchParams({ verb: String(verbId) })
-    setSelectedSentence(null)
-    setDialogOpen(true)
-  }
-  const openEdit = (sentence: FillInSentence, e: React.MouseEvent) => {
-    e.stopPropagation()
-    setSelectedSentence(sentence)
-    setDialogOpen(true)
-  }
-  const openDeleteConfirm = (sentence: FillInSentence) => setSentenceToDelete(sentence)
-  const closeDeleteConfirm = () => setSentenceToDelete(null)
-
-  React.useEffect(() => {
-    if (noVerbs || hasOpenedFromQuery || initialVerbIdFromQuery == null) return
-    setHasOpenedFromQuery(true)
-    setSelectedSentence(null)
-    setDialogOpen(true)
-  }, [initialVerbIdFromQuery, noVerbs, hasOpenedFromQuery])
-
-  React.useEffect(() => {
-    if (initialVerbIdFromQuery == null) setHasOpenedFromQuery(false)
-  }, [initialVerbIdFromQuery])
-
-  const hasQueryParams = initialVerbIdFromQuery != null
-
-  const handleConfirmDelete = () => {
-    if (sentenceToDelete == null) return
-    deleteMutation.mutate(sentenceToDelete.id, {
-      onSuccess: () => {
-        toast.success('Invulzin verwijderd.')
-        closeDeleteConfirm()
-      },
-      onError: (err) => {
-        if (err instanceof ApiError) {
-          toast.error('Verwijderen mislukt', { description: err.message })
-        } else {
-          toast.error('Verwijderen mislukt', {
-            description: err instanceof Error ? err.message : undefined,
-          })
-        }
-      },
-    })
-  }
-
-  const handleDialogOpenChange = (open: boolean) => {
-    setDialogOpen(open)
-    if (!open && hasQueryParams) setSearchParams({})
-  }
-
-  const isLoading = verbsLoading || sentencesLoading
-  const showCardList = !noVerbs && !isLoading && !sentencesError
+  const {
+    verbs,
+    groups,
+    verbsLoading,
+    noVerbs,
+    sentencesError,
+    sentencesErrorObj,
+    forbiddenMessage,
+    showCardList,
+    expandedVerbIds,
+    dialogOpen,
+    selectedSentence,
+    sentenceToDelete,
+    initialVerbIdFromQuery,
+    initialAnswerFormKeyFromQuery,
+    deletePending,
+    setVerbSublistOpen,
+    openCreate,
+    handleAddSentence,
+    openEdit,
+    openDeleteConfirm,
+    closeDeleteConfirm,
+    handleConfirmDelete,
+    handleDialogOpenChange,
+  } = useAdminSentencesPage(searchParams, setSearchParams)
 
   return (
     <main className="min-w-0 overflow-x-hidden p-6">
@@ -129,7 +48,7 @@ export function AdminSentencesPage() {
           </p>
         </div>
         {!noVerbs && (
-          <Button onClick={() => openCreate()} disabled={verbsLoading}>
+          <Button onClick={openCreate} disabled={verbsLoading}>
             Nieuwe zin
           </Button>
         )}
@@ -149,7 +68,7 @@ export function AdminSentencesPage() {
             <Link to={ROUTES.beheerWerkwoorden}>Naar Vervoegingen beheren</Link>
           </Button>
         </div>
-      ) : isLoading ? (
+      ) : verbsLoading ? (
         <div className="space-y-4">
           {[...Array(4)].map((_, i) => (
             <Card key={i}>
@@ -165,7 +84,9 @@ export function AdminSentencesPage() {
         </div>
       ) : sentencesError ? (
         <p className="text-destructive mt-1 text-sm" role="alert">
-          {sentencesErrorObj instanceof Error ? sentencesErrorObj.message : 'Fout bij ophalen invulzinnen.'}
+          {sentencesErrorObj instanceof Error
+            ? sentencesErrorObj.message
+            : 'Fout bij ophalen invulzinnen.'}
         </p>
       ) : showCardList ? (
         <>
@@ -202,7 +123,7 @@ export function AdminSentencesPage() {
         onOpenChange={(open) => !open && closeDeleteConfirm()}
         sentence={sentenceToDelete}
         onConfirm={handleConfirmDelete}
-        isPending={deleteMutation.isPending}
+        isPending={deletePending}
       />
     </main>
   )
