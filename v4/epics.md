@@ -44,22 +44,22 @@ Deze epics sluiten aan op [casus.md](casus.md), [usecases.md](usecases.md) en [e
 - Alleen `beheerder` kan werkwoorden, zinnen en (later) thema's beheren.
 - Alleen geauthenticeerde gebruikers kunnen oefenen en nakijkmodellen zien.
 - Beheerders zien in de hoofdnavigatie één item "Beheer"; klik daarop leidt naar het Beheer-dashboard (/beheer).
-- Toegang tot Werkwoorden beheren, Zinnen beheren en Oefening genereren verloopt via het Beheer-dashboard; er zijn geen aparte navigatie-items voor deze acties.
+- Toegang tot Vervoegingen beheren, Zinnen beheren en Oefening toevoegen verloopt via het Beheer-dashboard; er zijn geen aparte navigatie-items voor deze acties.
 
 ## Beheer-dashboard en navigatie
 
-**Beschrijving:** De beheer-omgeving heeft één navigatie-item "Beheer". Het Beheer-dashboard (`/beheer`) is de centrale ingang voor werkwoorden, invulzinnen en oefening genereren. De hoofdnavigatie bevat geen aparte items voor Werkwoorden, Zinnen of Oefening genereren.
+**Beschrijving:** De beheer-omgeving heeft één navigatie-item "Beheer". Het Beheer-dashboard (`/beheer`) is de centrale ingang voor werkwoorden, invulzinnen en oefening toevoegen. De hoofdnavigatie bevat geen aparte items voor Werkwoorden, Zinnen of Oefening toevoegen.
 
 **Acceptatiecriteria**
 - In de hoofdnavigatie (desktop en mobiel) zien beheerders voor beheer alleen het item "Beheer". Klik daarop leidt naar het Beheer-dashboard (`/beheer`).
-- Op het Beheer-dashboard zijn zichtbaar: overzicht/statistieken (aantal werkwoorden, invulzinnen, werkwoorden compleet) en acties: Werkwoorden beheren, Zinnen/Invulzinnen beheren, Oefening genereren. Elke actie is een duidelijke link of knop naar de bestaande pagina.
+- Op het Beheer-dashboard zijn zichtbaar: overzicht/statistieken (aantal werkwoorden, invulzinnen, werkwoorden compleet) en acties: Vervoegingen beheren, Zinnen beheren, Oefening toevoegen. Elke actie is een duidelijke link of knop naar de bestaande pagina. De actie Zinnen beheren leidt naar de pagina met weergaven "Invulzinnen" en "Vormdekking".
 - De routes `/beheer/werkwoorden`, `/beheer/zinnen` en `/beheer/oefening-genereren` blijven bestaan en zijn bereikbaar via het dashboard (niet via aparte nav-items).
-- (Optioneel) Het dashboard toont een logische volgorde of stappen: werkwoord toevoegen → vormen invullen → invulzinnen toevoegen → oefening genereren (visueel of als richtlijn).
+- De actie Oefening toevoegen toont of beschrijft een logische volgorde (stappen): type kiezen, werkwoorden kiezen, aantal items. (Optioneel: het dashboard toont een bredere volgorde werkwoord toevoegen → vormen invullen → invulzinnen toevoegen → oefening toevoegen.)
 
 ### Beslissing
 
-- **Context:** Beheer had naast "Beheer" aparte nav-items (Werkwoorden, Zinnen, Oefening genereren); dezelfde acties stonden op het dashboard. Nav was vol; "Zinnen" dekte meer dan alleen invulzinnen.
-- **Beslissing:** Hoofdnavigatie toont voor beheerders één item "Beheer". Het Beheer-dashboard is de enige ingang voor Werkwoorden, Zinnen, Oefening genereren. Routes blijven; breadcrumb/terug naar dashboard vanaf subpagina's.
+- **Context:** Beheer had naast "Beheer" aparte nav-items (Vervoegingen, Zinnen, Oefening toevoegen); dezelfde acties stonden op het dashboard. Nav was vol; "Zinnen" dekt meer dan alleen invulzinnen.
+- **Beslissing:** Hoofdnavigatie toont voor beheerders één item "Beheer". Het Beheer-dashboard is de enige ingang voor Vervoegingen beheren, Zinnen beheren, Oefening toevoegen. Routes blijven; breadcrumb/terug naar dashboard vanaf subpagina's.
 - **Gevolgen:** nav-config bevat voor adminOnly alleen het item naar `/beheer`; bestaande pagina's en functionaliteit blijven; alleen de manier van navigeren verandert.
 
 ### UI-componenten (bij implementatie)
@@ -83,6 +83,7 @@ Bij de latere code-iteratie: card, progress, breadcrumb en empty overwogen; geen
 **Acceptatiecriteria**
 - Beheerder kan een werkwoord (infinitief) toevoegen, wijzigen en verwijderen.
 - Beheerder kan per werkwoord de set werkwoordsvormen beheren (zie [erd.md](erd.md)).
+- De werkwoordenpagina (/beheer/werkwoorden) biedt een **overzicht** per werkwoord: naast de vervoegingsvormen wordt het aantal invulzinnen getoond; de beheerder kan vanuit een werkwoord naar de zinnen voor dat werkwoord (bijv. link naar Overzicht per werkwoord met filter).
 - Validatie voorkomt ongeldige invoer (minimaal: infinitief verplicht; vormvelden mogen leeg in MVP).
 - Bij het toevoegen van een werkwoord: als de infinitief al bestaat, toont het systeem een duidelijke foutmelding (bijv. "Een werkwoord met deze infinitief bestaat al."). De backend hanteert een unieke constraint op de infinitief.
 - Data kan worden opgeslagen en later weer opgehaald voor oefeninggeneratie.
@@ -99,7 +100,7 @@ Bij de latere code-iteratie: card, progress, breadcrumb en empty overwogen; geen
 - Beheerder kan invulzinnen toevoegen, wijzigen en verwijderen.
 - Een invulzin heeft minimaal `sentence_template` en `answer` (zie [erd.md](erd.md)); daarnaast **welke werkwoordsvorm** het antwoord is (answer_form_key).
 - Bij toevoegen/wijzigen kiest de beheerder een werkwoord (bijv. dropdown of zoeklijst); vanuit werkwoord-detail kan de beheerder oefenzinnen voor dat werkwoord toevoegen (werkwoord vooringevuld).
-- Als er nog geen werkwoorden bestaan, toont het systeem een duidelijke melding en verwijs naar Werkwoorden beheren (Epic 2).
+- Als er nog geen werkwoorden bestaan, toont het systeem een duidelijke melding en verwijs naar Vervoegingen beheren (Epic 2).
 - Het systeem toont een foutmelding als er geen zinnen beschikbaar zijn bij een invulzin-oefening (contract Epic 4/5).
 
 **Uitbreiding (v4 Fase 2/3):**
