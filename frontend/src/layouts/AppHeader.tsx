@@ -12,7 +12,8 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
-import { MobileNavSheetContent, NavWithIndicator } from '@/components/NavWithIndicator'
+import { MobileNavSheetContent } from '@/components/MobileNavSheetContent'
+import { NavWithIndicator } from '@/components/NavWithIndicator'
 import type { User } from '@/lib/api'
 import type { NavItemConfig } from '@/lib/nav-config'
 import { ROUTES } from '@/lib/routes'
