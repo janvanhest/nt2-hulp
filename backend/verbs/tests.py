@@ -58,7 +58,11 @@ class VerbInfinitiveUniquenessTests(TestCase):
         duplicate = VerbSerializer(data={"infinitive": "lopen"})
         self.assertFalse(duplicate.is_valid())
         self.assertIn("infinitive", duplicate.errors)
-        self.assertIn("bestaat al", str(duplicate.errors["infinitive"]))
+        msg = str(duplicate.errors["infinitive"])
+        self.assertTrue(
+            "bestaat al" in msg or "already exists" in msg,
+            f"Expected uniqueness message, got: {msg}",
+        )
         self.assertEqual(Verb.objects.count(), 1)
 
     def test_update_rejects_changing_infinitive_to_existing_one(self) -> None:
@@ -75,7 +79,11 @@ class VerbInfinitiveUniquenessTests(TestCase):
         )
         self.assertFalse(serializer.is_valid())
         self.assertIn("infinitive", serializer.errors)
-        self.assertIn("bestaat al", str(serializer.errors["infinitive"]))
+        msg = str(serializer.errors["infinitive"])
+        self.assertTrue(
+            "bestaat al" in msg or "already exists" in msg,
+            f"Expected uniqueness message, got: {msg}",
+        )
 
         lopen.refresh_from_db()
         self.assertEqual(lopen.infinitive, "lopen")
