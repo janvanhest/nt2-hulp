@@ -73,6 +73,34 @@ Het nakijkmodel wordt bij het genereren van de oefening (UC3) aangemaakt. Digita
 
 **Resultaat:** Oefening is klaar voor gebruik (zie [terminologie.md](terminologie.md) Selectie).
 
+### Scenario's Fase 1: selectie op werkwoord
+
+**Scenario A – Vervoegingsoefening met gekozen werkwoorden**
+
+1. Beheerder opent "Oefening genereren".
+2. Beheerder kiest type **Vervoegingsoefening**.
+3. Beheerder maakt een selectie: kiest één of meer werkwoorden uit de lijst van bestaande werkwoorden (bijv. multi-select of checkboxes). Optioneel: keuze "Alle werkwoorden" behouden voor backward compatibility.
+4. Beheerder kiest aantal items (bijv. 10).
+5. Beheerder bevestigt. Het systeem trekt willekeurig **alleen uit de geselecteerde werkwoorden** (zonder teruglegging), maakt oefening met geordende items en nakijkmodel.
+6. Als er geen werkwoorden zijn geselecteerd: systeem toont foutmelding (bijv. "Kies minimaal één werkwoord").
+7. Als het gekozen aantal items groter is dan het aantal geselecteerde werkwoorden: systeem toont foutmelding (bijv. "Er zijn maar N werkwoorden geselecteerd; kies maximaal N items.").
+
+**Scenario B – Invulzin-oefening met gekozen werkwoorden**
+
+1. Beheerder opent "Oefening genereren".
+2. Beheerder kiest type **Invulzin-oefening**.
+3. Beheerder maakt een selectie: kiest één of meer werkwoorden. Alleen **invulzinnen die aan die werkwoorden gekoppeld zijn** komen in de trekking. Optioneel: "Alle zinnen" (huidig gedrag).
+4. Beheerder kiest aantal items.
+5. Beheerder bevestigt. Het systeem trekt willekeurig alleen uit invulzinnen van de geselecteerde werkwoorden, maakt oefening + nakijkmodel.
+6. Geen werkwoorden geselecteerd → foutmelding.
+7. Geen invulzinnen beschikbaar voor de geselecteerde werkwoorden → foutmelding (bijv. "Geen invulzinnen voor de gekozen werkwoorden.").
+8. Gevraagd aantal items groter dan beschikbare zinnen in selectie → foutmelding met maximaal aantal.
+
+**Randgevallen**
+
+- **Geen werkwoorden in het systeem:** bestaand gedrag: melding en verwijs naar Werkwoorden beheren (blijft van toepassing).
+- **"Alle werkwoorden" / geen selectie:** indien UI een optie "Alle werkwoorden" biedt of selectie leeg mag zijn, dan gedrag zoals nu: trekking uit alle werkwoorden resp. alle invulzinnen. Anders: selectie verplicht en foutmelding bij lege selectie.
+
 **Uitbreiding (Fase 2):** Selectie op thema; zie [fasering.md](fasering.md).
 
 ---

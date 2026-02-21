@@ -3,6 +3,7 @@ import type { ExerciseType } from '@/lib/api'
 import { ApiError } from '@/lib/api'
 import { ROUTES } from '@/lib/routes'
 import { useCreateExercise } from '@/hooks/useExercises'
+import { useVerbs } from '@/hooks/useVerbs'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -21,7 +22,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { toast } from 'sonner'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 const EXERCISE_TYPE_OPTIONS: { value: ExerciseType; label: string }[] = [
   { value: 'vervoeging', label: 'Vervoegingsoefening' },
@@ -31,8 +32,25 @@ const EXERCISE_TYPE_OPTIONS: { value: ExerciseType; label: string }[] = [
 export function AdminGenerateExercisePage() {
   const navigate = useNavigate()
   const createMutation = useCreateExercise()
+  const { data: verbs = [], isLoading: verbsLoading } = useVerbs()
   const [exerciseType, setExerciseType] = useState<ExerciseType>('vervoeging')
   const [numItems, setNumItems] = useState<string>('10')
+  const [useAllVerbs, setUseAllVerbs] = useState(true)
+  const [selectedVerbIds, setSelectedVerbIds] = useState<Set<number>>(new Set())
+
+  const sortedVerbs = useMemo(
+    () => [...verbs].sort((a, b) => a.infinitive.localeCompare(b.infinitive)),
+    [verbs]
+  )
+
+  const toggleVerb = (id: number) => {
+    setSelectedVerbIds((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -41,28 +59,34 @@ export function AdminGenerateExercisePage() {
       toast.error('Voer een geldig aantal in (minimaal 1).')
       return
     }
-    createMutation.mutate(
-      { exercise_type: exerciseType, num_items: n },
-      {
-        onSuccess: () => {
-          toast.success('Oefening aangemaakt.')
-          navigate(ROUTES.oefenen)
-        },
-        onError: (err) => {
-          const message =
-            err instanceof ApiError ? err.message : 'Er is iets misgegaan.'
-          toast.error(message)
-        },
-      }
-    )
+    if (!useAllVerbs && selectedVerbIds.size === 0) {
+      toast.error('Kies minimaal één werkwoord.')
+      return
+    }
+    const payload = {
+      exercise_type: exerciseType,
+      num_items: n,
+      ...(useAllVerbs ? {} : { verb_ids: Array.from(selectedVerbIds) }),
+    }
+    createMutation.mutate(payload, {
+      onSuccess: () => {
+        toast.success('Oefening aangemaakt.')
+        navigate(ROUTES.oefenen)
+      },
+      onError: (err) => {
+        const message =
+          err instanceof ApiError ? err.message : 'Er is iets misgegaan.'
+        toast.error(message)
+      },
+    })
   }
 
   return (
     <main className="p-6">
       <h1 className="text-2xl font-semibold">Oefening genereren</h1>
       <p className="text-muted-foreground mt-1">
-        Kies het type oefening en het aantal items. De oefening wordt direct
-        aangemaakt.
+        Kies het type oefening, werkwoorden en aantal items. De oefening wordt
+        direct aangemaakt.
       </p>
 
       <Card className="mt-6 max-w-md">
@@ -94,6 +118,54 @@ export function AdminGenerateExercisePage() {
                 </SelectContent>
               </Select>
             </div>
+
+            <div className="space-y-2">
+              <Label>Werkwoorden</Label>
+              <div className="flex flex-col gap-2">
+                <label className="flex items-center gap-2 text-sm font-normal cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={useAllVerbs}
+                    onChange={(e) => setUseAllVerbs(e.target.checked)}
+                    className="rounded border-input"
+                  />
+                  Alle werkwoorden
+                </label>
+                {!useAllVerbs && (
+                  <div
+                    className="max-h-48 overflow-y-auto rounded-md border border-input p-2 space-y-1.5"
+                    role="group"
+                    aria-label="Kies werkwoorden"
+                  >
+                    {verbsLoading ? (
+                      <p className="text-muted-foreground text-sm">
+                        Werkwoorden laden…
+                      </p>
+                    ) : sortedVerbs.length === 0 ? (
+                      <p className="text-muted-foreground text-sm">
+                        Geen werkwoorden. Voeg eerst werkwoorden toe.
+                      </p>
+                    ) : (
+                      sortedVerbs.map((v) => (
+                        <label
+                          key={v.id}
+                          className="flex items-center gap-2 text-sm font-normal cursor-pointer hover:bg-muted/50 rounded px-1 py-0.5"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={selectedVerbIds.has(v.id)}
+                            onChange={() => toggleVerb(v.id)}
+                            className="rounded border-input"
+                          />
+                          {v.infinitive}
+                        </label>
+                      ))
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="num-items">Aantal items</Label>
               <Input
@@ -109,7 +181,10 @@ export function AdminGenerateExercisePage() {
                 zinnen.
               </p>
             </div>
-            <Button type="submit" disabled={createMutation.isPending}>
+            <Button
+              type="submit"
+              disabled={createMutation.isPending || (verbsLoading && !useAllVerbs)}
+            >
               {createMutation.isPending ? 'Bezig…' : 'Oefening genereren'}
             </Button>
           </form>
