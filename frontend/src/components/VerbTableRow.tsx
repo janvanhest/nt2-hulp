@@ -10,6 +10,8 @@ import * as React from 'react'
 
 export interface VerbTableRowProps {
   verb: Verb
+  /** Number of fill-in sentences linked to this verb. */
+  sentenceCount?: number
   expanded: boolean
   onToggleExpand: () => void
   onEdit: (e: React.MouseEvent) => void
@@ -19,6 +21,7 @@ export interface VerbTableRowProps {
 /** Single responsibility: render one verb table row and its expandable detail. */
 export function VerbTableRow({
   verb,
+  sentenceCount = 0,
   expanded,
   onToggleExpand,
   onEdit,
@@ -39,6 +42,9 @@ export function VerbTableRow({
           <Badge variant={filledCount === totalCount ? 'default' : 'secondary'}>
             {filledCount} / {totalCount}
           </Badge>
+        </TableCell>
+        <TableCell>
+          <Badge variant="secondary">{sentenceCount}</Badge>
         </TableCell>
         <TableCell onClick={(e) => e.stopPropagation()}>
           <div className="flex flex-wrap items-center gap-1">
@@ -65,11 +71,16 @@ export function VerbTableRow({
       </TableRow>
       {expanded && (
         <TableRow>
-          <TableCell colSpan={3} className="bg-muted/10">
+          <TableCell colSpan={4} className="bg-muted/10">
             <VerbFormFields forms={verb.forms} />
-            <div className="mt-3">
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              <span className="text-muted-foreground text-sm">
+                {sentenceCount === 1 ? '1 invulzin' : `${sentenceCount} invulzinnen`}
+              </span>
               <Button variant="outline" size="sm" asChild>
-                <Link to={`${ROUTES.beheerZinnen}?verb=${verb.id}`}>Oefenzinnen toevoegen</Link>
+                <Link to={`${ROUTES.beheerZinnen}?verb=${verb.id}`}>
+                  {sentenceCount === 0 ? 'Oefenzinnen toevoegen' : 'Bekijk zinnen'}
+                </Link>
               </Button>
             </div>
           </TableCell>

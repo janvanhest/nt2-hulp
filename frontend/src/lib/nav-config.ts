@@ -13,7 +13,7 @@ export interface NavItemConfig {
 
 /**
  * Single source of truth for main nav items. Filter by adminOnly in layout.
- * Beheerders zien alleen "Beheer"; Werkwoorden, Zinnen en Oefening genereren
+ * Beheerders zien alleen "Beheer"; Vervoegingen, Zinnen en Oefening toevoegen
  * zijn bereikbaar via het Beheer-dashboard (/beheer).
  */
 export const NAV_ITEMS: NavItemConfig[] = [
