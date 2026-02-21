@@ -21,6 +21,10 @@ import { isAdmin } from '@/lib/api'
 import { NAV_ITEMS } from '@/lib/nav-config'
 import { ROUTES } from '@/lib/routes'
 
+/**
+ * Main app shell: header with nav, username, logout, and mobile sheet menu.
+ * Requires auth; redirects to login when no token or /api/auth/me/ fails.
+ */
 export function AppLayout() {
   const { token, clearToken } = useAuth()
   const { data: user, isPending, isError } = useMe()
@@ -28,6 +32,7 @@ export function AppLayout() {
   const [sheetOpen, setSheetOpen] = useState(false)
   const hamburgerRef = useRef<HTMLButtonElement>(null)
 
+  /** Syncs sheet open state and returns focus to the hamburger button when the sheet closes (accessibility). */
   const handleSheetOpenChange = (open: boolean) => {
     setSheetOpen(open)
     if (!open) {
