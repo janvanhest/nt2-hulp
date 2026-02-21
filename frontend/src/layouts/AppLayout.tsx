@@ -2,7 +2,6 @@ import { useRef, useState } from 'react'
 import { Link, Navigate, Outlet } from 'react-router'
 import { Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { VisuallyHidden } from 'radix-ui'
 import {
@@ -18,7 +17,7 @@ import { MobileNavSheetContent, NavWithIndicator } from '@/components/NavWithInd
 import { useAuth } from '@/contexts/AuthContext'
 import { useLogoutMutation } from '@/hooks/useAuthMutations'
 import { useMe } from '@/hooks/useMe'
-import { isAdmin, ROLE_LABELS } from '@/lib/api'
+import { isAdmin } from '@/lib/api'
 import { NAV_ITEMS } from '@/lib/nav-config'
 import { ROUTES } from '@/lib/routes'
 
@@ -76,16 +75,10 @@ export function AppLayout() {
           </div>
           <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-4">
             {user != null && (
-              <div className="hidden min-w-0 min-[1150px]:flex min-[1150px]:gap-2">
-                <span className="truncate rounded-md bg-muted px-2.5 py-1 text-sm font-medium text-foreground">
+              <div className="hidden min-w-0 min-[1150px]:flex min-[1150px]:items-center">
+                <span className="truncate rounded-full bg-muted px-3 py-1.5 text-sm font-medium text-foreground">
                   {user.username}
                 </span>
-                <Badge
-                  variant="secondary"
-                  className="shrink-0 border-primary/40 bg-primary/15 text-primary text-xs font-medium"
-                >
-                  {ROLE_LABELS[user.role]}
-                </Badge>
               </div>
             )}
             <Button
@@ -123,7 +116,7 @@ export function AppLayout() {
                   </span>
                   {user != null && (
                     <span className="truncate text-sm text-muted-foreground">
-                      {user.username} · {ROLE_LABELS[user.role]}
+                      {user.username}
                     </span>
                   )}
                 </div>
