@@ -10,11 +10,32 @@ import { TARGET_SENTENCES_PER_FORM } from '@/lib/sentenceUtils'
 import { Link, useSearchParams } from 'react-router'
 
 const VIEW_ZINNEN = 'zinnen'
-const VIEW_VORMDEEKING = 'vormdekking'
+const VIEW_VORMDEKKING = 'vormdekking'
 
-function parseView(viewParam: string | null): 'zinnen' | 'vormdekking' {
-  if (viewParam === VIEW_ZINNEN || viewParam === VIEW_VORMDEEKING) return viewParam
-  return VIEW_VORMDEEKING
+type VerbOverviewView = 'zinnen' | 'vormdekking'
+
+type ViewPageConfig = {
+  title: string
+  subtitle: string
+  introText: string
+}
+
+function parseView(viewParam: string | null): VerbOverviewView {
+  if (viewParam === VIEW_ZINNEN || viewParam === VIEW_VORMDEKKING) return viewParam
+  return VIEW_VORMDEKKING
+}
+
+const VIEW_PAGE_CONFIG: Record<VerbOverviewView, ViewPageConfig> = {
+  zinnen: {
+    title: 'Zinnen beheren',
+    subtitle: 'Alleen invulzinnen per werkwoord. Voeg zinnen toe of bewerk ze.',
+    introText: 'Beheer invulzinnen per werkwoord.',
+  },
+  vormdekking: {
+    title: 'Overzicht per werkwoord',
+    subtitle: 'Vormdekking en invulzinnen per werkwoord. Voeg zinnen toe of bewerk ze.',
+    introText: `Streef: per werkwoordsvorm min. ${TARGET_SENTENCES_PER_FORM} oefenzinnen.`,
+  },
 }
 
 export function AdminVerbOverviewPage() {
@@ -47,20 +68,14 @@ export function AdminVerbOverviewPage() {
     handleDialogOpenChange,
   } = useAdminVerbOverviewPage(searchParams, setSearchParams)
 
-  const isZinnenView = view === VIEW_ZINNEN
+  const pageConfig = VIEW_PAGE_CONFIG[view]
 
   return (
     <main className="min-w-0 overflow-x-hidden p-6">
       <div className="mb-4 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold">
-            {isZinnenView ? 'Zinnen beheren' : 'Overzicht per werkwoord'}
-          </h1>
-          <p className="text-muted-foreground mt-1 text-sm">
-            {isZinnenView
-              ? 'Alleen invulzinnen per werkwoord. Voeg zinnen toe of bewerk ze.'
-              : 'Vormdekking en invulzinnen per werkwoord. Voeg zinnen toe of bewerk ze.'}
-          </p>
+          <h1 className="text-2xl font-semibold">{pageConfig.title}</h1>
+          <p className="text-muted-foreground mt-1 text-sm">{pageConfig.subtitle}</p>
         </div>
         {!noVerbs && (
           <Button onClick={openCreate} disabled={verbsLoading}>
@@ -105,15 +120,7 @@ export function AdminVerbOverviewPage() {
         </p>
       ) : showCardList ? (
         <>
-          {isZinnenView ? (
-            <p className="text-muted-foreground mb-4 text-sm">
-              Beheer invulzinnen per werkwoord.
-            </p>
-          ) : (
-            <p className="text-muted-foreground mb-4 text-sm">
-              Streef: per werkwoordsvorm min. {TARGET_SENTENCES_PER_FORM} oefenzinnen.
-            </p>
-          )}
+          <p className="text-muted-foreground mb-4 text-sm">{pageConfig.introText}</p>
           <div className="space-y-4">
             {groups.map((group) => (
               <VerbSentenceCard
@@ -124,7 +131,7 @@ export function AdminVerbOverviewPage() {
                 onEditSentence={openEdit}
                 onDeleteSentence={openDeleteConfirm}
                 onAddSentence={handleAddSentence}
-                showFormCoverage={!isZinnenView}
+                showFormCoverage={view === VIEW_VORMDEKKING}
               />
             ))}
           </div>

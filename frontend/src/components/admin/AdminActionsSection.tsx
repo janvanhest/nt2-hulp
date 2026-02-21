@@ -7,11 +7,16 @@ type AdminActionsSectionProps = {
   isLoading: boolean
 }
 
+function sentencesBadge(count: number): string {
+  return count === 1 ? '1 zin' : `${count} zinnen`
+}
+
 export function AdminActionsSection({
   verbsCount,
   sentencesCount,
   isLoading,
 }: AdminActionsSectionProps) {
+  const sentencesLabel = sentencesBadge(sentencesCount)
   return (
     <section className="mt-8" aria-label="Acties">
       <div className="grid gap-4 md:grid-cols-2">
@@ -33,14 +38,14 @@ export function AdminActionsSection({
           description="Vormdekking en invulzinnen per werkwoord. Voeg zinnen toe of bewerk ze."
           to={ROUTES.beheerOverzichtPerWerkwoord}
           isLoading={isLoading}
-          badge={`${sentencesCount} zin${sentencesCount !== 1 ? 'nen' : ''}`}
+          badge={sentencesLabel}
         />
         <AdminActionCard
           title="Zinnen beheren"
           description="Alleen invulzinnen per werkwoord. Voeg zinnen toe of bewerk ze."
-          to={`${ROUTES.beheerOverzichtPerWerkwoord}?view=zinnen`}
+          to={ROUTES.beheerOverzichtPerWerkwoordWithView('zinnen')}
           isLoading={isLoading}
-          badge={`${sentencesCount} zin${sentencesCount !== 1 ? 'nen' : ''}`}
+          badge={sentencesLabel}
         />
       </div>
     </section>
