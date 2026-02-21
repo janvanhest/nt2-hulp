@@ -1,13 +1,5 @@
 import type { LucideIcon } from 'lucide-react'
-import {
-  BookOpen,
-  FileCheck,
-  FileText,
-  Home,
-  List,
-  PlusCircle,
-  Settings,
-} from 'lucide-react'
+import { BookOpen, FileCheck, Home, Settings } from 'lucide-react'
 import type { AppPath } from '@/lib/routes'
 import { ROUTES } from '@/lib/routes'
 
@@ -19,28 +11,14 @@ export interface NavItemConfig {
   adminOnly?: boolean
 }
 
-/** Single source of truth for main nav items. Filter by adminOnly in layout. */
+/**
+ * Single source of truth for main nav items. Filter by adminOnly in layout.
+ * Beheerders zien alleen "Beheer"; Werkwoorden, Zinnen en Oefening genereren
+ * zijn bereikbaar via het Beheer-dashboard (/beheer).
+ */
 export const NAV_ITEMS: NavItemConfig[] = [
   { to: ROUTES.home, label: 'Home', icon: Home, end: true },
   { to: ROUTES.oefenen, label: 'Oefenen', icon: BookOpen },
   { to: ROUTES.nakijk, label: 'Nakijkmodel', icon: FileCheck },
   { to: ROUTES.beheer, label: 'Beheer', icon: Settings, adminOnly: true },
-  {
-    to: ROUTES.beheerWerkwoorden,
-    label: 'Werkwoorden',
-    icon: List,
-    adminOnly: true,
-  },
-  {
-    to: ROUTES.beheerZinnen,
-    label: 'Zinnen',
-    icon: FileText,
-    adminOnly: true,
-  },
-  {
-    to: ROUTES.beheerOefeningGenereren,
-    label: 'Oefening genereren',
-    icon: PlusCircle,
-    adminOnly: true,
-  },
 ]
