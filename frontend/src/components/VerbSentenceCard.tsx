@@ -27,6 +27,8 @@ export interface VerbSentenceCardProps {
   onDeleteSentence: (sentence: FillInSentence) => void
   /** Called when user clicks "Zin toevoegen"; opens dialog with this verb pre-selected. */
   onAddSentence?: (verbId: number) => void
+  /** When false, hide form coverage (progress, per-form counts and links). Default true. */
+  showFormCoverage?: boolean
 }
 
 export function VerbSentenceCard({
@@ -36,6 +38,7 @@ export function VerbSentenceCard({
   onEditSentence,
   onDeleteSentence,
   onAddSentence,
+  showFormCoverage = true,
 }: VerbSentenceCardProps) {
   const { verb, sentences: verbSentences } = group
   const [detailsOpen, setDetailsOpen] = React.useState(false)
@@ -63,6 +66,7 @@ export function VerbSentenceCard({
               coveredForms={coveredForms}
               formsPercentage={formsPercentage}
               formCounts={formCounts}
+              showFormCoverage={showFormCoverage}
             />
             <CardAction className="order-2 w-full shrink-0 sm:order-none sm:col-start-2 sm:row-span-2 sm:row-start-1 sm:w-auto sm:min-w-[10rem] sm:justify-self-end">
               <VerbSentenceCardActions
@@ -72,6 +76,7 @@ export function VerbSentenceCard({
                 onAddSentence={onAddSentence}
                 verbId={verb.id}
                 sentenceCount={sentenceCount}
+                showFormCoverage={showFormCoverage}
               />
             </CardAction>
           </CardHeader>

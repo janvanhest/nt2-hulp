@@ -35,6 +35,13 @@ export function AdminActionsSection({
           isLoading={isLoading}
           badge={`${sentencesCount} zin${sentencesCount !== 1 ? 'nen' : ''}`}
         />
+        <AdminActionCard
+          title="Zinnen beheren"
+          description="Alleen invulzinnen per werkwoord. Voeg zinnen toe of bewerk ze."
+          to={`${ROUTES.beheerOverzichtPerWerkwoord}?view=zinnen`}
+          isLoading={isLoading}
+          badge={`${sentencesCount} zin${sentencesCount !== 1 ? 'nen' : ''}`}
+        />
       </div>
     </section>
   )

@@ -9,7 +9,7 @@ import { AdminStatsSection } from '@/components/admin/AdminStatsSection'
 const FORM_COUNT = VERB_FORM_KEYS.length
 
 export function AdminPage() {
-  const { data: adminCheck, isError, error } = useQuery({
+  const { isError, error } = useQuery({
     queryKey: ['admin-check'],
     queryFn: async () => {
       const res = await apiFetch('/api/beheer/')
