@@ -159,6 +159,8 @@ export type ExerciseType = 'vervoeging' | 'invulzin';
 export interface CreateExercisePayload {
   exercise_type: ExerciseType;
   num_items: number;
+  /** Optioneel: alleen uit deze werkwoorden trekken; ontbreekt of leeg = alle. */
+  verb_ids?: number[];
 }
 
 /** Conjugation item in exercise response. */
