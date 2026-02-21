@@ -44,7 +44,7 @@ Deze epics sluiten aan op [casus.md](casus.md), [usecases.md](usecases.md) en [e
 - Alleen `beheerder` kan werkwoorden, zinnen en (later) thema's beheren.
 - Alleen geauthenticeerde gebruikers kunnen oefenen en nakijkmodellen zien.
 - Beheerders zien in de hoofdnavigatie één item "Beheer"; klik daarop leidt naar het Beheer-dashboard (/beheer).
-- Toegang tot Vervoegingen beheren, Zinnen beheren en Oefening toevoegen verloopt via het Beheer-dashboard; er zijn geen aparte navigatie-items voor deze acties.
+- Toegang tot Vervoegingen beheren, Overzicht per werkwoord, Zinnen beheren en Oefening toevoegen verloopt via het Beheer-dashboard; er zijn geen aparte navigatie-items voor deze acties.
 
 ## Beheer-dashboard en navigatie
 
@@ -52,14 +52,18 @@ Deze epics sluiten aan op [casus.md](casus.md), [usecases.md](usecases.md) en [e
 
 **Acceptatiecriteria**
 - In de hoofdnavigatie (desktop en mobiel) zien beheerders voor beheer alleen het item "Beheer". Klik daarop leidt naar het Beheer-dashboard (`/beheer`).
-- Op het Beheer-dashboard zijn zichtbaar: overzicht/statistieken (aantal werkwoorden, invulzinnen, werkwoorden compleet) en acties: Vervoegingen beheren, Zinnen beheren, Oefening toevoegen. Elke actie is een duidelijke link of knop naar de bestaande pagina. De actie Zinnen beheren leidt naar de pagina met weergaven "Invulzinnen" en "Vormdekking".
-- De routes `/beheer/werkwoorden`, `/beheer/zinnen` en `/beheer/oefening-genereren` blijven bestaan en zijn bereikbaar via het dashboard (niet via aparte nav-items).
-- De actie Oefening toevoegen toont of beschrijft een logische volgorde (stappen): type kiezen, werkwoorden kiezen, aantal items. (Optioneel: het dashboard toont een bredere volgorde werkwoord toevoegen → vormen invullen → invulzinnen toevoegen → oefening toevoegen.)
+- Op het Beheer-dashboard zijn zichtbaar: overzicht/statistieken (aantal werkwoorden, invulzinnen, werkwoorden compleet) en acties: **Vervoegingen beheren**, **Overzicht per werkwoord**, **Zinnen beheren**, **Oefening toevoegen**. Elke actie is een duidelijke link of knop naar de bestaande pagina. Overzicht per werkwoord en Zinnen beheren gaan naar dezelfde pagina (`/beheer/overzicht-per-werkwoord`); Zinnen beheren met `?view=zinnen` (alleen invulzinnen), Overzicht per werkwoord zonder param of met `view=vormdekking` (vormdekking en invulzinnen).
+- De routes `/beheer/werkwoorden`, `/beheer/overzicht-per-werkwoord` en `/beheer/oefening-genereren` blijven bestaan en zijn bereikbaar via het dashboard (niet via aparte nav-items). De route `/beheer/overzicht-per-werkwoord` bedient zowel Overzicht per werkwoord als Zinnen beheren.
+- De actie Oefening toevoegen toont of beschrijft een logische volgorde (stappen): type kiezen, werkwoorden kiezen, aantal items.
+
+### Aanbevolen voorbereidingsflow
+
+Aanbevolen volgorde voor het klaarzetten van inhoud vóór het genereren van een oefening: (1) Werkwoord kiezen of toevoegen (Vervoegingen beheren), (2) Vormen invullen (Vervoegingen beheren), (3) Invulzinnen toevoegen en – wanneer beschikbaar (Fase 2) – thema aan invulzin koppelen (Zinnen beheren of Overzicht per werkwoord). Daarna kan de beheerder Oefening toevoegen gebruiken.
 
 ### Beslissing
 
 - **Context:** Beheer had naast "Beheer" aparte nav-items (Vervoegingen, Zinnen, Oefening toevoegen); dezelfde acties stonden op het dashboard. Nav was vol; "Zinnen" dekt meer dan alleen invulzinnen.
-- **Beslissing:** Hoofdnavigatie toont voor beheerders één item "Beheer". Het Beheer-dashboard is de enige ingang voor Vervoegingen beheren, Zinnen beheren, Oefening toevoegen. Routes blijven; breadcrumb/terug naar dashboard vanaf subpagina's.
+- **Beslissing:** Hoofdnavigatie toont voor beheerders één item "Beheer". Het Beheer-dashboard is de enige ingang voor Vervoegingen beheren, Overzicht per werkwoord, Zinnen beheren, Oefening toevoegen. Routes blijven; breadcrumb/terug naar dashboard vanaf subpagina's.
 - **Gevolgen:** nav-config bevat voor adminOnly alleen het item naar `/beheer`; bestaande pagina's en functionaliteit blijven; alleen de manier van navigeren verandert.
 
 ### UI-componenten (bij implementatie)

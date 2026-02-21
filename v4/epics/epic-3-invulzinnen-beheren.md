@@ -29,7 +29,7 @@ Bouwt voort op Epic 0 (Foundation), Epic 1 (Rollen & autorisatie) en **Epic 2 (W
 4. Vanuit het detail van een werkwoord kan de beheerder oefenzinnen voor dat werkwoord toevoegen (werkwoord is dan vooringevuld).
 5. Als er nog geen werkwoorden bestaan, toont het systeem een duidelijke melding en verwijs naar Vervoegingen beheren (Epic 2).
 6. Het systeem toont een foutmelding als er geen zinnen beschikbaar zijn bij een invulzin-oefening.
-7. Er is een duidelijke manier om alleen de invulzinnen per werkwoord te zien (zonder vormdekking in de kaarten), bijv. via tab "Invulzinnen".
+7. Er is een duidelijke manier om alleen de invulzinnen per werkwoord te zien (zonder vormdekking in de kaarten): via de actie **Zinnen beheren** (zelfde pagina met `?view=zinnen`) of de weergave **Overzicht per werkwoord** (zonder view of `view=vormdekking`).
 
 ### Relevante bronnen
 

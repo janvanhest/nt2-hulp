@@ -2,7 +2,9 @@
 
 Sluiten aan op [casus.md](casus.md), [erd.md](erd.md) en [epics.md](epics.md).
 
-De beheerder opent "Beheer" en kiest op het Beheer-dashboard voor Vervoegingen beheren, Overzicht per werkwoord of Oefening toevoegen; er is geen apart navigatie-item per actie.
+De beheerder opent "Beheer" en kiest op het Beheer-dashboard voor Vervoegingen beheren, Overzicht per werkwoord, Zinnen beheren of Oefening toevoegen; er is geen apart navigatie-item per actie.
+
+**Aanbevolen voorbereiding.** Voor het genereren van een oefening is de volgende volgorde aanbevolen: (1) Werkwoord kiezen of toevoegen (Vervoegingen beheren), (2) Vormen invullen (Vervoegingen beheren), (3) Invulzinnen toevoegen en – wanneer beschikbaar (Fase 2) – thema aan invulzin koppelen (Zinnen beheren of Overzicht per werkwoord). Daarna Oefening toevoegen gebruiken. Zie [epics.md](epics.md) (Beheer-dashboard, Aanbevolen voorbereidingsflow).
 
 ## UC1: Vervoegingsoefening (alle vormen invullen)
 

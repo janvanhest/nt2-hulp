@@ -38,7 +38,7 @@ Het nakijkmodel (correcte antwoorden) wordt **bij het aanmaken van de oefening (
 
 ### UI-label en stappen
 
-De **gebruikers-zichtbare** label voor deze actie is "Oefening toevoegen" (niet "Oefening genereren"). Op het dashboard en op de pagina wordt een stappenvolgorde getoond: type kiezen → werkwoorden kiezen → aantal items. De epicnaam "Oefeningen Genereren" blijft (technisch proces).
+De **gebruikers-zichtbare** label voor deze actie is "Oefening toevoegen" (niet "Oefening genereren"). Op het dashboard en op de pagina wordt een stappenvolgorde getoond: type kiezen → werkwoorden kiezen → aantal items. De epicnaam "Oefeningen Genereren" blijft (technisch proces). De inhoud voor een oefening (werkwoorden, vormen, invulzinnen) wordt idealiter volgens de **aanbevolen voorbereidingsflow** ingevuld; zie [../epics.md](../epics.md) (Beheer-dashboard, Aanbevolen voorbereidingsflow).
 
 ### Acceptatiecriteria (uit `../epics.md`)
 
