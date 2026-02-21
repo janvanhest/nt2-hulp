@@ -1,21 +1,10 @@
-import { Link } from 'react-router'
-import { ChevronRight } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { ApiError, apiFetch } from '@/lib/api'
-import { ROUTES } from '@/lib/routes'
 import { useFillInSentences } from '@/hooks/useFillInSentences'
 import { useVerbs } from '@/hooks/useVerbs'
 import { countFilledForms, VERB_FORM_KEYS } from '@/lib/verbFormConfig'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
+import { AdminActionsSection } from '@/components/admin/AdminActionsSection'
+import { AdminStatsSection } from '@/components/admin/AdminStatsSection'
 
 const FORM_COUNT = VERB_FORM_KEYS.length
 
@@ -61,131 +50,18 @@ export function AdminPage() {
             Overzicht beheer. Werkwoorden en zinnen beheren:
           </p>
 
-          <section className="mt-6" aria-label="Statistieken">
-            <div className="grid gap-4 md:grid-cols-3">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Werkwoorden</CardTitle>
-                  <CardDescription>in de database</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {statsLoading ? (
-                    <Skeleton className="h-9 w-14" />
-                  ) : (
-                    <span className="text-3xl font-bold tabular-nums">
-                      {verbsCount}
-                    </span>
-                  )}
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Invulzinnen</CardTitle>
-                  <CardDescription>oefenzinnen gekoppeld aan werkwoorden</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {statsLoading ? (
-                    <Skeleton className="h-9 w-14" />
-                  ) : (
-                    <span className="text-3xl font-bold tabular-nums">
-                      {sentencesCount}
-                    </span>
-                  )}
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Werkwoorden compleet</CardTitle>
-                  <CardDescription>alle vormen ingevuld</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {statsLoading ? (
-                    <Skeleton className="h-9 w-24" />
-                  ) : (
-                    <span className="text-3xl font-bold tabular-nums">
-                      {verbsCompleteCount}
-                      <span className="text-muted-foreground text-lg font-normal">
-                        {' '}
-                        / {verbsCount}
-                      </span>
-                    </span>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
-          </section>
+          <AdminStatsSection
+            verbsCount={verbsCount}
+            sentencesCount={sentencesCount}
+            verbsCompleteCount={verbsCompleteCount}
+            isLoading={statsLoading}
+          />
 
-          <section className="mt-8" aria-label="Acties">
-            <div className="grid gap-4 md:grid-cols-2">
-              <Card className="flex h-full flex-col rounded-xl border">
-                <CardHeader>
-                  <CardTitle className="text-lg">Oefening genereren</CardTitle>
-                  <CardDescription>
-                    Maak een vervoegingsoefening of invulzin-oefening met een
-                    gekozen aantal items.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="mt-auto">
-                  <Button asChild variant="outline" size="sm">
-                    <Link to={ROUTES.beheerOefeningGenereren}>
-                      Openen
-                      <ChevronRight className="size-4" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-              <Card className="flex h-full flex-col rounded-xl border">
-                <CardHeader>
-                  <CardTitle className="text-lg">Werkwoorden beheren</CardTitle>
-                  <CardDescription>
-                    Voeg werkwoorden toe en vul de vervoegingen in.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="mt-auto flex flex-wrap items-center gap-2">
-                  {statsLoading ? (
-                    <Skeleton className="h-8 w-24" />
-                  ) : (
-                    <>
-                      <Button asChild variant="outline" size="sm">
-                        <Link to={ROUTES.beheerWerkwoorden}>
-                          Openen
-                          <ChevronRight className="size-4" />
-                        </Link>
-                      </Button>
-                      <Badge variant="secondary" className="tabular-nums">
-                        {verbsCount} werkwoord{verbsCount !== 1 ? 'en' : ''}
-                      </Badge>
-                    </>
-                  )}
-                </CardContent>
-              </Card>
-              <Card className="flex h-full flex-col rounded-xl border">
-                <CardHeader>
-                  <CardTitle className="text-lg">Zinnen beheren</CardTitle>
-                  <CardDescription>
-                    Beheer invulzinnen gekoppeld aan werkwoorden.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="mt-auto flex flex-wrap items-center gap-2">
-                  {statsLoading ? (
-                    <Skeleton className="h-8 w-24" />
-                  ) : (
-                    <>
-                      <Button asChild variant="outline" size="sm">
-                        <Link to={ROUTES.beheerZinnen}>
-                          Openen
-                          <ChevronRight className="size-4" />
-                        </Link>
-                      </Button>
-                      <Badge variant="secondary" className="tabular-nums">
-                        {sentencesCount} zin{sentencesCount !== 1 ? 'nen' : ''}
-                      </Badge>
-                    </>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
-          </section>
+          <AdminActionsSection
+            verbsCount={verbsCount}
+            sentencesCount={sentencesCount}
+            isLoading={statsLoading}
+          />
 
           {adminCheck?.ok === true && !statsLoading && (
             <p className="text-muted-foreground mt-6 text-sm">Toegang bevestigd.</p>
