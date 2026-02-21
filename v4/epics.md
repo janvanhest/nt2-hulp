@@ -7,8 +7,7 @@ Deze epics sluiten aan op [casus.md](casus.md), [usecases.md](usecases.md) en [e
 | Epic | v3-scope | v4-uitbreiding |
 |------|----------|----------------|
 | 0 Foundation | Af* | — |
-| 1 Rollen & autorisatie | Af* | — |
-| Beheer-dashboard en navigatie | Open | — |
+| 1 Rollen & autorisatie (incl. Beheer-dashboard) | Af* | — |
 | 2 Werkwoorden Beheren | Af* | Open (Fase 2/3: thema, filter) |
 | 3 Invulzinnen Beheren | Af* | Open (Fase 2/3: thema, filter) |
 | 4 Oefeningen Genereren | Af* | Open (Fase 1/2: selectie) |
@@ -46,7 +45,7 @@ Deze epics sluiten aan op [casus.md](casus.md), [usecases.md](usecases.md) en [e
 - Beheerders zien in de hoofdnavigatie één item "Beheer"; klik daarop leidt naar het Beheer-dashboard (/beheer).
 - Toegang tot Vervoegingen beheren, Overzicht per werkwoord, Zinnen beheren en Oefening toevoegen verloopt via het Beheer-dashboard; er zijn geen aparte navigatie-items voor deze acties.
 
-## Beheer-dashboard en navigatie
+### Beheer-dashboard en navigatie
 
 **Beschrijving:** De beheer-omgeving heeft één navigatie-item "Beheer". Het Beheer-dashboard (`/beheer`) is de centrale ingang voor werkwoorden, invulzinnen en oefening toevoegen. De hoofdnavigatie bevat geen aparte items voor Werkwoorden, Zinnen of Oefening toevoegen.
 
