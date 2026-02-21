@@ -36,6 +36,10 @@ Beide scenario's zijn toepassingen van hetzelfde uitgangspunt: selectie = op wer
 
 Het nakijkmodel (correcte antwoorden) wordt **bij het aanmaken van de oefening (Epic 4)** aangemaakt. Zo is het direct beschikbaar voor het tonen in de app (Epic 5) en voor export (Epic 6).
 
+### UI-label en stappen
+
+De **gebruikers-zichtbare** label voor deze actie is "Oefening toevoegen" (niet "Oefening genereren"). Op het dashboard en op de pagina wordt een stappenvolgorde getoond: type kiezen → werkwoorden kiezen → aantal items. De epicnaam "Oefeningen Genereren" blijft (technisch proces).
+
 ### Acceptatiecriteria (uit `../epics.md`)
 
 1. Beheerder kan kiezen tussen vervoegingsoefening en invulzin-oefening (UC3).
