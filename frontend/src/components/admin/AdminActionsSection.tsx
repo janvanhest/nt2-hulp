@@ -16,13 +16,13 @@ export function AdminActionsSection({
     <section className="mt-8" aria-label="Acties">
       <div className="grid gap-4 md:grid-cols-2">
         <AdminActionCard
-          title="Oefening genereren"
-          description="Maak een vervoegingsoefening of invulzin-oefening met een gekozen aantal items."
+          title="Oefening toevoegen"
+          description="Stap 1: kies type (vervoeging of invulzin). Stap 2: kies werkwoorden. Stap 3: aantal items. De oefening wordt direct aangemaakt."
           to={ROUTES.beheerOefeningGenereren}
           isLoading={isLoading}
         />
         <AdminActionCard
-          title="Werkwoorden beheren"
+          title="Vervoegingen beheren"
           description="Voeg werkwoorden toe en vul de vervoegingen in."
           to={ROUTES.beheerWerkwoorden}
           isLoading={isLoading}

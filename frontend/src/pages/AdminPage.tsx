@@ -62,10 +62,6 @@ export function AdminPage() {
             sentencesCount={sentencesCount}
             isLoading={statsLoading}
           />
-
-          {adminCheck?.ok === true && !statsLoading && (
-            <p className="text-muted-foreground mt-6 text-sm">Toegang bevestigd.</p>
-          )}
         </>
       )}
     </main>
