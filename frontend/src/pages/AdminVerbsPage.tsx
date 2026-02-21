@@ -1,5 +1,6 @@
 import { ApiError } from '@/lib/api'
 import type { Verb } from '@/lib/api'
+import { useFillInSentences } from '@/hooks/useFillInSentences'
 import { useVerbs, useDeleteVerb } from '@/hooks/useVerbs'
 import { VerbFormDialog } from '@/components/VerbFormDialog'
 import { VerbTableRow } from '@/components/VerbTableRow'
@@ -23,13 +24,24 @@ const TABLE_HEADERS = (
   <TableRow>
     <TableHead>Infinitief</TableHead>
     <TableHead>Aantal ingevulde vormen</TableHead>
+    <TableHead>Invulzinnen</TableHead>
     <TableHead>Acties</TableHead>
   </TableRow>
 )
 
 export function AdminVerbsPage() {
   const { data, isLoading, isError, error } = useVerbs()
+  const { data: sentences = [] } = useFillInSentences()
   const deleteMutation = useDeleteVerb()
+
+  const sentenceCountByVerbId = React.useMemo(() => {
+    const map = new Map<number, number>()
+    for (const s of sentences) {
+      const id = s.verb.id
+      map.set(id, (map.get(id) ?? 0) + 1)
+    }
+    return map
+  }, [sentences])
 
   const forbiddenMessage =
     isError && error instanceof ApiError && error.status === 403 ? error.message : null
@@ -76,7 +88,7 @@ export function AdminVerbsPage() {
   return (
     <main className="p-6">
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Werkwoorden beheren</h1>
+        <h1 className="text-2xl font-semibold">Vervoegingen beheren</h1>
         <Button onClick={openCreate}>Werkwoord toevoegen</Button>
       </div>
       {forbiddenMessage != null ? (
@@ -94,6 +106,7 @@ export function AdminVerbsPage() {
               {[...Array(3)].map((_, i) => (
                 <TableRow key={i}>
                   <TableCell><Skeleton className="h-4 w-32" /></TableCell>
+                  <TableCell><Skeleton className="h-4 w-16" /></TableCell>
                   <TableCell><Skeleton className="h-4 w-16" /></TableCell>
                   <TableCell><Skeleton className="h-4 w-16" /></TableCell>
                 </TableRow>
@@ -119,6 +132,7 @@ export function AdminVerbsPage() {
                 <VerbTableRow
                   key={verb.id}
                   verb={verb}
+                  sentenceCount={sentenceCountByVerbId.get(verb.id) ?? 0}
                   expanded={expandedId === verb.id}
                   onToggleExpand={() =>
                     setExpandedId(expandedId === verb.id ? null : verb.id)

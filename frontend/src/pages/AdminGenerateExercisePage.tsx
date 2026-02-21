@@ -83,10 +83,10 @@ export function AdminGenerateExercisePage() {
 
   return (
     <main className="p-6">
-      <h1 className="text-2xl font-semibold">Oefening genereren</h1>
+      <h1 className="text-2xl font-semibold">Oefening toevoegen</h1>
       <p className="text-muted-foreground mt-1">
-        Kies het type oefening, werkwoorden en aantal items. De oefening wordt
-        direct aangemaakt.
+        Stap 1: kies type. Stap 2: kies werkwoorden. Stap 3: aantal items. De
+        oefening wordt direct aangemaakt.
       </p>
 
       <Card className="mt-6 max-w-md">
@@ -185,7 +185,7 @@ export function AdminGenerateExercisePage() {
               type="submit"
               disabled={createMutation.isPending || (verbsLoading && !useAllVerbs)}
             >
-              {createMutation.isPending ? 'Bezig…' : 'Oefening genereren'}
+              {createMutation.isPending ? 'Bezig…' : 'Oefening toevoegen'}
             </Button>
           </form>
         </CardContent>

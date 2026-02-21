@@ -141,7 +141,7 @@ export function AdminSentencesPage() {
         <div className="mt-2 flex flex-col items-start gap-2 text-muted-foreground">
           <p>Voeg eerst werkwoorden toe om oefenzinnen te kunnen koppelen.</p>
           <Button asChild variant="default">
-            <Link to={ROUTES.beheerWerkwoorden}>Naar Werkwoorden beheren</Link>
+            <Link to={ROUTES.beheerWerkwoorden}>Naar Vervoegingen beheren</Link>
           </Button>
         </div>
       ) : isLoading ? (
