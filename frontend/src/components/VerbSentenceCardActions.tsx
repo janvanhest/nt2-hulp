@@ -92,7 +92,7 @@ export function VerbSentenceCardActions({
         </Button>
       ) : (
         <Button asChild variant="outline" size="sm" className="min-h-9 w-full sm:min-h-8">
-          <Link to={`${ROUTES.beheerZinnen}?verb=${verbId}`}>
+          <Link to={`${ROUTES.beheerOverzichtPerWerkwoord}?verb=${verbId}`}>
             Zin toevoegen
           </Link>
         </Button>

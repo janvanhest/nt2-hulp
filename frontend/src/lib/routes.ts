@@ -6,7 +6,7 @@ export const ROUTES = {
   home: '/',
   beheer: '/beheer',
   beheerWerkwoorden: '/beheer/werkwoorden',
-  beheerZinnen: '/beheer/zinnen',
+  beheerOverzichtPerWerkwoord: '/beheer/overzicht-per-werkwoord',
   beheerOefeningGenereren: '/beheer/oefening-genereren',
   oefenen: '/oefenen',
   oefenenDo: (id: number) => `/oefenen/${id}`,

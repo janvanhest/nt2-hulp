@@ -31,7 +31,7 @@ export function AdminActionsSection({
         <AdminActionCard
           title="Overzicht per werkwoord"
           description="Vormdekking en invulzinnen per werkwoord. Voeg zinnen toe of bewerk ze."
-          to={ROUTES.beheerZinnen}
+          to={ROUTES.beheerOverzichtPerWerkwoord}
           isLoading={isLoading}
           badge={`${sentencesCount} zin${sentencesCount !== 1 ? 'nen' : ''}`}
         />

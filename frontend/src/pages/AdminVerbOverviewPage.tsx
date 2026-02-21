@@ -4,12 +4,12 @@ import { VerbSentenceCard } from '@/components/VerbSentenceCard'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useAdminSentencesPage } from '@/hooks/useAdminSentencesPage'
+import { useAdminVerbOverviewPage } from '@/hooks/useAdminVerbOverviewPage'
 import { ROUTES } from '@/lib/routes'
 import { TARGET_SENTENCES_PER_FORM } from '@/lib/sentenceUtils'
 import { Link, useSearchParams } from 'react-router'
 
-export function AdminSentencesPage() {
+export function AdminVerbOverviewPage() {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const {
@@ -36,7 +36,7 @@ export function AdminSentencesPage() {
     closeDeleteConfirm,
     handleConfirmDelete,
     handleDialogOpenChange,
-  } = useAdminSentencesPage(searchParams, setSearchParams)
+  } = useAdminVerbOverviewPage(searchParams, setSearchParams)
 
   return (
     <main className="min-w-0 overflow-x-hidden p-6">

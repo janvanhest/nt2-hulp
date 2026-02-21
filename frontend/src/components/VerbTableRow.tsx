@@ -78,7 +78,7 @@ export function VerbTableRow({
                 {sentenceCount === 1 ? '1 invulzin' : `${sentenceCount} invulzinnen`}
               </span>
               <Button variant="outline" size="sm" asChild>
-                <Link to={`${ROUTES.beheerZinnen}?verb=${verb.id}`}>
+                <Link to={`${ROUTES.beheerOverzichtPerWerkwoord}?verb=${verb.id}`}>
                   {sentenceCount === 0 ? 'Oefenzinnen toevoegen' : 'Bekijk zinnen'}
                 </Link>
               </Button>

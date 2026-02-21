@@ -41,7 +41,7 @@ function getForbiddenMessage(
   return null
 }
 
-export interface UseAdminSentencesPageResult {
+export interface UseAdminVerbOverviewPageResult {
   verbs: Verb[]
   groups: VerbSentenceGroup[]
   verbsLoading: boolean
@@ -50,7 +50,7 @@ export interface UseAdminSentencesPageResult {
   sentencesError: boolean
   sentencesErrorObj: unknown
   forbiddenMessage: string | null
-  showCardList: boolean;
+  showCardList: boolean
   expandedVerbIds: Set<number>
   dialogOpen: boolean
   selectedSentence: FillInSentence | null
@@ -70,10 +70,10 @@ export interface UseAdminSentencesPageResult {
 
 export type SetSearchParams = (params: Record<string, string> | (() => Record<string, string>)) => void
 
-export function useAdminSentencesPage(
+export function useAdminVerbOverviewPage(
   searchParams: URLSearchParams,
   setSearchParams: SetSearchParams
-): UseAdminSentencesPageResult {
+): UseAdminVerbOverviewPageResult {
   const { verbId: initialVerbIdFromQuery, answerFormKey: initialAnswerFormKeyFromQuery } =
     React.useMemo(() => parseQueryParams(searchParams), [searchParams])
 

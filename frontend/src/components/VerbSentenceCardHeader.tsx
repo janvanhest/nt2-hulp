@@ -52,7 +52,7 @@ export function VerbSentenceCardHeader({
                 </Badge>
                 {!covered && (
                   <Link
-                    to={`${ROUTES.beheerZinnen}?verb=${verb.id}&form=${formKey}`}
+                    to={`${ROUTES.beheerOverzichtPerWerkwoord}?verb=${verb.id}&form=${formKey}`}
                     className="shrink-0 text-primary hover:underline"
                   >
                     Toevoegen
