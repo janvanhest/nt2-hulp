@@ -10,6 +10,7 @@ Werkwoorden en bijbehorende werkwoordsvormen beheren (CRUD) met duidelijke valid
 
 - Beheerder kan werkwoord (infinitief) toevoegen, wijzigen, verwijderen; per werkwoord de set werkwoordsvormen beheren.
 - Validatie: minimaal infinitief verplicht; vormvelden mogen leeg in MVP.
+- Uniciteit: bij toevoegen van een werkwoord met een bestaande infinitief geeft het systeem een duidelijke foutmelding; de API retourneert een passende status (bijv. 400) en een begrijpelijke message. (Implementatie: `Verb.infinitive` unique + serializer.)
 - Data opgeslagen en op te halen voor oefeninggeneratie.
 
 ## v4-uitbreiding (Fase 2/3)
