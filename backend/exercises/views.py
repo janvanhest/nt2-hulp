@@ -51,11 +51,13 @@ class ExerciseViewSet(ModelViewSet):
         serializer = CreateExerciseSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
+        verb_ids = data.get("verb_ids")
         try:
             exercise = generate_exercise(
                 exercise_type=data["exercise_type"],
                 num_items=data["num_items"],
                 user=request.user,
+                verb_ids=verb_ids,
             )
         except ValueError as e:
             return Response(

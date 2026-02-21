@@ -10,6 +10,11 @@ class CreateExerciseSerializer(serializers.Serializer):
 
     exercise_type = serializers.ChoiceField(choices=ExerciseType.choices)
     num_items = serializers.IntegerField(min_value=1)
+    verb_ids = serializers.ListField(
+        child=serializers.IntegerField(),
+        required=False,
+        allow_empty=True,
+    )
 
 
 class ConjugationItemSerializer(serializers.ModelSerializer):
