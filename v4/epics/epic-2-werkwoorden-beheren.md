@@ -10,8 +10,12 @@ Werkwoorden en bijbehorende werkwoordsvormen beheren (CRUD) met duidelijke valid
 
 - Beheerder kan werkwoord (infinitief) toevoegen, wijzigen, verwijderen; per werkwoord de set werkwoordsvormen beheren.
 - Validatie: minimaal infinitief verplicht; vormvelden mogen leeg in MVP.
-- Uniciteit: bij toevoegen van een werkwoord met een bestaande infinitief geeft het systeem een duidelijke foutmelding; de API retourneert een passende status (bijv. 400) en een begrijpelijke message. (Implementatie: `Verb.infinitive` unique + serializer.)
+- Uniciteit: bij toevoegen van een werkwoord met een bestaande infinitief geeft het systeem een duidelijke foutmelding; de API retourneert een passende status (bijv. 400) en een begrijpelijke message. (Implementatie: `Verb.infinitive` unique + serializer.) Hetzelfde geldt bij bewerken: wijziging naar een al bestaande infinitief wordt geweigerd. Backend-tests: `VerbInfinitiveUniquenessTests` in `backend/verbs/tests.py`.
 - Data opgeslagen en op te halen voor oefeninggeneratie.
+
+## Normalisatie infinitief
+
+Er is geen automatische normalisatie in de backend: infinitief wordt opgeslagen zoals opgegeven (case-sensitive, geen trim). De frontend trimt invoer voor verzending. "Doen" en "doen" zijn daardoor twee verschillende werkwoorden; voor eenduidigheid kan de beheerder consequent kleine letters gebruiken.
 
 ## v4-uitbreiding (Fase 2/3)
 
