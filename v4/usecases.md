@@ -2,6 +2,8 @@
 
 Sluiten aan op [casus.md](casus.md), [erd.md](erd.md) en [epics.md](epics.md).
 
+De beheerder opent "Beheer" en kiest op het Beheer-dashboard voor Werkwoorden beheren, Zinnen beheren of Oefening genereren; er is geen apart navigatie-item per actie.
+
 ## UC1: Vervoegingsoefening (alle vormen invullen)
 
 **Doel:** De gebruiker vult alle vormen van een werkwoord in en kan deze controleren.
@@ -116,6 +118,9 @@ Het nakijkmodel wordt bij het genereren van de oefening (UC3) aangemaakt. Digita
 **Hoofdscenario:**
 1. Beheerder voegt een werkwoord toe of wijzigt een bestaand werkwoord.
 2. Systeem valideert invoer en slaat op.
+
+**Alternatieven/uitzonderingen:**
+- Bij toevoegen: als de infinitief al bestaat, toont het systeem een duidelijke foutmelding.
 
 **Resultaat:** Werkwoordenbestand is bijgewerkt.
 
