@@ -20,6 +20,8 @@ Bouwt voort op Epic 0 (Foundation), Epic 1 (Rollen & autorisatie) en **Epic 2 (W
 | Autorisatie | Ja | Alleen beheerder; hergebruik beheer-permissies. |
 | Foutmelding bij oefening zonder zinnen | Ja | Bij invulzin-oefening zonder beschikbare zinnen (Epic 4/5). |
 | Weergave "Alleen invulzinnen" | Ja | Beheerder kan op de zinnen-pagina kiezen voor weergave "Invulzinnen" (alleen lijst invulzinnen per werkwoord, zonder vormdekking) of "Vormdekking" (met vormdekking en streef per vorm). |
+| Thema per invulzin | Ja | Invulzin kan bij meerdere thema's horen (m:n). Backend: Theme-model en InvulzinThema-koppeltabel. In de form-dialog: thema's kiezen uit lijst of nieuw thema direct toevoegen (creatable). In de tabel: kolom "Vorm" (badge werkwoordsvorm) en "Thema's" (badges). |
+| Stap 3 wizard Oefening toevoegen | Ja | In de wizard "Oefening toevoegen" biedt stap 3 inline beheer van invulzinnen voor het zojuist gekozen werkwoord: tabel (Zin, Vorm, Antwoord, Thema's, Acties), knop "Zin toevoegen", bewerken/verwijderen in dialogs. Optioneel: link "Naar Zinnen beheren" naar het overzicht per werkwoord. |
 
 ### Acceptatiecriteria (uit `../epics.md`)
 
@@ -70,6 +72,7 @@ Als er nog geen werkwoorden zijn:
 
 - Invulzinnen kunnen een eigen resource zijn (bijv. `GET/POST /api/beheer/invulzinnen/`) met `werkwoord_id` in de body, of genest onder werkwoorden voor aanmaken (bijv. `POST /api/beheer/werkwoorden/:id/invulzinnen/`). Beide kunnen naast elkaar bestaan: genest voor flow B, lijst + filter voor flow A.
 - Lijst werkwoorden voor de dropdown/zoeklijst komt uit de bestaande werkwoorden-API (Epic 2).
+- **Thema's:** `GET/POST /api/beheer/themas/` voor lijst en aanmaken. Invulzin-response bevat `themas` (id, naam); create/update accepteren optioneel `thema_ids: number[]`.
 
 ### 5. Contract: foutmelding bij invulzin-oefening zonder zinnen (Epic 4/5)
 
