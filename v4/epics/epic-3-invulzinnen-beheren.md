@@ -19,9 +19,9 @@ Bouwt voort op Epic 0 (Foundation), Epic 1 (Rollen & autorisatie) en **Epic 2 (W
 | Lege staat: geen werkwoorden | Ja | Duidelijke melding + verwijs naar Vervoegingen beheren. |
 | Autorisatie | Ja | Alleen beheerder; hergebruik beheer-permissies. |
 | Foutmelding bij oefening zonder zinnen | Ja | Bij invulzin-oefening zonder beschikbare zinnen (Epic 4/5). |
-| Weergave "Alleen invulzinnen" | Ja | Beheerder kan op de zinnen-pagina kiezen voor weergave "Invulzinnen" (alleen lijst invulzinnen per werkwoord, zonder vormdekking) of "Vormdekking" (met vormdekking en streef per vorm). |
+| Weergave "Alleen invulzinnen" | Ja | Op de pagina Overzicht per werkwoord kan de beheerder kiezen voor weergave "Zinnen beheren" (`?view=zinnen`: alleen invulzinnen per werkwoord) of "Overzicht per werkwoord" (`?view=vormdekking`: met vormdekking en streef per vorm). |
 | Thema per invulzin | Ja | Invulzin kan bij meerdere thema's horen (m:n). Backend: Theme-model en InvulzinThema-koppeltabel. In de form-dialog: thema's kiezen uit lijst of nieuw thema direct toevoegen (creatable). In de tabel: kolom "Vorm" (badge werkwoordsvorm) en "Thema's" (badges). |
-| Stap 3 wizard Oefening toevoegen | Ja | In de wizard "Oefening toevoegen" biedt stap 3 inline beheer van invulzinnen voor het zojuist gekozen werkwoord: tabel (Zin, Vorm, Antwoord, Thema's, Acties), knop "Zin toevoegen", bewerken/verwijderen in dialogs. Optioneel: link "Naar Zinnen beheren" naar het overzicht per werkwoord. |
+| Stap 3 wizard Oefening toevoegen | Ja | In de wizard "Oefening toevoegen" biedt stap 3 inline beheer van invulzinnen voor het zojuist gekozen werkwoord: tabel (Zin, Vorm, Antwoord, Thema's, Acties), knop "Zin toevoegen" opent een **dialog** (werkwoord vast), bewerken/verwijderen in dialogs. Link "Naar Zinnen beheren" naar Overzicht per werkwoord. |
 
 ### Acceptatiecriteria (uit `../epics.md`)
 
@@ -47,32 +47,33 @@ Bouwt voort op Epic 0 (Foundation), Epic 1 (Rollen & autorisatie) en **Epic 2 (W
 
 Invulzinnen worden altijd aan een werkwoord gekoppeld (`werkwoord_id` verplicht). Er is geen "losse" invulzin. De UI ondersteunt twee manieren van toevoegen:
 
-- **Flow A — Vanuit Zinnen beheren:** Overzicht van invulzinnen → "Nieuwe zin" → kies werkwoord uit lijst van bestaande werkwoorden → vul `sentence_template` en `answer` in.
-- **Flow B — Vanuit Werkwoord-detail:** Bij een werkwoord (detail of rij) → "Oefenzinnen toevoegen" → werkwoord is vooringevuld → alleen `sentence_template` en `answer` invullen.
+- **Flow A — Overzicht per werkwoord / Zinnen beheren:** De pagina `/beheer/overzicht-per-werkwoord` toont bovenaan een **inline card** "Invulzin toevoegen" (geen modal). De beheerder kiest werkwoord → werkwoordsvorm → vult de volledige zin in; het antwoord wordt uit de gekozen werkwoordsvorm afgeleid, de invulplek (___) uit de zin. Bij bewerken schakelt dezelfde card naar "Invulzin bewerken" met vooringevulde velden.
+- **Flow B — Vanuit werkwoord (link of wizard):** Bij een werkwoord (rij of in de wizard stap 3) → "Zin toevoegen" / "Oefenzinnen toevoegen" → werkwoord is vooringevuld (bij wizard in een **dialog**); daarna werkwoordsvorm kiezen en zin invullen (zelfde workflow als hierboven).
 
 Beide flows leiden tot dezelfde data: een `INVULZIN` met `werkwoord_id`, `sentence_template`, `answer` en `answer_form_key`.
 
-### 2. Werkwoordsvorm van het antwoord (answer_form_key)
+### 2. Werkwoordsvorm eerst; antwoord en invulplek afgeleid
 
-Het antwoord ("loop", "liep", "gelopen" …) kan bij hetzelfde werkwoord voor meerdere vormen gelden. Om dubbelzinnigheid te voorkomen:
+Om dubbelzinnigheid te voorkomen en de invoer te vereenvoudigen:
 
-- Elke invulzin heeft een veld **`answer_form_key`**: welke werkwoordsvorm in de invulplek hoort. Waarden sluiten aan op de vormvelden van het werkwoord: `tt_ik`, `tt_jij`, `tt_hij`, `vt_ev`, `vt_mv`, `vd`, `vd_hulpwerkwoord`, en optioneel `infinitive` (heel werkwoord).
-- **UI:** Bij het formulier "Invulzin toevoegen/bewerken" kiest de beheerder naast het antwoord ook "Werkwoordsvorm" uit een dropdown met dezelfde labels als bij werkwoordsvormen (bijv. "ik (tt)", "hij/zij (vt)", "voltooid deelwoord"). Zo is duidelijk: antwoord "loop" + vorm "ik (tt)" versus antwoord "liep" + vorm "hij/zij (vt)".
-- **Weergave:** In lijst of detail kan het antwoord getoond worden als "loop (ik, tt)" of "liep (hij, vt)" voor snelle herkenning.
-- Labels en keys hergebruiken uit `verbFormConfig` / werkwoordsvormen (Epic 2) voor consistentie.
+- Elke invulzin heeft **`answer_form_key`** (welke werkwoordsvorm) en **`answer`** (het invulwoord). Het formulier volgt een vaste volgorde:
+  1. **Werkwoord** kiezen (bijv. lopen).
+  2. **Werkwoordsvorm** kiezen (bijv. "ik (tt)"); het **antwoord** wordt automatisch uit de vervoeging van dat werkwoord gehaald (bijv. "loop"). De dropdown toont per optie de waarde, bijv. "ik (tt) — loop". Het antwoord wordt niet handmatig getypt.
+  3. **Zin** invullen: de beheerder typt de **volledige zin** met het antwoord erin (bijv. "Ik loop naar mijn werk"). Het systeem vervangt het eerste voorkomen van het antwoord in de zin door `___` en slaat dat op als `sentence_template`. Als het antwoord niet in de zin voorkomt, toont het systeem een foutmelding.
+- **Bewerken:** De opgeslagen template (met `___`) wordt in het formulier getoond als volledige zin (___ vervangen door het opgeslagen antwoord), zodat de beheerder de zin kan aanpassen en opnieuw opslaan.
+- Labels en keys hergebruiken uit `verbFormConfig` / werkwoordsvormen (Epic 2). Als een werkwoordsvorm nog niet is ingevuld (lege vervoeging), toont de dropdown "(nog niet ingevuld)" en bij opslaan een melding om eerst de vervoeging in te vullen.
 
 ### 3. Geen invulzinnen zonder werkwoorden
 
 Als er nog geen werkwoorden zijn:
 
-- Pagina "Zinnen beheren" (voorheen Overzicht per werkwoord) toont een duidelijke melding (bijv. "Voeg eerst werkwoorden toe om oefenzinnen te kunnen koppelen.") met link/verwijzing naar Vervoegingen beheren.
-- "Nieuwe invulzin" is dan niet beschikbaar of toont dezelfde melding.
+- De pagina Overzicht per werkwoord (`/beheer/overzicht-per-werkwoord`) toont een duidelijke melding (bijv. "Voeg eerst werkwoorden toe om oefenzinnen te kunnen koppelen.") met link naar Vervoegingen beheren.
+- De card "Invulzin toevoegen" is dan niet zichtbaar; pas zodra er werkwoorden zijn wordt de card met het formulier getoond.
 
 ### 4. API en data
 
-- Invulzinnen kunnen een eigen resource zijn (bijv. `GET/POST /api/beheer/invulzinnen/`) met `werkwoord_id` in de body, of genest onder werkwoorden voor aanmaken (bijv. `POST /api/beheer/werkwoorden/:id/invulzinnen/`). Beide kunnen naast elkaar bestaan: genest voor flow B, lijst + filter voor flow A.
-- Lijst werkwoorden voor de dropdown/zoeklijst komt uit de bestaande werkwoorden-API (Epic 2).
-- **Thema's:** `GET/POST /api/beheer/themas/` voor lijst en aanmaken. Invulzin-response bevat `themas` (id, naam); create/update accepteren optioneel `thema_ids: number[]`.
+- Invulzinnen: `GET/POST /api/beheer/invulzinnen/` met `werkwoord_id` in de body; lijst ondersteunt filter `?verb=<id>`. Lijst werkwoorden voor de dropdown komt uit de werkwoorden-API (Epic 2).
+- **Thema's:** `GET /api/beheer/themas/` en `POST /api/beheer/themas/` (met **trailing slash** in de request-URL, anders kan redirect bij POST de body doen verliezen). Payload voor aanmaken: `{ "naam": "..." }`. Invulzin-response bevat `themas` (id, naam); create/update accepteren optioneel `thema_ids: number[]`. Bij succesvol aanmaken van een thema in het formulier: toast "Thema toegevoegd." en het nieuwe thema wordt aan de geselecteerde thema's toegevoegd.
 
 ### 5. Contract: foutmelding bij invulzin-oefening zonder zinnen (Epic 4/5)
 

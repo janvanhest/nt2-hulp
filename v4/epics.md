@@ -52,7 +52,7 @@ Deze epics sluiten aan op [casus.md](casus.md), [usecases.md](usecases.md) en [e
 **Acceptatiecriteria**
 - In de hoofdnavigatie (desktop en mobiel) zien beheerders voor beheer alleen het item "Beheer". Klik daarop leidt naar het Beheer-dashboard (`/beheer`).
 - Op het Beheer-dashboard zijn zichtbaar: overzicht/statistieken (aantal werkwoorden, invulzinnen, werkwoorden compleet) en acties: **Vervoegingen beheren**, **Overzicht per werkwoord**, **Zinnen beheren**, **Oefening toevoegen**. Elke actie is een duidelijke link of knop naar de bestaande pagina. Overzicht per werkwoord en Zinnen beheren gaan naar dezelfde pagina (`/beheer/overzicht-per-werkwoord`); Zinnen beheren met `?view=zinnen` (alleen invulzinnen), Overzicht per werkwoord zonder param of met `view=vormdekking` (vormdekking en invulzinnen).
-- De routes `/beheer/werkwoorden`, `/beheer/overzicht-per-werkwoord` en `/beheer/oefening-genereren` blijven bestaan en zijn bereikbaar via het dashboard (niet via aparte nav-items). De route `/beheer/overzicht-per-werkwoord` bedient zowel Overzicht per werkwoord als Zinnen beheren.
+- De routes `/beheer/werkwoorden`, `/beheer/overzicht-per-werkwoord` en `/beheer/oefening-genereren` blijven bestaan en zijn bereikbaar via het dashboard (niet via aparte nav-items). De route `/beheer/overzicht-per-werkwoord` bedient zowel Overzicht per werkwoord als Zinnen beheren. Op die pagina staat bovenaan een **inline card** voor het toevoegen en bewerken van invulzinnen (geen modal); de workflow is: werkwoord kiezen → werkwoordsvorm kiezen (antwoord wordt daaruit afgeleid) → volledige zin invullen (invulplek wordt uit antwoord en zin bepaald).
 - De actie Oefening toevoegen toont of beschrijft een logische volgorde (stappen): type kiezen, werkwoorden kiezen, aantal items.
 
 ### Aanbevolen voorbereidingsflow
@@ -97,12 +97,12 @@ Bij de latere code-iteratie: card, progress, breadcrumb en empty overwogen; geen
 
 ## Epic 3: Invulzinnen Beheren
 
-**Beschrijving:** Oefenzinnen zijn een uitbreiding op werkwoorden: altijd aan een bestaand werkwoord gekoppeld. Zinnen met invulplek beheren, inclusief het juiste antwoord (werkwoord of vorm).
+**Beschrijving:** Oefenzinnen zijn een uitbreiding op werkwoorden: altijd aan een bestaand werkwoord gekoppeld. Zinnen met invulplek beheren; het antwoord volgt uit de gekozen werkwoordsvorm, de invulplek uit de zin.
 
 **Acceptatiecriteria**
 - Beheerder kan invulzinnen toevoegen, wijzigen en verwijderen.
-- Een invulzin heeft minimaal `sentence_template` en `answer` (zie [erd.md](erd.md)); daarnaast **welke werkwoordsvorm** het antwoord is (answer_form_key).
-- Bij toevoegen/wijzigen kiest de beheerder een werkwoord (bijv. dropdown of zoeklijst); vanuit werkwoord-detail kan de beheerder oefenzinnen voor dat werkwoord toevoegen (werkwoord vooringevuld).
+- Een invulzin heeft `sentence_template`, `answer` en `answer_form_key` (zie [erd.md](erd.md)). Bij toevoegen/wijzigen: beheerder kiest **eerst** werkwoord, **dan** werkwoordsvorm (dropdown toont bijv. "ik (tt) — loop"); het antwoord wordt uit de vervoeging afgeleid. Daarna vult de beheerder de **volledige zin** in; het systeem bepaalt de invulplek (___) door het antwoord in de zin te vervangen. Als het antwoord niet in de zin voorkomt, wordt een fout getoond.
+- Toevoegen/bewerken op de pagina Overzicht per werkwoord gebeurt in een **inline card** (geen modal); vanuit een werkwoord kan met een link het formulier met dat werkwoord vooringevuld worden. In de wizard Oefening toevoegen (stap 3) opent "Zin toevoegen" een dialog met vast werkwoord.
 - Als er nog geen werkwoorden bestaan, toont het systeem een duidelijke melding en verwijs naar Vervoegingen beheren (Epic 2).
 - Het systeem toont een foutmelding als er geen zinnen beschikbaar zijn bij een invulzin-oefening (contract Epic 4/5).
 

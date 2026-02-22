@@ -41,8 +41,8 @@ Het nakijkmodel (correcte antwoorden) wordt **bij het aanmaken van de oefening (
 De **gebruikers-zichtbare** label voor deze actie is "Oefening toevoegen" (niet "Oefening genereren"). De pagina **Oefening toevoegen** is een **wizard** met vier stappen (horizontale stepper met bolletjes). Na het voltooien van een stap wordt het bolletje een vinkje en wordt de volgende stap actief:
 
 1. **Infinitief** — alleen het veld "Infinitief"; knop "Volgende stap" maakt het werkwoord aan en gaat door naar stap 2. Na voltooiing toont de stepper het toegevoegde infinitief als status.
-2. **Vormen** — inline formulier om de werkwoordsvormen in te vullen voor het zojuist toegevoegde werkwoord; na opslaan door naar stap 3. Stap 2 is alleen bereikbaar nadat in stap 1 een werkwoord is aangemaakt.
-3. **Zinnen** — placeholder met link naar Zinnen beheren en knop om naar stap 4 te gaan; wordt in een volgende iteratie uitgewerkt.
+2. **Vormen** — inline formulier om de werkwoordsvormen in te vullen voor het zojuist toegevoegde werkwoord. De knop heet **"Opslaan en naar stap 3"** zodat duidelijk is dat opslaan en doorgaan in één actie zit; na succesvol opslaan gaat de wizard naar stap 3. Stap 2 is alleen bereikbaar nadat in stap 1 een werkwoord is aangemaakt.
+3. **Zinnen** — inline beheer van invulzinnen voor dit werkwoord: tabel (Zin, Vorm, Antwoord, Thema's, Acties), knop "Zin toevoegen" (opent dialog met werkwoord vast), bewerken/verwijderen in dialogs. Link "Naar Zinnen beheren" naar `/beheer/overzicht-per-werkwoord`. Knop "Ga naar stap 4: Oefening genereren" om door te gaan.
 4. **Oefening** — formulier om de oefening aan te maken: type (vervoeging/invulzin), werkwoorden (alle/selectie), aantal items, knop "Oefening toevoegen".
 
 De beheerder kan **tussen stappen switchen**: stap 1 is altijd klikbaar; stap 2 zodra een werkwoord is toegevoegd; stappen 3 en 4 zodra die eenmaal bereikt zijn.
