@@ -88,3 +88,44 @@ class FillInSentence(models.Model):
             if len(self.sentence_template) > 50
             else self.sentence_template
         )
+
+
+class Theme(models.Model):
+    """Thema voor groepering van werkwoorden en/of invulzinnen (m:n)."""
+
+    naam = models.CharField(max_length=100, unique=True)
+
+    class Meta:
+        verbose_name = "Thema"
+        verbose_name_plural = "Thema's"
+
+    def __str__(self) -> str:
+        return self.naam
+
+
+class InvulzinThema(models.Model):
+    """Koppeltabel: invulzin m:n thema."""
+
+    invulzin = models.ForeignKey(
+        FillInSentence,
+        on_delete=models.CASCADE,
+        related_name="thema_links",
+    )
+    thema = models.ForeignKey(
+        Theme,
+        on_delete=models.CASCADE,
+        related_name="invulzin_links",
+    )
+
+    class Meta:
+        verbose_name = "Invulzin-thema"
+        verbose_name_plural = "Invulzin-thema's"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["invulzin", "thema"],
+                name="unique_invulzin_thema",
+            )
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.invulzin} – {self.thema.naam}"
