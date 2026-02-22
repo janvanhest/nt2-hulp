@@ -5,6 +5,7 @@ import { ROUTES } from '@/lib/routes'
 import { DeleteSentenceConfirmDialog } from '@/components/DeleteSentenceConfirmDialog'
 import { FillInSentenceFormDialog } from '@/components/FillInSentenceFormDialog'
 import { VerbFormEditor, getInitialVerbForm } from '@/components/VerbFormEditor'
+import { VerbSentenceCard } from '@/components/VerbSentenceCard'
 import { VerbSentenceTable } from '@/components/VerbSentenceTable'
 import { useCreateExercise } from '@/hooks/useExercises'
 import {
@@ -63,7 +64,7 @@ const EXERCISE_TYPE_OPTIONS: { value: ExerciseType; label: string }[] = [
   { value: 'invulzin', label: 'Invulzin-oefening' },
 ]
 
-export function AdminGenerateExercisePage() {
+export const AdminGenerateExercisePage = () => {
   const navigate = useNavigate()
   const createExerciseMutation = useCreateExercise()
   const createVerbMutation = useCreateVerb()
@@ -80,6 +81,7 @@ export function AdminGenerateExercisePage() {
   const [sentenceDialogOpen, setSentenceDialogOpen] = useState(false)
   const [sentenceToEdit, setSentenceToEdit] = useState<FillInSentence | null>(null)
   const [sentenceToDelete, setSentenceToDelete] = useState<FillInSentence | null>(null)
+  const [step4CardExpanded, setStep4CardExpanded] = useState(true)
 
   const { data: step3Sentences = [] } = useFillInSentences(createdVerb?.id)
   const deleteSentenceMutation = useDeleteFillInSentence()
@@ -336,7 +338,7 @@ export function AdminGenerateExercisePage() {
           >
             4
           </span>
-          <span className="text-xs font-medium text-center">Oefening</span>
+          <span className="text-xs font-medium text-center">Afronden</span>
         </button>
       </nav>
 
@@ -511,7 +513,7 @@ export function AdminGenerateExercisePage() {
             />
             <div className="flex justify-end pt-2">
               <Button type="button" onClick={() => setCurrentStep(4)}>
-                Ga naar stap 4: Oefening genereren
+                Ga naar stap 4: Overzicht werkwoord
               </Button>
             </div>
           </CardContent>
@@ -570,118 +572,132 @@ export function AdminGenerateExercisePage() {
         isPending={deleteSentenceMutation.isPending}
       />
 
-      {/* Step 4: Oefening genereren */}
-      {currentStep === 4 && (
+      {/* Step 4: Werkwoord afgerond + oefening genereren */}
+      {currentStep === 4 && createdVerb != null && (
         <>
           <h2 className="text-lg font-semibold mt-8">
-            Stap 4: Oefening genereren
+            Stap 4: Werkwoord afgerond
           </h2>
-          <Card className="mt-4 max-w-md">
-        <CardHeader>
-          <CardTitle className="text-lg">Nieuwe oefening</CardTitle>
-          <CardDescription>
-            Vervoeging: werkwoorden met alle vormen. Invulzin: zinnen met een
-            invulplek.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleExerciseSubmit} className="flex flex-col gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="exercise-type">Oefeningstype</Label>
-              <Select
-                value={exerciseType}
-                onValueChange={(v) => setExerciseType(v as ExerciseType)}
-                name="exercise_type"
-              >
-                <SelectTrigger id="exercise-type">
-                  <SelectValue placeholder="Kies type" />
-                </SelectTrigger>
-                <SelectContent>
-                  {EXERCISE_TYPE_OPTIONS.map((opt) => (
-                    <SelectItem key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label>Werkwoorden</Label>
-              <div className="flex flex-col gap-2">
-                <label className="flex items-center gap-2 text-sm font-normal cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={useAllVerbs}
-                    onChange={(e) => setUseAllVerbs(e.target.checked)}
-                    className="rounded border-input"
-                  />
-                  Alle werkwoorden
-                </label>
-                {!useAllVerbs && (
-                  <div
-                    className="max-h-48 overflow-y-auto rounded-md border border-input p-2 space-y-1.5"
-                    role="group"
-                    aria-label="Kies werkwoorden"
+          <div className="mt-4 max-w-4xl">
+            <VerbSentenceCard
+              group={{ verb: createdVerb, sentences: step3Sentences }}
+              isExpanded={step4CardExpanded}
+              onExpandChange={setStep4CardExpanded}
+              onEditSentence={(s) => {
+                setSentenceToEdit(s)
+                setSentenceDialogOpen(true)
+              }}
+              onDeleteSentence={setSentenceToDelete}
+              onAddSentence={() => setSentenceDialogOpen(true)}
+              showFormCoverage
+            />
+          </div>
+          <Card className="mt-6 max-w-md">
+            <CardHeader>
+              <CardTitle className="text-lg">Nieuwe oefening</CardTitle>
+              <CardDescription>
+                Vervoeging: werkwoorden met alle vormen. Invulzin: zinnen met een
+                invulplek.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleExerciseSubmit} className="flex flex-col gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="exercise-type">Oefeningstype</Label>
+                  <Select
+                    value={exerciseType}
+                    onValueChange={(v) => setExerciseType(v as ExerciseType)}
+                    name="exercise_type"
                   >
-                    {verbsLoading ? (
-                      <p className="text-muted-foreground text-sm">
-                        Werkwoorden laden…
-                      </p>
-                    ) : sortedVerbs.length === 0 ? (
-                      <p className="text-muted-foreground text-sm">
-                        Geen werkwoorden. Voeg eerst werkwoorden toe.
-                      </p>
-                    ) : (
-                      sortedVerbs.map((v) => (
-                        <label
-                          key={v.id}
-                          className="flex items-center gap-2 text-sm font-normal cursor-pointer hover:bg-muted/50 rounded px-1 py-0.5"
-                        >
-                          <input
-                            type="checkbox"
-                            checked={selectedVerbIds.has(v.id)}
-                            onChange={() => toggleVerb(v.id)}
-                            className="rounded border-input"
-                          />
-                          {v.infinitive}
-                        </label>
-                      ))
+                    <SelectTrigger id="exercise-type">
+                      <SelectValue placeholder="Kies type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {EXERCISE_TYPE_OPTIONS.map((opt) => (
+                        <SelectItem key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Werkwoorden</Label>
+                  <div className="flex flex-col gap-2">
+                    <label className="flex items-center gap-2 text-sm font-normal cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={useAllVerbs}
+                        onChange={(e) => setUseAllVerbs(e.target.checked)}
+                        className="rounded border-input"
+                      />
+                      Alle werkwoorden
+                    </label>
+                    {!useAllVerbs && (
+                      <div
+                        className="max-h-48 overflow-y-auto rounded-md border border-input p-2 space-y-1.5"
+                        role="group"
+                        aria-label="Kies werkwoorden"
+                      >
+                        {verbsLoading ? (
+                          <p className="text-muted-foreground text-sm">
+                            Werkwoorden laden…
+                          </p>
+                        ) : sortedVerbs.length === 0 ? (
+                          <p className="text-muted-foreground text-sm">
+                            Geen werkwoorden. Voeg eerst werkwoorden toe.
+                          </p>
+                        ) : (
+                          sortedVerbs.map((v) => (
+                            <label
+                              key={v.id}
+                              className="flex items-center gap-2 text-sm font-normal cursor-pointer hover:bg-muted/50 rounded px-1 py-0.5"
+                            >
+                              <input
+                                type="checkbox"
+                                checked={selectedVerbIds.has(v.id)}
+                                onChange={() => toggleVerb(v.id)}
+                                className="rounded border-input"
+                              />
+                              {v.infinitive}
+                            </label>
+                          ))
+                        )}
+                      </div>
                     )}
                   </div>
-                )}
-              </div>
-            </div>
+                </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="num-items">Aantal items</Label>
-              <Input
-                id="num-items"
-                type="number"
-                min={1}
-                value={numItems}
-                onChange={(e) => setNumItems(e.target.value)}
-                aria-describedby="num-items-hint"
-              />
-              <p id="num-items-hint" className="text-muted-foreground text-sm">
-                Minimaal 1. Maximaal het aantal beschikbare werkwoorden of
-                zinnen.
-              </p>
-            </div>
-            <Button
-              type="submit"
-              disabled={
-                createExerciseMutation.isPending ||
-                (verbsLoading && !useAllVerbs)
-              }
-            >
-              {createExerciseMutation.isPending
-                ? 'Bezig…'
-                : 'Oefening toevoegen'}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+                <div className="space-y-2">
+                  <Label htmlFor="num-items">Aantal items</Label>
+                  <Input
+                    id="num-items"
+                    type="number"
+                    min={1}
+                    value={numItems}
+                    onChange={(e) => setNumItems(e.target.value)}
+                    aria-describedby="num-items-hint"
+                  />
+                  <p id="num-items-hint" className="text-muted-foreground text-sm">
+                    Minimaal 1. Maximaal het aantal beschikbare werkwoorden of
+                    zinnen.
+                  </p>
+                </div>
+                <Button
+                  type="submit"
+                  disabled={
+                    createExerciseMutation.isPending ||
+                    (verbsLoading && !useAllVerbs)
+                  }
+                >
+                  {createExerciseMutation.isPending
+                    ? 'Bezig…'
+                    : 'Oefening toevoegen'}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
         </>
       )}
     </main>
