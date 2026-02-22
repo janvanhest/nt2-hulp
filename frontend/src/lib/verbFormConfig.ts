@@ -1,4 +1,4 @@
-import type { AnswerFormKey, VerbForm } from '@/lib/api'
+import type { AnswerFormKey, Verb, VerbForm } from '@/lib/api'
 
 export const VERB_FORM_LABELS: Record<keyof VerbForm, string> = {
   tt_ik: 'ik (tt)',
@@ -20,6 +20,13 @@ export const ANSWER_FORM_KEYS: AnswerFormKey[] = [
 export const ANSWER_FORM_LABELS: Record<AnswerFormKey, string> = {
   ...VERB_FORM_LABELS,
   infinitive: 'Infinitief (heel werkwoord)',
+}
+
+/** Bepaalt het antwoord (invulwoord) uit het werkwoord en de gekozen werkwoordsvorm. */
+export function getAnswerFromVerb(verb: Verb, formKey: AnswerFormKey): string {
+  if (formKey === 'infinitive') return verb.infinitive
+  const value = verb.forms[formKey]
+  return typeof value === 'string' ? value : ''
 }
 
 /** Short descriptions for form fields, shown as hints (e.g. tooltip). Single source of truth. */
