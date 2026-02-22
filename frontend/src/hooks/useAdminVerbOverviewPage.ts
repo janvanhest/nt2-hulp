@@ -52,20 +52,18 @@ export interface UseAdminVerbOverviewPageResult {
   forbiddenMessage: string | null
   showCardList: boolean
   expandedVerbIds: Set<number>
-  dialogOpen: boolean
   selectedSentence: FillInSentence | null
   sentenceToDelete: FillInSentence | null
   initialVerbIdFromQuery: number | undefined
   initialAnswerFormKeyFromQuery: AnswerFormKey | undefined
   deletePending: boolean
   setVerbSublistOpen: (verbId: number, open: boolean) => void
-  openCreate: () => void
   handleAddSentence: (verbId: number) => void
   openEdit: (sentence: FillInSentence, e: React.MouseEvent) => void
   openDeleteConfirm: (sentence: FillInSentence) => void
   closeDeleteConfirm: () => void
   handleConfirmDelete: () => void
-  handleDialogOpenChange: (open: boolean) => void
+  clearSentenceForm: () => void
 }
 
 export type SetSearchParams = (params: Record<string, string> | (() => Record<string, string>)) => void
@@ -92,10 +90,8 @@ export function useAdminVerbOverviewPage(
     [verbs, sentences]
   )
 
-  const [dialogOpen, setDialogOpen] = React.useState(false)
   const [selectedSentence, setSelectedSentence] = React.useState<FillInSentence | null>(null)
   const [sentenceToDelete, setSentenceToDelete] = React.useState<FillInSentence | null>(null)
-  const [hasOpenedFromQuery, setHasOpenedFromQuery] = React.useState(false)
   const [expandedVerbIds, setExpandedVerbIds] = React.useState<Set<number>>(new Set())
 
   const setVerbSublistOpen = React.useCallback((verbId: number, open: boolean) => {
@@ -114,18 +110,16 @@ export function useAdminVerbOverviewPage(
     sentencesError,
     sentencesErrorObj
   )
-  const hasQueryParams = initialVerbIdFromQuery != null
 
-  const openCreate = React.useCallback(() => {
+  const clearSentenceForm = React.useCallback(() => {
     setSelectedSentence(null)
-    setDialogOpen(true)
-  }, [])
+    setSearchParams({})
+  }, [setSearchParams])
 
   const handleAddSentence = React.useCallback(
     (verbId: number) => {
-      setSearchParams({ verb: String(verbId) })
       setSelectedSentence(null)
-      setDialogOpen(true)
+      setSearchParams({ verb: String(verbId) })
     },
     [setSearchParams]
   )
@@ -133,7 +127,6 @@ export function useAdminVerbOverviewPage(
   const openEdit = React.useCallback((sentence: FillInSentence, e: React.MouseEvent) => {
     e.stopPropagation()
     setSelectedSentence(sentence)
-    setDialogOpen(true)
   }, [])
 
   const openDeleteConfirm = React.useCallback((sentence: FillInSentence) => {
@@ -163,25 +156,6 @@ export function useAdminVerbOverviewPage(
     })
   }, [sentenceToDelete, deleteMutation, closeDeleteConfirm])
 
-  const handleDialogOpenChange = React.useCallback(
-    (open: boolean) => {
-      setDialogOpen(open)
-      if (!open && hasQueryParams) setSearchParams({})
-    },
-    [hasQueryParams, setSearchParams]
-  )
-
-  React.useEffect(() => {
-    if (noVerbs || hasOpenedFromQuery || initialVerbIdFromQuery == null) return
-    setHasOpenedFromQuery(true)
-    setSelectedSentence(null)
-    setDialogOpen(true)
-  }, [initialVerbIdFromQuery, noVerbs, hasOpenedFromQuery])
-
-  React.useEffect(() => {
-    if (initialVerbIdFromQuery == null) setHasOpenedFromQuery(false)
-  }, [initialVerbIdFromQuery])
-
   const isLoading = verbsLoading || sentencesLoading
   const showCardList = !noVerbs && !isLoading && !sentencesError
 
@@ -196,19 +170,17 @@ export function useAdminVerbOverviewPage(
     forbiddenMessage,
     showCardList,
     expandedVerbIds,
-    dialogOpen,
     selectedSentence,
     sentenceToDelete,
     initialVerbIdFromQuery,
     initialAnswerFormKeyFromQuery,
     deletePending: deleteMutation.isPending,
     setVerbSublistOpen,
-    openCreate,
     handleAddSentence,
     openEdit,
     openDeleteConfirm,
     closeDeleteConfirm,
     handleConfirmDelete,
-    handleDialogOpenChange,
+    clearSentenceForm,
   }
 }

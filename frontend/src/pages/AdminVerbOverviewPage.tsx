@@ -1,5 +1,5 @@
 import { DeleteSentenceConfirmDialog } from '@/components/DeleteSentenceConfirmDialog'
-import { FillInSentenceFormDialog } from '@/components/FillInSentenceFormDialog'
+import { FillInSentenceFormCard } from '@/components/FillInSentenceFormCard'
 import { VerbSentenceCard } from '@/components/VerbSentenceCard'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -52,36 +52,27 @@ export function AdminVerbOverviewPage() {
     forbiddenMessage,
     showCardList,
     expandedVerbIds,
-    dialogOpen,
     selectedSentence,
     sentenceToDelete,
     initialVerbIdFromQuery,
     initialAnswerFormKeyFromQuery,
     deletePending,
     setVerbSublistOpen,
-    openCreate,
     handleAddSentence,
     openEdit,
     openDeleteConfirm,
     closeDeleteConfirm,
     handleConfirmDelete,
-    handleDialogOpenChange,
+    clearSentenceForm,
   } = useAdminVerbOverviewPage(searchParams, setSearchParams)
 
   const pageConfig = VIEW_PAGE_CONFIG[view]
 
   return (
     <main className="min-w-0 overflow-x-hidden p-6">
-      <div className="mb-4 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">{pageConfig.title}</h1>
-          <p className="text-muted-foreground mt-1 text-sm">{pageConfig.subtitle}</p>
-        </div>
-        {!noVerbs && (
-          <Button onClick={openCreate} disabled={verbsLoading}>
-            Nieuwe zin
-          </Button>
-        )}
+      <div className="mb-4">
+        <h1 className="text-2xl font-semibold">{pageConfig.title}</h1>
+        <p className="text-muted-foreground mt-1 text-sm">{pageConfig.subtitle}</p>
       </div>
 
       {forbiddenMessage != null ? (
@@ -121,6 +112,16 @@ export function AdminVerbOverviewPage() {
       ) : showCardList ? (
         <>
           <p className="text-muted-foreground mb-4 text-sm">{pageConfig.introText}</p>
+          <div className="mb-6">
+            <FillInSentenceFormCard
+              sentence={selectedSentence}
+              initialVerbId={initialVerbIdFromQuery}
+              initialAnswerFormKey={initialAnswerFormKeyFromQuery}
+              verbs={verbs}
+              onSuccess={clearSentenceForm}
+              onCancel={clearSentenceForm}
+            />
+          </div>
           <div className="space-y-4">
             {groups.map((group) => (
               <VerbSentenceCard
@@ -137,15 +138,6 @@ export function AdminVerbOverviewPage() {
           </div>
         </>
       ) : null}
-
-      <FillInSentenceFormDialog
-        open={dialogOpen}
-        onOpenChange={handleDialogOpenChange}
-        sentence={selectedSentence}
-        initialVerbId={initialVerbIdFromQuery}
-        initialAnswerFormKey={initialAnswerFormKeyFromQuery}
-        verbs={verbs}
-      />
 
       <DeleteSentenceConfirmDialog
         open={sentenceToDelete != null}
