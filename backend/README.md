@@ -37,6 +37,10 @@ Vanuit repo-root: `docker compose -f backend/docker-compose.yml run --rm web pyt
 - Seed data: `seed_initial_data` (of `SEED_INITIAL_DATA=1` in `.env`)
 - Django superuser: `createsuperuser`
 
+## Testen
+
+Django gebruikt het ingebouwde testframework (gebaseerd op unittest). Tests staan per app in `tests.py` of in een `tests/` package. Draaien: `python manage.py test` (optioneel: app, testclass of testmethod). Zie **[docs/testing.md](../docs/testing.md)** voor uitgebreide uitleg, commando's en hoe je tests in Docker uitvoert.
+
 ## Lint / format / typecheck
 
 Project gebruikt [ruff](https://docs.astral.sh/ruff/), Black en mypy; config in [pyproject.toml](pyproject.toml).

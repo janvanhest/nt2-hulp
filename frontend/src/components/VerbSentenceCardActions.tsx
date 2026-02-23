@@ -13,6 +13,8 @@ export interface VerbSentenceCardActionsProps {
   onAddSentence?: (verbId: number) => void
   verbId: number
   sentenceCount: number
+  /** When false, hide the "Vormen" / "Verberg vormdetails" toggle. */
+  showFormCoverage?: boolean
 }
 
 const toggleButtonClass =
@@ -25,6 +27,7 @@ export function VerbSentenceCardActions({
   onAddSentence,
   verbId,
   sentenceCount,
+  showFormCoverage = true,
 }: VerbSentenceCardActionsProps) {
   return (
     <div
@@ -33,29 +36,31 @@ export function VerbSentenceCardActions({
       )}
     >
       <div className="flex flex-row flex-wrap gap-1">
-        <CollapsibleTrigger asChild>
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            className={cn(toggleButtonClass, 'min-h-9 sm:min-h-8')}
-            aria-expanded={detailsOpen}
-            aria-label="Vormen per type tonen of verbergen"
-          >
-            {detailsOpen ? (
-              <>
-                <ChevronUpIcon className="size-4 shrink-0" />
-                <span className="sm:inline">Verberg vormdetails</span>
-                <span className="sm:hidden">Vormen</span>
-              </>
-            ) : (
-              <>
-                <ChevronDownIcon className="size-4 shrink-0" />
-                Vormen ({TOTAL_VERB_FORMS})
-              </>
-            )}
-          </Button>
-        </CollapsibleTrigger>
+        {showFormCoverage && (
+          <CollapsibleTrigger asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className={cn(toggleButtonClass, 'min-h-9 sm:min-h-8')}
+              aria-expanded={detailsOpen}
+              aria-label="Vormen per type tonen of verbergen"
+            >
+              {detailsOpen ? (
+                <>
+                  <ChevronUpIcon className="size-4 shrink-0" />
+                  <span className="sm:inline">Verberg vormdetails</span>
+                  <span className="sm:hidden">Vormen</span>
+                </>
+              ) : (
+                <>
+                  <ChevronDownIcon className="size-4 shrink-0" />
+                  Vormen ({TOTAL_VERB_FORMS})
+                </>
+              )}
+            </Button>
+          </CollapsibleTrigger>
+        )}
         <Button
           type="button"
           variant="ghost"
@@ -92,7 +97,7 @@ export function VerbSentenceCardActions({
         </Button>
       ) : (
         <Button asChild variant="outline" size="sm" className="min-h-9 w-full sm:min-h-8">
-          <Link to={`${ROUTES.beheerZinnen}?verb=${verbId}`}>
+          <Link to={`${ROUTES.beheerOverzichtPerWerkwoord}?verb=${verbId}`}>
             Zin toevoegen
           </Link>
         </Button>

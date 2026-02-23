@@ -36,18 +36,18 @@ Autorisatie wordt **altijd in de backend** afgedwongen. De frontend gebruikt rol
 
 ### Backend
 
-- **Beheer-endpoints** (werkwoorden, zinnen, GET `/api/beheer/`): `permission_classes = BEHEER_PERMISSION_CLASSES` (uit `accounts.permissions`). Zie `accounts.permissions.IsBeheerder` en `accounts.beheer_views`. Zonder beheerderrol → **403 Forbidden** met detail "Alleen beheerder kan deze actie uitvoeren."
+- **Beheer-endpoints** (werkwoorden, zinnen, GET `/api/beheer/`): `permission_classes = ADMIN_PERMISSION_CLASSES` (uit `accounts.permissions`). Zie `accounts.permissions.IsAdmin` en `accounts.admin_views`. Zonder beheerderrol → **403 Forbidden** met `IsAdmin.message`.
 - **Oefen- en nakijk-endpoints:** (wanneer toegevoegd) `permission_classes = [IsAuthenticated]` (uit `rest_framework.permissions`). Zonder token → **401 Unauthorized**.
 - **Auth:** Login/logout en `/api/auth/me/` zoals geconfigureerd in `accounts.api_views` en `accounts.api_urls`.
 
 ### Frontend
 
-- **Route-guard:** Routes onder `/beheer` gebruiken `BeheerLayout` (`frontend/src/layouts/BeheerLayout.tsx`). Als `user.role !== 'beheerder'`, redirect naar home.
+- **Route-guard:** Routes onder `/beheer` gebruiken `AdminLayout` (`frontend/src/layouts/AdminLayout.tsx`). Als `user.role !== 'beheerder'`, toont de layout "Geen toegang"; navigatie blijft zichtbaar.
 - **Navigatie:** In `AppLayout` worden links naar Beheer, Werkwoorden en Zinnen alleen getoond als `user.role === 'beheerder'`.
 - **401:** Bij verlopen of ontbrekend token wist de app de token en redirect naar login (o.a. in `apiFetch` en `useMe`).
-- **403:** Bij een 403 op een API-call (bijv. beheer-actie met gebruikersrol) tonen callers de `detail` uit de response aan de gebruiker (zie bijv. `BeheerPage`).
+- **403:** Bij een 403 op een API-call (bijv. beheer-actie met gebruikersrol) tonen callers de `detail` uit de response aan de gebruiker (zie bijv. `AdminPage`).
 
 ## Toevoegen van nieuwe beheer- of oefen-endpoints
 
-- **Beheer (werkwoorden/zinnen):** View voorzien van `permission_classes = BEHEER_PERMISSION_CLASSES` (import uit `accounts.permissions`) en URL onder `api/beheer/` of in een aparte app die dezelfde permission gebruikt. Zonder beheerderrol → 403 met bestaande `IsBeheerder.message`.
+- **Beheer (werkwoorden/zinnen):** View voorzien van `permission_classes = ADMIN_PERMISSION_CLASSES` (import uit `accounts.permissions`) en URL onder `api/beheer/` of in een aparte app die dezelfde permission gebruikt. Zonder beheerderrol → 403 met bestaande `IsAdmin.message`.
 - **Oefenen/nakijk:** View voorzien van `permission_classes = [IsAuthenticated]` (uit `rest_framework.permissions`); ongeauthenticeerde requests krijgen 401 (zelfde gedrag als `/api/auth/me/`).

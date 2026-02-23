@@ -2,6 +2,8 @@ import type { AnswerFormKey, FillInSentence, Verb } from '@/lib/api'
 import { ANSWER_FORM_KEYS, ANSWER_FORM_LABELS } from '@/lib/verbFormConfig'
 
 export const TARGET_SENTENCES_PER_FORM = 2
+/** Mogelijke streefwaarden voor aantal invulzinnen per werkwoordsvorm (dropdown). */
+export const TARGET_SENTENCES_PER_FORM_OPTIONS = [1, 2, 3, 4, 5] as const
 export const TOTAL_VERB_FORMS = ANSWER_FORM_KEYS.length
 
 export interface VerbSentenceGroup {

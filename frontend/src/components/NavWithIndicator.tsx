@@ -28,14 +28,6 @@ const navLinkClassName = ({ isActive }: { isActive: boolean }) =>
       : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
   )
 
-const sheetNavLinkClassName = ({ isActive }: { isActive: boolean }) =>
-  cn(
-    'flex items-center gap-2.5 rounded-lg px-4 py-3 text-base font-medium transition-colors',
-    isActive
-      ? 'font-semibold text-primary bg-primary/10'
-      : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
-  )
-
 function NavItem({
   item,
   index,
@@ -59,35 +51,15 @@ function NavItem({
   )
 }
 
-function SheetNavItem({
-  item,
-  onNavigate,
-}: {
-  item: NavItemConfig
-  onNavigate: () => void
-}) {
-  const Icon = item.icon
-  return (
-    <NavLink
-      to={item.to}
-      end={item.end}
-      className={sheetNavLinkClassName}
-      onClick={onNavigate}
-    >
-      <Icon aria-hidden className="size-5 shrink-0" />
-      {item.label}
-    </NavLink>
-  )
-}
-
-const INDICATOR_INSET_X = 2
-const INDICATOR_INSET_Y = 14
-
 export function NavWithIndicator({
   mainItems,
   adminItems,
   showAdminNav,
 }: NavWithIndicatorProps) {
+  /** Inset (px) for the active nav indicator; affects size of the grey pill. */
+  const INDICATOR_INSET_X = 2
+  const INDICATOR_INSET_Y = 2
+
   const navRef = useRef<HTMLElement>(null)
   const linkRefs = useRef<(HTMLAnchorElement | null)[]>([])
   const location = useLocation()
@@ -120,7 +92,7 @@ export function NavWithIndicator({
       left: linkRect.left - navRect.left + INDICATOR_INSET_X,
       width: Math.max(0, linkRect.width - INDICATOR_INSET_X * 2),
     })
-  }, [activeIndex, location.pathname, mainItems.length, adminItems.length, showAdminNav])
+  }, [activeIndex, location.pathname, mainItems.length, adminItems.length, showAdminNav, INDICATOR_INSET_X, INDICATOR_INSET_Y])
 
   let idx = 0
   return (
@@ -146,37 +118,6 @@ export function NavWithIndicator({
           <Separator orientation="vertical" className="mx-1 h-5" />
           {adminItems.map((item) => (
             <NavItem key={item.to} item={item} index={idx++} refCallback={setRef} />
-          ))}
-        </>
-      )}
-    </nav>
-  )
-}
-
-export function MobileNavSheetContent({
-  mainItems,
-  adminItems,
-  showAdminNav,
-  onNavigate,
-}: MobileNavSheetContentProps) {
-  return (
-    <nav className="mt-6 flex flex-col gap-1" aria-labelledby="sheet-nav-title">
-      {mainItems.map((item) => (
-        <SheetNavItem
-          key={item.to}
-          item={item}
-          onNavigate={onNavigate}
-        />
-      ))}
-      {showAdminNav && (
-        <>
-          <Separator className="my-2" />
-          {adminItems.map((item) => (
-            <SheetNavItem
-              key={item.to}
-              item={item}
-              onNavigate={onNavigate}
-            />
           ))}
         </>
       )}

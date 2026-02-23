@@ -4,7 +4,7 @@ import { AdminLayout } from '@/layouts/AdminLayout'
 import { AdminPage } from '@/pages/AdminPage'
 import { AdminGenerateExercisePage } from '@/pages/AdminGenerateExercisePage'
 import { AdminVerbsPage } from '@/pages/AdminVerbsPage'
-import { AdminSentencesPage } from '@/pages/AdminSentencesPage'
+import { AdminVerbOverviewPage } from '@/pages/AdminVerbOverviewPage'
 import { HomePage } from '@/pages/HomePage'
 import { LoginPage } from '@/pages/LoginPage'
 import { NakijkPage } from '@/pages/NakijkPage'
@@ -50,8 +50,8 @@ export const router = createBrowserRouter([
             Component: AdminVerbsPage,
           },
           {
-            path: 'zinnen',
-            Component: AdminSentencesPage,
+            path: 'overzicht-per-werkwoord',
+            Component: AdminVerbOverviewPage,
           },
           {
             path: 'oefening-genereren',

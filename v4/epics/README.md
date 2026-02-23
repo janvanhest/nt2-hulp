@@ -17,3 +17,5 @@ Gedetailleerde uitwerkingen van epics: contracts, validatie, technisch ontwerp, 
 | [epic-7-technisch-overzicht.md](epic-7-technisch-overzicht.md) | Flow, componenten, infra |
 | [epic-7-datamodel-import.md](epic-7-datamodel-import.md) | VerbImportJob, VerbImportItem |
 | [epic-7-admin-ux.md](epic-7-admin-ux.md) | Bulk-invoerformulier, job-detailpagina |
+
+Beheer-dashboard en navigatie (één nav-item "Beheer", dashboard als ingang): zie [../epics.md#beheer-dashboard-en-navigatie](../epics.md#beheer-dashboard-en-navigatie).

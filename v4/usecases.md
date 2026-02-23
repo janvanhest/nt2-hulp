@@ -2,6 +2,10 @@
 
 Sluiten aan op [casus.md](casus.md), [erd.md](erd.md) en [epics.md](epics.md).
 
+De beheerder opent "Beheer" en kiest op het Beheer-dashboard voor Vervoegingen beheren, Overzicht per werkwoord, Zinnen beheren of Oefening toevoegen; er is geen apart navigatie-item per actie.
+
+**Aanbevolen voorbereiding.** Voor het genereren van een oefening is de volgende volgorde aanbevolen: (1) Werkwoord kiezen of toevoegen (Vervoegingen beheren), (2) Vormen invullen (Vervoegingen beheren), (3) Invulzinnen toevoegen en – wanneer beschikbaar (Fase 2) – thema aan invulzin koppelen (Zinnen beheren of Overzicht per werkwoord). Daarna Oefening toevoegen gebruiken. Zie [epics.md](epics.md) (Beheer-dashboard, Aanbevolen voorbereidingsflow).
+
 ## UC1: Vervoegingsoefening (alle vormen invullen)
 
 **Doel:** De gebruiker vult alle vormen van een werkwoord in en kan deze controleren.
@@ -59,7 +63,7 @@ Het nakijkmodel wordt bij het genereren van de oefening (UC3) aangemaakt. Digita
 
 ## UC3: Oefening genereren
 
-**Doel:** Een nieuwe oefening genereren op basis van een **selectie** (werkwoorden en/of thema) en aantal items.
+**Doel:** Een nieuwe oefening genereren op basis van een **selectie** (op werkwoord/infinitief; Fase 2: ook thema) en aantal items.
 
 **Actoren:** Beheerder
 
@@ -67,11 +71,39 @@ Het nakijkmodel wordt bij het genereren van de oefening (UC3) aangemaakt. Digita
 
 **Hoofdscenario:**
 1. Beheerder kiest oefeningstype (vervoegingsoefening of invulzin-oefening).
-2. Beheerder maakt een **selectie**: kiest werkwoorden (expliciet) en/of een thema waaruit items worden gekozen (in plaats van "alle" willekeurig).
+2. Beheerder maakt een **selectie**: kiest werkwoorden (infinitieven); daar hangen werkwoordsvormen en invulzinnen aan. (Fase 2: ook thema.) Zie [terminologie.md](terminologie.md) en [epics/epic-4-oefeningen-genereren.md](epics/epic-4-oefeningen-genereren.md).
 3. Beheerder selecteert aantal items (rijtje); richtlijn minimaal 5 voor voldoende oefenlengte.
 4. Systeem genereert oefening met geordende items en nakijkmodel.
 
 **Resultaat:** Oefening is klaar voor gebruik (zie [terminologie.md](terminologie.md) Selectie).
+
+### Scenario's Fase 1: selectie op werkwoord
+
+**Scenario A – Vervoegingsoefening met gekozen werkwoorden**
+
+1. Beheerder opent "Oefening toevoegen".
+2. Beheerder kiest type **Vervoegingsoefening**.
+3. Beheerder maakt een selectie: kiest één of meer werkwoorden uit de lijst van bestaande werkwoorden (bijv. multi-select of checkboxes). Optioneel: keuze "Alle werkwoorden" behouden voor backward compatibility.
+4. Beheerder kiest aantal items (bijv. 10).
+5. Beheerder bevestigt. Het systeem trekt willekeurig **alleen uit de geselecteerde werkwoorden** (zonder teruglegging), maakt oefening met geordende items en nakijkmodel.
+6. Als er geen werkwoorden zijn geselecteerd: systeem toont foutmelding (bijv. "Kies minimaal één werkwoord").
+7. Als het gekozen aantal items groter is dan het aantal geselecteerde werkwoorden: systeem toont foutmelding (bijv. "Er zijn maar N werkwoorden geselecteerd; kies maximaal N items.").
+
+**Scenario B – Invulzin-oefening met gekozen werkwoorden**
+
+1. Beheerder opent "Oefening toevoegen".
+2. Beheerder kiest type **Invulzin-oefening**.
+3. Beheerder maakt een selectie: kiest één of meer werkwoorden. Alleen **invulzinnen die aan die werkwoorden gekoppeld zijn** komen in de trekking. Optioneel: "Alle zinnen" (huidig gedrag).
+4. Beheerder kiest aantal items.
+5. Beheerder bevestigt. Het systeem trekt willekeurig alleen uit invulzinnen van de geselecteerde werkwoorden, maakt oefening + nakijkmodel.
+6. Geen werkwoorden geselecteerd → foutmelding.
+7. Geen invulzinnen beschikbaar voor de geselecteerde werkwoorden → foutmelding (bijv. "Geen invulzinnen voor de gekozen werkwoorden.").
+8. Gevraagd aantal items groter dan beschikbare zinnen in selectie → foutmelding met maximaal aantal.
+
+**Randgevallen**
+
+- **Geen werkwoorden in het systeem:** bestaand gedrag: melding en verwijs naar Vervoegingen beheren (blijft van toepassing).
+- **"Alle werkwoorden" / geen selectie:** indien UI een optie "Alle werkwoorden" biedt of selectie leeg mag zijn, dan gedrag zoals nu: trekking uit alle werkwoorden resp. alle invulzinnen. Anders: selectie verplicht en foutmelding bij lege selectie.
 
 **Uitbreiding (Fase 2):** Selectie op thema; zie [fasering.md](fasering.md).
 
@@ -88,6 +120,9 @@ Het nakijkmodel wordt bij het genereren van de oefening (UC3) aangemaakt. Digita
 **Hoofdscenario:**
 1. Beheerder voegt een werkwoord toe of wijzigt een bestaand werkwoord.
 2. Systeem valideert invoer en slaat op.
+
+**Alternatieven/uitzonderingen:**
+- Bij toevoegen: als de infinitief al bestaat, toont het systeem een duidelijke foutmelding.
 
 **Resultaat:** Werkwoordenbestand is bijgewerkt.
 

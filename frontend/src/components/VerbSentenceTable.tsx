@@ -1,4 +1,5 @@
-import type { FillInSentence } from '@/lib/api'
+import type { AnswerFormKey, FillInSentence } from '@/lib/api'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
   Table,
@@ -8,7 +9,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { formatAnswerDisplay, sentencePreview } from '@/lib/sentenceUtils'
+import { sentencePreview } from '@/lib/sentenceUtils'
+import { ANSWER_FORM_LABELS } from '@/lib/verbFormConfig'
 import * as React from 'react'
 
 export interface VerbSentenceTableProps {
@@ -26,13 +28,39 @@ function VerbSentenceTableRow({
   onEditSentence: (sentence: FillInSentence, e: React.MouseEvent) => void
   onDeleteSentence: (sentence: FillInSentence) => void
 }) {
+  const formLabel =
+    sentence.answer_form_key && sentence.answer_form_key in ANSWER_FORM_LABELS
+      ? ANSWER_FORM_LABELS[sentence.answer_form_key as AnswerFormKey]
+      : null
+  const themas = sentence.themas ?? []
+
   return (
     <TableRow>
       <TableCell className="max-w-xs truncate" title={sentence.sentence_template}>
         {sentencePreview(sentence.sentence_template)}
       </TableCell>
+      <TableCell className="whitespace-nowrap">
+        {formLabel != null ? (
+          <Badge variant="secondary" className="text-xs font-normal">
+            {formLabel}
+          </Badge>
+        ) : (
+          '—'
+        )}
+      </TableCell>
+      <TableCell>{sentence.answer}</TableCell>
       <TableCell>
-        {formatAnswerDisplay(sentence.answer, sentence.answer_form_key)}
+        {themas.length > 0 ? (
+          <span className="flex flex-wrap gap-1">
+            {themas.map((t) => (
+              <Badge key={t.id} variant="outline" className="text-xs font-normal">
+                {t.naam}
+              </Badge>
+            ))}
+          </span>
+        ) : (
+          '—'
+        )}
       </TableCell>
       <TableCell className="py-1">
         <div className="flex flex-nowrap items-center gap-1">
@@ -78,7 +106,9 @@ export function VerbSentenceTable({
         <TableHeader>
           <TableRow>
             <TableHead>Zin</TableHead>
+            <TableHead>Vorm</TableHead>
             <TableHead>Antwoord</TableHead>
+            <TableHead>Thema&apos;s</TableHead>
             <TableHead className="w-[1%]">Acties</TableHead>
           </TableRow>
         </TableHeader>

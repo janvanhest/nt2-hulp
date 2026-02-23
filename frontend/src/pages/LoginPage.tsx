@@ -1,15 +1,33 @@
 import { useState } from 'react'
+import { Navigate } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useAuth } from '@/contexts/AuthContext'
 import { useLoginMutation } from '@/hooks/useAuthMutations'
+import { useMe } from '@/hooks/useMe'
+import { ROUTES } from '@/lib/routes'
 import illustrationLogin from '@/assets/illustration-login.svg?url'
 
 export function LoginPage() {
+  const { token } = useAuth()
+  const { data: user, isPending } = useMe()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const loginMutation = useLoginMutation()
+
+  if (token && user) {
+    return <Navigate to={ROUTES.home} replace />
+  }
+
+  if (token && isPending) {
+    return (
+      <div className="flex min-h-svh items-center justify-center">
+        <p className="text-muted-foreground">Laden…</p>
+      </div>
+    )
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()

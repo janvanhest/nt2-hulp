@@ -6,6 +6,15 @@ De beheerder genereert een oefening door type (vervoegingsoefening of invulzin-o
 
 Bouwt voort op Epic 0 (Foundation), Epic 1 (Rollen & autorisatie), **Epic 2 (Werkwoorden Beheren)** en **Epic 3 (Invulzinnen Beheren)**.
 
+### Uitgangspunt: selectie op werkwoord (infinitief)
+
+Selectie bij het genereren van een oefening gebeurt op **werkwoord/infinitief**. Werkwoordsvormen en oefenzinnen (invulzinnen) zijn aan het werkwoord gekoppeld; ze zijn geen aparte selectie-eenheid. De beheerder kiest welke werkwoorden meedoen; het systeem bepaalt daaruit welke items in de oefening komen.
+
+- **Vervoegingsoefening (scenario A):** items = werkwoorden met hun werkwoordsvormen (één item = één werkwoord, alle vormen).
+- **Invulzin-oefening (scenario B):** items = invulzinnen die bij de geselecteerde werkwoorden horen.
+
+Beide scenario's zijn toepassingen van hetzelfde uitgangspunt: selectie = op werkwoord. Zie ook [../terminologie.md](../terminologie.md) (Selectie, Uitgangspunt selectie).
+
 ### Scope
 
 | Wat | In scope | Toelichting |
@@ -26,6 +35,19 @@ Bouwt voort op Epic 0 (Foundation), Epic 1 (Rollen & autorisatie), **Epic 2 (Wer
 ### Wanneer nakijkmodel
 
 Het nakijkmodel (correcte antwoorden) wordt **bij het aanmaken van de oefening (Epic 4)** aangemaakt. Zo is het direct beschikbaar voor het tonen in de app (Epic 5) en voor export (Epic 6).
+
+### UI-label en stappen
+
+De **gebruikers-zichtbare** label voor deze actie is "Oefening toevoegen" (niet "Oefening genereren"). De pagina **Oefening toevoegen** is een **wizard** met vier stappen (horizontale stepper met bolletjes). Na het voltooien van een stap wordt het bolletje een vinkje en wordt de volgende stap actief:
+
+1. **Infinitief** — alleen het veld "Infinitief"; knop "Volgende stap" maakt het werkwoord aan en gaat door naar stap 2. Na voltooiing toont de stepper het toegevoegde infinitief als status.
+2. **Vormen** — inline formulier om de werkwoordsvormen in te vullen voor het zojuist toegevoegde werkwoord. De knop heet **"Opslaan en naar stap 3"** zodat duidelijk is dat opslaan en doorgaan in één actie zit; na succesvol opslaan gaat de wizard naar stap 3. Stap 2 is alleen bereikbaar nadat in stap 1 een werkwoord is aangemaakt.
+3. **Zinnen** — inline beheer van invulzinnen voor dit werkwoord: tabel (Zin, Vorm, Antwoord, Thema's, Acties), knop "Zin toevoegen" (opent dialog met werkwoord vast), bewerken/verwijderen in dialogs. Link "Naar Zinnen beheren" naar `/beheer/overzicht-per-werkwoord`. Knop "Ga naar stap 4: Overzicht werkwoord" om door te gaan.
+4. **Afronden** — Eerst het overzicht per werkwoord (zelfde weergave als op Overzicht per werkwoord: vormdekking, zinnen, optie om nog zinnen toe te voegen of te bewerken). Daaronder het formulier om een oefening aan te maken: type (vervoeging/invulzin), werkwoorden (alle/selectie), aantal items, knop "Oefening toevoegen".
+
+De beheerder kan **tussen stappen switchen**: stap 1 is altijd klikbaar; stap 2 zodra een werkwoord is toegevoegd; stappen 3 en 4 zodra die eenmaal bereikt zijn.
+
+De epicnaam "Oefeningen Genereren" blijft (technisch proces). Zie [../epics.md](../epics.md) (Beheer-dashboard, Aanbevolen voorbereidingsflow).
 
 ### Acceptatiecriteria (uit `../epics.md`)
 

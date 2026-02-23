@@ -110,6 +110,15 @@ export interface VerbPayload {
   forms?: VerbForm;
 }
 
+/** Beheer thema's API base path. */
+export const THEMAS_API_PATH = '/api/beheer/themas';
+
+/** Thema from the API. */
+export interface Theme {
+  id: number;
+  naam: string;
+}
+
 /** Beheer invulzinnen API base path. */
 export const FILL_IN_SENTENCES_API_PATH = '/api/beheer/invulzinnen';
 
@@ -137,6 +146,7 @@ export interface FillInSentence {
   sentence_template: string;
   answer: string;
   answer_form_key?: AnswerFormKey | '';
+  themas?: Theme[];
   created_at: string;
   updated_at: string;
 }
@@ -147,6 +157,7 @@ export interface FillInSentencePayload {
   sentence_template: string;
   answer: string;
   answer_form_key?: AnswerFormKey | '';
+  thema_ids?: number[];
 }
 
 /** Beheer oefeningen API base path (generate exercise). */
@@ -159,6 +170,8 @@ export type ExerciseType = 'vervoeging' | 'invulzin';
 export interface CreateExercisePayload {
   exercise_type: ExerciseType;
   num_items: number;
+  /** Optioneel: alleen uit deze werkwoorden trekken; ontbreekt of leeg = alle. */
+  verb_ids?: number[];
 }
 
 /** Conjugation item in exercise response. */
